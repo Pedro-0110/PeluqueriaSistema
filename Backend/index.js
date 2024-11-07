@@ -1,0 +1,21 @@
+const express = require('express')
+const profesionales = require('./Routes/profesionales')
+const usuarios = require('./Routes/usuarios')
+const servicios = require('./Routes/servicios.js')
+const citas = require('./Routes/citas.js')
+const horariosDisponibles = require('./Routes/horariosDisponibles.js')
+const galeria = require('./Routes/galeria.js')
+const reseñas = require('./Routes/reseñas.js')
+const app = express()
+
+app.use(express.json())
+
+app.use('/',profesionales)
+app.use('/',usuarios)
+app.use('/',servicios)
+app.use('/',citas)
+app.use('/',horariosDisponibles)
+app.use('/',galeria)
+app.use('/',reseñas)
+
+app.listen(8000,()=> console.log('Escuchando en el puerto 8000'))
