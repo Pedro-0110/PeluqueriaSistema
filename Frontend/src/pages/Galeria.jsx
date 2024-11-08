@@ -22,7 +22,7 @@ export const Galeria = () => {
     <>
         <article className="contenedor-tabla-btn-h">
             <h2>Galeria</h2>
-            <Table>
+            <Table striped bordered hover variant="warning">
                 <thead>
                     <tr>
                         <td>Img</td>
@@ -41,8 +41,11 @@ export const Galeria = () => {
                                 <td>{galeria.nombre} {galeria.apellido}</td>
                                 <td>{galeria.fecha_subida}</td>
                                 <td>
+                                    <div className='btns-editar-galeria'>
+                                    
                                     <Button onClick={()=>{handleClickEditar()}}>Editar</Button>
                                     <Button onClick={()=>{handleClickEliminar()}}>Eliminar</Button>
+                                    </div>
                                 </td>
                             </tr>
                         )

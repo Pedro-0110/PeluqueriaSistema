@@ -7,25 +7,27 @@ export const NavbarAdministrados = () => {
             <div className="div-imagen-administrador"><img src="https://cdn-icons-png.flaticon.com/512/78/78948.png" alt="" /></div>
             <ul>
                 <li><NavLink to="/citas" style={({ isActive }) => ({
-          color: isActive ? 'blue' : 'white'})} >Administrar Citas</NavLink></li>
+          color: isActive ? 'green' : 'white'})} >  <span> Citas</span> 
+    <img src="/Frontend/Icons/icono-profesional.png" alt="" /></NavLink></li>
                 <li><NavLink to="/galeria" style={({ isActive }) => ({
-          color: isActive ? 'blue' : 'white'})} >Administrar Galeria</NavLink></li>
+          color: isActive ? 'green' : 'white'})} ><span> Galeria</span> 
+    <img src="/Frontend/Icons/icono-imagen.png" alt="" /></NavLink></li>
                 <li><NavLink to="/usuarios" style={({ isActive }) => ({
-          color: isActive ? 'blue' : 'white'})} >Administrar Usuarios</NavLink></li>
+          color: isActive ? 'green' : 'white'})} > Usuarios</NavLink></li>
                 <li><NavLink to="/reseñas" style={({ isActive }) => ({
-          color: isActive ? 'blue' : 'white'})} >Administrar Reseñas</NavLink></li>
+          color: isActive ? 'green' : 'white'})} > Reseñas</NavLink></li>
                 <li><NavLink to="/perfil" style={({ isActive }) => ({
-          color: isActive ? 'blue' : 'white'})} >Administrar Perfil</NavLink></li>
+          color: isActive ? 'green' : 'white'})} > Perfil</NavLink></li>
                 <li><NavLink to="/profesionales" style={({ isActive }) => ({
-          color: isActive ? 'blue' : 'white'})} >Administrar Profesionales</NavLink></li>
+          color: isActive ? 'green' : 'white'})} > Profesionales</NavLink></li>
                 <li><NavLink to="/redesSociales" style={({ isActive }) => ({
-          color: isActive ? 'blue' : 'white'})} >Administrar Redes Sociales</NavLink></li>
+          color: isActive ? 'green' : 'white'})} > Redes Sociales</NavLink></li>
                 <li><NavLink to="/horariosDisponibles" style={({ isActive }) => ({
-          color: isActive ? 'blue' : 'white'})} >Administrar Horarios disponibles</NavLink></li>
+          color: isActive ? 'green' : 'white'})} > Horarios disponibles</NavLink></li>
                 <li><NavLink to="/servicios" style={({ isActive }) => ({
-          color: isActive ? 'blue' : 'white'})} >Administrar Servicios</NavLink></li>
+          color: isActive ? 'green' : 'white'})} > Servicios</NavLink></li>
                 <li><NavLink to="" style={({ isActive }) => ({
-          color: isActive ? 'blue' : 'white'})}>Cerrar secion</NavLink></li>
+          color: isActive ? 'green' : 'white'})}>Cerrar secion</NavLink></li>
             </ul>
         </article>
     </>

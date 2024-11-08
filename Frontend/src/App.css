@@ -36,7 +36,7 @@ h3{
 .navegacion-administrador li{
    margin: 1rem;
     padding: 0.5rem;
-    background-color: rgb(21, 241, 149);
+    background-color: rgb(0, 0, 0);
     border-radius: 10px;
     text-align: center;
     list-style-type: none;
@@ -69,13 +69,15 @@ h3{
 }
 
 .contenedor-tabla-botones-hn{
-    width: 80vw;
+    width: 82vw;
     margin: 1rem;
+    margin-top: 10rem;
 }
 
 .contenedor-editar-profesional{
     width: 20vw;
     margin: 1rem;
+    margin-top: 12rem;
 }
 .contenedor-pagina-no-encontrada{
     width: 82vw;
@@ -95,4 +97,31 @@ h3{
     width: 18vw;
     border-radius: 100%;
     margin: 1rem;
+  }
+  .btn-crear-profesional{
+    float: right;
+  }
+
+  .btns-editar-profesional{
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  .contenedor-tabla-profesionales{
+    height: 40vh;
+    overflow-y: auto; 
+  }
+
+  .btn-crear-profesional{
+    margin-top: 1rem;
+  }
+
+  .contenedor-tabla-btn-h{
+    width: 82vw;
+    text-align: center;
+  }
+
+  .btns-editar-galeria{
+    display: flex;
+    justify-content: space-evenly;
   }

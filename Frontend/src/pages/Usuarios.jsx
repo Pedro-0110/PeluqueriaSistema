@@ -107,7 +107,7 @@ export const Usuarios = () => {
             <h2>Usuarios</h2>
             <h3>Buscar usuarios</h3>
             <input type="text" name="" id="" />
-            <Table striped bordered hover variant="dark">
+            <Table striped bordered hover variant="warning">
                 <thead>
                 <tr>
                     <td>Nombre</td>
