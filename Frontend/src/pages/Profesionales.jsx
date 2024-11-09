@@ -114,11 +114,11 @@ export const Profesionales = () => {
   return (
     <>
         <article className="contenedor-tabla-botones-hn">
-            <h2>Profesionales</h2>
+            <h2 style={{padding: '1rem', backgroundColor: '#343a40', color: 'white', border : '1px solid black', borderRadius : '10px'}}>Profesionales</h2>
             <div className='contenedor-tabla-profesionales'>
 
             
-            <Table striped bordered hover variant="warning">
+            <Table striped bordered hover variant="primary">
                 <thead>
                     <tr>
                         <td>Nombre</td>
@@ -140,10 +140,10 @@ export const Profesionales = () => {
                             <td>{profesional.fecha_ingreso}</td>
                             <td>{profesional.activo  == 1 ? "Si" : "No"}</td>
                             <td>
-                                <img src="" alt="" />
+                                
                                 <div className='btns-editar-profesional'>
-                                <Button variant = 'warning' onClick={()=> handleClickEditar(profesional.profesional_id,profesional.nombre, profesional.apellido, profesional.especialidad, profesional.descripcion, profesional.fecha_ingreso, profesional.activo)}><img src={iconoLapiz} width={'14px'}/></Button>
-                                <Button variant =  'danger' onClick={()=> handleClickEliminar(profesional.profesional_id)}><img src={iconoBasura} width={'14px'}/></Button>
+                                <Button variant = 'warning' onClick={()=> handleClickEditar(profesional.profesional_id,profesional.nombre, profesional.apellido, profesional.especialidad, profesional.descripcion, profesional.fecha_ingreso, profesional.activo)}><img src={iconoLapiz} width={'22px'}/></Button>
+                                <Button variant =  'danger' onClick={()=> handleClickEliminar(profesional.profesional_id)}><img src={iconoBasura} width={'22px'}/></Button>
                                 </div>
                             </td>
                         </tr>

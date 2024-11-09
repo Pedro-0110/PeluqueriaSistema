@@ -1,5 +1,5 @@
 body{
-    background-color: rgb(243, 243, 243) !important;
+    background-color: rgb(167, 215, 243) !important;
 }
 h1{
     font-size: 28px;
@@ -34,7 +34,8 @@ h3{
 }
 
 .navegacion-administrador li{
-   margin: 1rem;
+    margin-top: 1rem;
+    margin-right: 2rem;
     padding: 0.5rem;
     background-color: rgb(0, 0, 0);
     border-radius: 10px;
@@ -90,11 +91,11 @@ h3{
 }
 
 .div-imagen-administrador{
-  width: 18vw;
+  width: 16vw;
 }
 
 .div-imagen-administrador img{
-    width: 18vw;
+    width: 16vw;
     border-radius: 100%;
     margin: 1rem;
   }
@@ -116,7 +117,7 @@ h3{
     margin-top: 1rem;
   }
 
-  .contenedor-tabla-btn-h{
+  .contenedor-tabla-btn-h-galeria{
     width: 82vw;
     text-align: center;
   }
@@ -124,4 +125,8 @@ h3{
   .btns-editar-galeria{
     display: flex;
     justify-content: space-evenly;
+  }
+
+  .encabezado-tabla td{
+    background-color: violet;
   }

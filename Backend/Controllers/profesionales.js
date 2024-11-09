@@ -68,12 +68,24 @@ const eliminarProfesional = (req, res) => {
     });
 };
 
+const obtenerNombreIDProfesionales = (req,res) =>{
+    const query = `select nombre, apellido, profesional_id from Profesionales;`
+    pool.query(query,(error,result)=>{
+        if (error) {
+            console.error("Error obteniendo profesionales:", error);
+            return res.status(500).send({ error: "Error al obtener profesionales" });
+        }
+        res.send(result);
+    })
+}
+
 module.exports = {
     obtenerProfesionales,
     obtenerProfesional,
     crearProfesional,
     editarProfesional,
-    eliminarProfesional
+    eliminarProfesional,
+    obtenerNombreIDProfesionales
 };
 
  

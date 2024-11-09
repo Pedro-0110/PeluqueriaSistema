@@ -4,7 +4,9 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Table from 'react-bootstrap/Table';
-import { NavbarAdministrados } from "../Components/NavbarAdministrados";
+import InputGroup from 'react-bootstrap/InputGroup';
+import iconoBasura from '../Icons/icono-basura.png'
+import iconoLapiz from '../Icons/icono-lapiz.png'
 
 export const Usuarios = () => {
 
@@ -20,6 +22,8 @@ export const Usuarios = () => {
     const[username, setUsername] = useState("")
     const[fecha_registro,setFechaRegistro] = useState("")
     const[rol_id, setRolID] = useState(1)
+    const[password,setPassword] = useState("")
+    const[email, setEmail] = useState("")
 
     const[show, setShow] = useState(false)
     const handleClose = () => setShow(false)
@@ -31,21 +35,21 @@ export const Usuarios = () => {
     }
 
     const obtenerRoles = async () =>{
-        const response = await axios.get("http://localhost:8000/usuarios/roles")
+        const response = await axios.get("http://localhost:8000/roles")
         setRoles(response.data)
     }
 
-    const handleClickCrear = () =>{
 
-    }
-
-    const handleClickEditar = (usuario_id,nombre, apellido, direccion, telefono, username, fecha_registro) =>{
+    const handleClickEditar = (usuario_id, nombre, apellido, email, telefono, direccion, username, password, rol_id, fecha_registro) =>{
         setUsuarioId(usuario_id)
         setNombre(nombre)
         setApellido(apellido)
-        setDireccion(direccion)
+        setEmail(email)
         setTelefono(telefono)
+        setDireccion(direccion)       
         setUsername(username)
+        setPassword(password)
+        setRolID(rol_id)
         setFechaRegistro(fecha_registro)
         setEditar(true)
     }
@@ -84,11 +88,32 @@ export const Usuarios = () => {
         const response = axios.put("http://localhost:8000/usuarios/" + usuario_id,{
             nombre,
             apellido,
-            direccion,
-            telefono,
-            username,
-            fecha_registro,
-            rol_id
+            email,
+            telefono, 
+            direccion, 
+            username, 
+            password, 
+            rol_id, 
+            fecha_registro
+
+        })
+        if(response){
+            obtenerUsuarios()
+        }
+    }
+
+    const handleClickConfirmar = async () =>{
+        const response = await axios.post("http://localhost:8000/usuarios/",{
+            nombre,
+            apellido,
+            email,
+            telefono, 
+            direccion, 
+            username, 
+            password, 
+            rol_id, 
+            fecha_registro
+            
         })
         if(response){
             obtenerUsuarios()
@@ -99,25 +124,34 @@ export const Usuarios = () => {
     useEffect(()=> {obtenerRoles()}, [])
 
   return (
-    <div className="">
-    
-        <article className="contenedor-general-usuario">
+    <>
+        <div className="contenedor-tabla-botones-hn">
+            <h2 style={{padding: '1rem', backgroundColor: '#343a40', color: 'white', border : '1px solid black', borderRadius : '10px'}}>Usuarios</h2>
+          
+            <InputGroup className="mb-3">
+        <InputGroup.Text id="inputGroup-sizing-default">
+          Buscar usuario
+        </InputGroup.Text>
+        <Form.Control
+          aria-label="Default"
+          aria-describedby="inputGroup-sizing-default"
+        />
+      </InputGroup>
 
-            <div className="div-tabla-usuarios">
-            <h2>Usuarios</h2>
-            <h3>Buscar usuarios</h3>
-            <input type="text" name="" id="" />
-            <Table striped bordered hover variant="warning">
+        <article className="contenedor-tabla-profesionales">
+
+           
+            <Table striped bordered hover variant="primary">
                 <thead>
                 <tr>
-                    <td>Nombre</td>
-                    <td>Apellido</td>
-                    <td>Direccion</td>
-                    <td>Telefono</td>
-                    <td>Username</td>
-                    <td>Fecha de registro</td>
-                    <td>Rol</td>
-                    <td>Opciones</td>
+                    <td style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Nombre</td>
+                    <td style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Apellido</td>
+                    <td style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Direccion</td>
+                    <td style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Telefono</td>
+                    <td style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Username</td>
+                    <td style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Fecha de registro</td>
+                    <td style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Rol</td>
+                    <td style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Opciones</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -131,121 +165,155 @@ export const Usuarios = () => {
                             <td>{usuario.fecha_registro}</td>
                             <td>{usuario.nombre}</td>
                             <td>
+                                <div className='btns-editar-profesional'>
                                 <Button variant = 'warning' onClick={()=> handleClickEditar(usuario.usuario_id,usuario.nombre, usuario.apellido, usuario.direccion, usuario.telefono, usuario.username,usuario.fecha_registro, usuario.nombre
-                                )}>Editar</Button>
-                                <Button variant = 'danger' onClick={()=> handleClickEliminar(usuario.usuario_id)}>Eliminar</Button>
+                                )}><img src={iconoLapiz} width={'22px'}/></Button>
+                                <Button variant = 'danger' onClick={()=> handleClickEliminar(usuario.usuario_id)}><img src={iconoBasura} width={'22px'}/></Button>
+                                </div>
                             </td>
                         </tr>
                     )}
                 </tbody>
             </Table>
-            <Button onClick={handleShow}>Crear nuevo usuario</Button>
-            </div>
+         </article>
+
+            <Button variant='success' style={{backgroundColor: '#007bff'}} className='btn-crear-profesional' onClick={handleShow}>Crear nuevo usuario</Button>
+        </div>
 
             {editar ? 
-            <article className="contenedor-editar-usuario">
+            <article className="contenedor-editar-profesional">
+            
             <Form>
                 <Form.Group>
                     <Form.Label>Nombre</Form.Label>
-                    <Form.Control value={nombre}/>
+                    <Form.Control value={nombre} onChange={(e) => setNombre(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Apellido</Form.Label>
-                    <Form.Control value={apellido}/>
+                    <Form.Control value={apellido} onChange = {(e) => setApellido(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
-                    <Form.Label>Direccion</Form.Label>
-                    <Form.Control value = {direccion}/>
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control value={email} onChange = {(e) => setEmail(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Telefono</Form.Label>
-                    <Form.Control value={telefono}/>
+                    <Form.Control value={telefono} onChange={(e) => setTelefono(e.target.value)}/>
+                </Form.Group>
+
+                <Form.Group>
+                    <Form.Label>Direccion</Form.Label>
+                    <Form.Control value = {direccion} onChange = {(e) => setDireccion(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Username</Form.Label>
-                    <Form.Control value = {username}/>
+                    <Form.Control value = {username} onChange = {(e) => setUsername(e.target.value)}/>
+                </Form.Group>
+
+                <Form.Group>
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control value = {password} onChange = {(e)=> setPassword(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Fecha de registro</Form.Label>
-                    <Form.Control type="date" value = {fecha_registro}/>
+                    <Form.Control type="date" value = {fecha_registro} onChange = {(e) => setFechaRegistro(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Rol</Form.Label>
-                    <Form.Select>
-                        <option value=""></option>
-                        <option value=""></option>
-                        <option value=""></option>
+                    <Form.Select onChange = {(e) => setRolID(e.target.value)} value={rol_id}>
+                        {
+                            roles.map(rol => 
+                                <option value={rol.rol_id}>{rol.nombre}</option>
+                    
+                            )
+                        }
                     </Form.Select>
                 </Form.Group>
             </Form>
-            <Button variant="success" onClick={()=> handleClickActualizar()}>Actualizar</Button>
-            <Button variant = "dark" onClick={handleClickCancelar}>Cancelar</Button>
+            <div className='btns-editar-profesional'>
+            <Button style={{marginTop : '1rem'}} variant="success" onClick={()=> handleClickActualizar()}>Actualizar</Button>
+            <Button style={{marginTop : '1rem'}} variant = "dark" onClick={handleClickCancelar}>Cancelar</Button>
+            </div>
             </article> : <></>}
 
 
-        </article>
 
         <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Nuevo usuario</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <Form>
+        <Form>
                 <Form.Group>
                     <Form.Label>Nombre</Form.Label>
-                    <Form.Control/>
+                    <Form.Control value={nombre} onChange={(e) => setNombre(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Apellido</Form.Label>
-                    <Form.Control/>
+                    <Form.Control value={apellido} onChange = {(e) => setApellido(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
-                    <Form.Label>Direccion</Form.Label>
-                    <Form.Control/>
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control type = 'email' value={email} onChange = {(e) => setEmail(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Telefono</Form.Label>
-                    <Form.Control/>
+                    <Form.Control type = 'number' value={telefono} onChange={(e) => setTelefono(e.target.value)}/>
+                </Form.Group>
+
+                <Form.Group>
+                    <Form.Label>Direccion</Form.Label>
+                    <Form.Control value = {direccion} onChange = {(e) => setDireccion(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Username</Form.Label>
-                    <Form.Control/>
+                    <Form.Control value = {username} onChange = {(e) => setUsername(e.target.value)}/>
+                </Form.Group>
+
+                <Form.Group>
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control type="password" value = {password} onChange = {(e)=> setPassword(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Fecha de registro</Form.Label>
-                    <Form.Control/>
+                    <Form.Control type="date" value = {fecha_registro} onChange = {(e) => setFechaRegistro(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Rol</Form.Label>
-                    <Form.Select>
-                        {roles.map(rol=>
-                            <option value="">{rol.nombre}</option>
-                        )}
+                    <Form.Select onChange = {(e) => setRolID(e.target.value)} value={rol_id}>
+                        {
+                            roles.map(rol => 
+                                <option value={rol.rol_id}>{rol.nombre}</option>
+                    
+                            )
+                        }
                     </Form.Select>
                 </Form.Group>
             </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Close
+            Cancelar
           </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
+          <Button style={{backgroundColor: '#28a745'}} variant="primary" onClick={()=> handleClickConfirmar()}>
+            Confirmar
           </Button>
         </Modal.Footer>
       </Modal>
-      </div>
+
+      </>
+        
   )
 }
