@@ -2,7 +2,6 @@ import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import Alert from 'react-bootstrap/Alert';
 import axios from 'axios'
 import iconoBasura from '../Icons/icono-basura.png'
 import iconoLapiz from '../Icons/icono-lapiz.png'
@@ -93,11 +92,11 @@ export const Galeria = () => {
 
   return (
     <>
-        <article className='contenedor-tabla-botones-hn'>
+        <article className='contenedor-padre'>
         <h2 style={{padding: '1rem', backgroundColor: '#343a40', color: 'white', border : '1px solid black', borderRadius : '10px'}}>Galeria</h2>
-        <div className="contenedor-tabla-profesionales">
+        <div className="contenedor-tabla">
 
-            <Table striped bordered hover variant="primary" >
+            <Table striped bordered hover variant="link" >
                 <thead >
                     <tr>
                         <td style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Img</td>
@@ -116,7 +115,7 @@ export const Galeria = () => {
                                 <td>{galeria.nombre} {galeria.apellido}</td>
                                 <td>{galeria.fecha_subida}</td>
                                 <td>
-                                    <div className='btns-editar-profesional'>
+                                    <div className='div-botones-editar'>
                                     
                                     <Button variant='warning' style={{backgroundColor : '#ffc107'}} onClick={()=>{handleClickEditar(galeria.imagen_id, galeria.profesional_id, galeria.url_imagen, galeria.descripcion, galeria.fecha_subida)}}><img src= {iconoLapiz} width={'22px'}/></Button>
                                     <Button variant='danger' style={{backgroundColor : '#dc3545'}} onClick={()=>{handleClickEliminar(galeria.imagen_id)}}><img src= {iconoBasura} width={'22px'}/></Button>
@@ -129,11 +128,12 @@ export const Galeria = () => {
             </Table>
         </div>
 
-            <Button variant='success' style={{backgroundColor: '#007bff'}} className='btn-crear-profesional' onClick={()=> handleClickCrear()}>Crear nueva imagen</Button> 
+            <Button variant='success' style={{backgroundColor: '#007bff'}} className='btn-crear' onClick={()=> handleClickCrear()}>Crear nueva imagen</Button> 
 
         </article>
         {editar ? 
-            <article className="contenedor-editar-profesional">
+            <article className="contenedor-editar">
+            <h4 style={{padding: '1rem', backgroundColor: '#343a40', color: 'white', border : '1px solid black', borderRadius : '10px'}}>Datos a actualizar</h4>
             <Form>
                 <Form.Group>
                     <Form.Label>URL imagen</Form.Label>
@@ -163,7 +163,7 @@ export const Galeria = () => {
                 </Form.Group>
 
             </Form>
-            <div className='btns-editar-profesional'>
+            <div className='div-botones-editar'>
             <Button style={{marginTop : '1rem'}} variant="success" onClick={()=>{handleClickActualizar()}}>Actualizar</Button>
             <Button style={{marginTop : '1rem', backgroundColor : '#6c757d'}} onClick={handleClickCancelar}>Cancelar</Button>
             </div>

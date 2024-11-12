@@ -2,10 +2,10 @@ const express = require('express')
 const {obtenerReseñas,obtenerReseña,crearReseña,editarReseña,eliminarReseña} = require('../Controllers/reseñas')
 const router = express.Router()
 
-router.get('/reseñas',obtenerReseñas)
-router.get('/reseñas/:id',obtenerReseña)
-router.post('/reseñas',crearReseña)
-router.put('/reseñas/:id',editarReseña)
-router.delete('/reseñas/:id',eliminarReseña)
+router.get('/resenas',obtenerReseñas)
+router.get('/resenas/:id',obtenerReseña)
+router.post('/resenas',crearReseña)
+router.put('/resenas/:id',editarReseña)
+router.delete('/resenas/:id',eliminarReseña)
 
 module.exports = router

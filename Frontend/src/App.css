@@ -1,5 +1,5 @@
 body{
-    background-color: rgb(167, 215, 243) !important;
+    background-color: #ffffff !important;
 }
 h1{
     font-size: 28px;
@@ -19,6 +19,7 @@ h3{
     line-height: 1.5;
     font-weight: 400;
 }
+
 .navegacion-administrador{
     font-size: 16px;
     width: 18vw;
@@ -27,58 +28,51 @@ h3{
     justify-content: space-between; /* Distribuye los elementos proporcionalmente */
     height: 100vh; /* Altura total de la columna, ajustable según tus necesidades */
 }
+
 .navegacion-administrador a{
     text-decoration: none;
     font-weight: 600;
-    
+    color: black; 
 }
 
 .navegacion-administrador li{
     margin-top: 1rem;
     margin-right: 2rem;
     padding: 0.5rem;
-    background-color: rgb(0, 0, 0);
+    background-color: #ffffff;
+    color: black;
     border-radius: 10px;
     text-align: center;
     list-style-type: none;
+    border: 1px solid rgb(0, 0, 0);
 }
 
-.contenedor-general-usuario{
-    display: flex;
-    width: 80vw;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.div-tabla-usuarios{
-    width: 82vw;
-}
 
 .navegacion-administrador{
     height: 100vh;
-    background-color: rgb(255, 255, 255);
+    background-color:#343a40;
+    color: black;
     display: flex;
     flex-direction: column;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 10px;
 }
 
 .contenedor-navbar-opcion{
     display: flex;
 }
 
-.contenedor-editar-usuario{
-    width: 20vw;
-}
 
-.contenedor-tabla-botones-hn{
+.contenedor-padre{
     width: 82vw;
     margin: 1rem;
-    margin-top: 10rem;
+   margin-top: 1rem;
 }
 
-.contenedor-editar-profesional{
+.contenedor-editar{
     width: 20vw;
     margin: 1rem;
-    margin-top: 12rem;
+    margin-top: 1rem;
 }
 .contenedor-pagina-no-encontrada{
     width: 82vw;
@@ -96,24 +90,25 @@ h3{
 
 .div-imagen-administrador img{
     width: 16vw;
-    border-radius: 100%;
-    margin: 1rem;
+    border: 2px solid rgb(221, 221, 221);
+    border-radius: 10px;
+    margin: 0.8rem;
   }
-  .btn-crear-profesional{
+  .btn-crear{
     float: right;
   }
 
-  .btns-editar-profesional{
+  .div-botones-editar{
     display: flex;
     justify-content: space-evenly;
   }
 
-  .contenedor-tabla-profesionales{
+  .contenedor-tabla{
     height: 40vh;
     overflow-y: auto; 
   }
 
-  .btn-crear-profesional{
+  .btn-crear{
     margin-top: 1rem;
   }
 
@@ -129,4 +124,10 @@ h3{
 
   .encabezado-tabla td{
     background-color: violet;
+  }
+
+  .contenedor-perfil{
+    width: 70vw;
+    margin-left: auto;
+    margin-right: auto;
   }

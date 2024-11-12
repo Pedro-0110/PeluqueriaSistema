@@ -2,11 +2,11 @@ import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal';
+import Alert from 'react-bootstrap/Alert';
 import axios from 'axios'
 import iconoBasura from '../Icons/icono-basura.png'
 import iconoLapiz from '../Icons/icono-lapiz.png'
-
-import { act, useEffect, useState } from 'react';
+import {useEffect, useState } from 'react';
 
 export const Profesionales = () => {
     const [profesionales,setProfesionales] = useState([])
@@ -113,21 +113,21 @@ export const Profesionales = () => {
     useEffect(()=> {obtenerProfesionales()},[])
   return (
     <>
-        <article className="contenedor-tabla-botones-hn">
+        <article className="contenedor-padre">
             <h2 style={{padding: '1rem', backgroundColor: '#343a40', color: 'white', border : '1px solid black', borderRadius : '10px'}}>Profesionales</h2>
-            <div className='contenedor-tabla-profesionales'>
+            <div className='contenedor-tabla'>
 
             
-            <Table striped bordered hover variant="primary">
+            <Table striped bordered hover variant="link">
                 <thead>
                     <tr>
-                        <td>Nombre</td>
-                        <td>Apellido</td>
-                        <td>Especialidad</td>
-                        <td>Descripcion</td>
-                        <td>Fecha de ingreso</td>
-                        <td>Activo</td>
-                        <td>Opciones</td>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Nombre</td>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Apellido</td>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Especialidad</td>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Descripcion</td>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Fecha de ingreso</td>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Activo</td>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Opciones</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -141,7 +141,7 @@ export const Profesionales = () => {
                             <td>{profesional.activo  == 1 ? "Si" : "No"}</td>
                             <td>
                                 
-                                <div className='btns-editar-profesional'>
+                                <div className='div-botones-editar'>
                                 <Button variant = 'warning' onClick={()=> handleClickEditar(profesional.profesional_id,profesional.nombre, profesional.apellido, profesional.especialidad, profesional.descripcion, profesional.fecha_ingreso, profesional.activo)}><img src={iconoLapiz} width={'22px'}/></Button>
                                 <Button variant =  'danger' onClick={()=> handleClickEliminar(profesional.profesional_id)}><img src={iconoBasura} width={'22px'}/></Button>
                                 </div>
@@ -151,10 +151,11 @@ export const Profesionales = () => {
                 </tbody>
             </Table>
             </div>
-            <Button className='btn-crear-profesional' onClick={()=> handleClickCrearProfesional()}>Crear nuevo profesional</Button>
+            <Button className='btn-crear' onClick={()=> handleClickCrearProfesional()}>Crear nuevo profesional</Button>
         </article>
 
-        {editar ? <article className='contenedor-editar-profesional'>
+        {editar ? <article className='contenedor-editar'>
+            <h4 style={{padding: '1rem', backgroundColor: '#343a40', color: 'white', border : '1px solid black', borderRadius : '10px'}}>Datos a actualizar</h4>
             <Form>
                 <Form.Group>
                     <Form.Label>Nombre</Form.Label>
@@ -193,7 +194,7 @@ export const Profesionales = () => {
                     </Form.Select>
                 </Form.Group>
             </Form>
-            <div className='btns-editar-profesional'>
+            <div className='div-botones-editar'>
             <Button style={{marginTop : '1rem'}} variant="success" onClick={()=> handleClickActualizar()}>Actualizar</Button>
             <Button style={{marginTop : '1rem'}} variant = "dark" onClick={handleClickCancelar}>Cancelar</Button>
             </div>
@@ -254,7 +255,6 @@ export const Profesionales = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    
     </>
   )
 }

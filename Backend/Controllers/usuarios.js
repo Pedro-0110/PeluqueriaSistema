@@ -73,10 +73,44 @@ const eliminarUsuario = (req, res) => {
   });
 };
 
+
+const obtenerAdministradores = (req,res) =>{
+  const query = `select * from Usuarios as u
+                 inner join Roles as r
+                 on u.rol_id = r.rol_id
+                 where r.nombre = 'Administrador'
+                 ;`
+  pool.query(query,(error,result)=>{
+    if (error) {
+      console.error(error);
+      return res.status(500).send("Error al obtener usuarios");
+    }
+    res.status(200).json(result);
+  })
+}
+
+const obtenerAdministrador = (req,res) =>{
+  const {id} = req.params
+  const query = `select * from Usuarios as u
+                 inner join Roles as r
+                 on u.rol_id = r.rol_id
+                 where r.nombre = 'Administrador' and u.usuario_id = ?
+                 ;`
+  pool.query(query,[id],(error,result)=>{
+    if (error) {
+      console.error(error);
+      return res.status(500).send("Error al obtener usuarios");
+    }
+    res.status(200).json(result);
+  })
+}
+
 module.exports = {
   obtenerUsuarios,
   obtenerUsuario,
   crearUsuario,
   editarUsuario,
   eliminarUsuario,
+  obtenerAdministradores,
+  obtenerAdministrador
 };

@@ -125,7 +125,7 @@ export const Usuarios = () => {
 
   return (
     <>
-        <div className="contenedor-tabla-botones-hn">
+        <div className="contenedor-padre">
             <h2 style={{padding: '1rem', backgroundColor: '#343a40', color: 'white', border : '1px solid black', borderRadius : '10px'}}>Usuarios</h2>
           
             <InputGroup className="mb-3">
@@ -138,10 +138,10 @@ export const Usuarios = () => {
         />
       </InputGroup>
 
-        <article className="contenedor-tabla-profesionales">
+        <article className="contenedor-tabla">
 
            
-            <Table striped bordered hover variant="primary">
+            <Table striped bordered hover variant="link">
                 <thead>
                 <tr>
                     <td style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Nombre</td>
@@ -165,7 +165,7 @@ export const Usuarios = () => {
                             <td>{usuario.fecha_registro}</td>
                             <td>{usuario.nombre}</td>
                             <td>
-                                <div className='btns-editar-profesional'>
+                                <div className='div-botones-editar'>
                                 <Button variant = 'warning' onClick={()=> handleClickEditar(usuario.usuario_id,usuario.nombre, usuario.apellido, usuario.direccion, usuario.telefono, usuario.username,usuario.fecha_registro, usuario.nombre
                                 )}><img src={iconoLapiz} width={'22px'}/></Button>
                                 <Button variant = 'danger' onClick={()=> handleClickEliminar(usuario.usuario_id)}><img src={iconoBasura} width={'22px'}/></Button>
@@ -181,8 +181,8 @@ export const Usuarios = () => {
         </div>
 
             {editar ? 
-            <article className="contenedor-editar-profesional">
-            
+            <article className="contenedor-editar">
+             <h4 style={{padding: '1rem', backgroundColor: '#343a40', color: 'white', border : '1px solid black', borderRadius : '10px'}}>Datos a actualizar</h4>
             <Form>
                 <Form.Group>
                     <Form.Label>Nombre</Form.Label>
@@ -228,15 +228,15 @@ export const Usuarios = () => {
                     <Form.Label>Rol</Form.Label>
                     <Form.Select onChange = {(e) => setRolID(e.target.value)} value={rol_id}>
                         {
-                            roles.map(rol => 
-                                <option value={rol.rol_id}>{rol.nombre}</option>
+                            roles.map((rol, index) => 
+                                <option key={index} value={rol.rol_id}>{rol.nombre}</option>
                     
                             )
                         }
                     </Form.Select>
                 </Form.Group>
             </Form>
-            <div className='btns-editar-profesional'>
+            <div className='div-botones-editar'>
             <Button style={{marginTop : '1rem'}} variant="success" onClick={()=> handleClickActualizar()}>Actualizar</Button>
             <Button style={{marginTop : '1rem'}} variant = "dark" onClick={handleClickCancelar}>Cancelar</Button>
             </div>
@@ -294,8 +294,8 @@ export const Usuarios = () => {
                     <Form.Label>Rol</Form.Label>
                     <Form.Select onChange = {(e) => setRolID(e.target.value)} value={rol_id}>
                         {
-                            roles.map(rol => 
-                                <option value={rol.rol_id}>{rol.nombre}</option>
+                            roles.map((rol, index) => 
+                                <option key = {index} value={rol.rol_id}>{rol.nombre}</option>
                     
                             )
                         }
