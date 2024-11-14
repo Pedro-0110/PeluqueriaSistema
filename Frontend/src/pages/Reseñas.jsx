@@ -1,6 +1,5 @@
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button'
-import Modal from 'react-bootstrap/Modal';
 import axios from 'axios'
 import iconoBasura from '../Icons/icono-basura.png'
 import {useEffect, useState } from 'react';
@@ -32,12 +31,14 @@ export const Reseñas = () => {
                 <thead>
                     <tr>
                         <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Reseña ID</td>
-                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Usuario ID</td>
-                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Profesional ID</td>
-                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Cita ID</td>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Usuario</td>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Username</td>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Profesional</td>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Fecha de la Cita</td>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Servicio</td>
                         <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Comentario</td>
                         <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Puntuacion</td>
-                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Fecha</td>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Fecha de la reseña</td>
                         <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Opcion</td>
                                         
                     </tr>
@@ -46,16 +47,18 @@ export const Reseñas = () => {
                     {resenas.map((resena, indx)=>
                         <tr key={indx}>
                             <td>{resena.reseña_id}</td>
-                            <td>{resena.usuario_id}</td>
-                            <td>{resena.profesional_id}</td>
-                            <td>{resena.cita_id}</td>
+                            <td>{resena.nombre_usuario}{resena.apellido_usuario}</td>
+                            <td>{resena.username}</td>
+                            <td>{resena.nombre_profesional}{resena.apellido_profesional}</td>
+                            <td>{resena.fecha_cita}</td>
+                            <td>{resena.nombre_servicio}</td>
                             <td>{resena.comentario}</td>
                             <td>{resena.puntuacion}</td>
                             <td>{resena.fecha_reseña}</td>
                             <td>
                             
                                 <div className='div-botones-editar'>
-                                <Button variant =  'danger' onClick={()=> handleClickEliminar(resena.reseña.id)}><img src={iconoBasura} width={'22px'}/></Button>
+                                <Button variant =  'danger' onClick={()=> handleClickEliminar(resena.reseña_id)}><img src={iconoBasura} width={'22px'}/></Button>
                                 </div>
                             </td>
                         </tr>

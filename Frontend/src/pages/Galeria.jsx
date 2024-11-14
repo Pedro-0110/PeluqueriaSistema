@@ -17,8 +17,8 @@ export const Galeria = () => {
     const[imagen_id, setImagenID] = useState("")
     const[profesional_id, setProfesionalID] = useState("")
     const[url_imagen, setUrlImagen] = useState("")
-    const[descripcion, setDescripcion] = useState("")
-    const[fecha_subida, setFechaSubida] = useState("")
+    const[descripcion_imagen, setDescripcion] = useState("")
+    const[fecha_subida_imagen, setFechaSubida] = useState("")
 
     const[show, setShow] = useState(false)
     const handleClose = () => setShow(false)
@@ -34,33 +34,37 @@ export const Galeria = () => {
         setProfesionales(response.data)
     }
 
-    const handleClickEditar = (imagen_id,profesional_id, url_imagen, descripcion, fecha_subida) =>{
+    const handleClickEditar = (imagen_id,profesional_id, url_imagen, descripcion_imagen, fecha_subida_imagen) =>{
         setEditar(true)
         setImagenID(imagen_id)
         setProfesionalID(profesional_id)
         setUrlImagen(url_imagen)
-        setDescripcion(descripcion)
-        const fechaFormateada = new Date(fecha_subida).toISOString().split("T")[0];
+        setDescripcion(descripcion_imagen)
+        const fechaFormateada = new Date(fecha_subida_imagen).toISOString().split("T")[0];
         setFechaSubida(fechaFormateada);
-   
-
     }
 
     const handleClickEliminar = async(url_imagen) =>{
-        const response = await axios.delete("http://localhost:8000/galeria/"+ url_imagen)
+        let response = confirm("Se eliminara el registro de forma permanente")
         if(response){
+            response = await axios.delete("http://localhost:8000/galeria/"+ url_imagen)
+            if(response.status){
+            alert("Registro eliminado")
             obtenerGalerias()
         }
     }
+}
 
     const handleClickActualizar = async () =>{
         const response = await axios.put("http://localhost:8000/galeria/" + imagen_id,{
             profesional_id,
             url_imagen,
-            descripcion,
-            fecha_subida
+            descripcion_imagen,
+            fecha_subida_imagen
         })
-        if(response){
+        if(response.status == 200){
+            limpiarCampos()
+            setEditar(false)
             obtenerGalerias()
         }
     }
@@ -71,20 +75,29 @@ export const Galeria = () => {
 
     }
 
-    const handleClickCrear = () =>{
-        setShow(true)
-    }
+    const handleClickCrear = () => setShow(true)
+  
 
     const handleClickConfirmar = async () =>{
         const response = await axios.post("http://localhost:8000/galeria/",{
             profesional_id,
             url_imagen,
-            descripcion,
-            fecha_subida
+            descripcion_imagen,
+            fecha_subida_imagen
         })
-        if(response){
+        if(response.status == 201){
+            limpiarCampos()
+            setShow(false)
             obtenerGalerias()
         }
+    }
+
+    const limpiarCampos = () => {
+    setImagenID("")
+    setProfesionalID("")
+    setUrlImagen("")
+    setDescripcion("")
+    setFechaSubida("")
     }
 
     useEffect(()=> {obtenerGalerias()},[])
@@ -111,14 +124,14 @@ export const Galeria = () => {
                         galerias.map((galeria,index) => 
                             <tr key={index}>
                                 <td style={{ textAlign: 'center'}}><img src={galeria.url_imagen} alt="" width={'60px'} /></td>
-                                <td>{galeria.descripcion}</td>
-                                <td>{galeria.nombre} {galeria.apellido}</td>
-                                <td>{galeria.fecha_subida}</td>
+                                <td>{galeria.descripcion_imagen}</td>
+                                <td>{galeria.nombre_profesional} {galeria.apellido_profesional}</td>
+                                <td>{galeria.fecha_subida_imagen}</td>
                                 <td>
                                     <div className='div-botones-editar'>
                                     
-                                    <Button variant='warning' style={{backgroundColor : '#ffc107'}} onClick={()=>{handleClickEditar(galeria.imagen_id, galeria.profesional_id, galeria.url_imagen, galeria.descripcion, galeria.fecha_subida)}}><img src= {iconoLapiz} width={'22px'}/></Button>
-                                    <Button variant='danger' style={{backgroundColor : '#dc3545'}} onClick={()=>{handleClickEliminar(galeria.imagen_id)}}><img src= {iconoBasura} width={'22px'}/></Button>
+                                    <Button variant='warning' onClick={()=>{handleClickEditar(galeria.imagen_id, galeria.profesional_id, galeria.url_imagen, galeria.descripcion_imagen, galeria.fecha_subida_imagen)}}><img src= {iconoLapiz} width={'22px'}/></Button>
+                                    <Button variant='danger' onClick={()=>{handleClickEliminar(galeria.imagen_id)}}><img src= {iconoBasura} width={'22px'}/></Button>
                                     </div>
                                 </td>
                             </tr>
@@ -128,7 +141,7 @@ export const Galeria = () => {
             </Table>
         </div>
 
-            <Button variant='success' style={{backgroundColor: '#007bff'}} className='btn-crear' onClick={()=> handleClickCrear()}>Crear nueva imagen</Button> 
+            <Button variant='primary' className='btn-crear' onClick={()=> handleClickCrear()}>Crear nueva imagen</Button> 
 
         </article>
         {editar ? 
@@ -142,21 +155,21 @@ export const Galeria = () => {
 
                 <Form.Group>
                     <Form.Label>Descripcion</Form.Label>
-                    <Form.Control onChange={(e)=> setDescripcion(e.target.value)} value={descripcion}/>
+                    <Form.Control onChange={(e)=> setDescripcion(e.target.value)} value={descripcion_imagen}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Profesional</Form.Label>
                     <Form.Select value={profesional_id} onChange={(e)=> setProfesionalID(e.target.value)}>
                         {profesionales.map((profesional, index)=>
-                            <option key={index} value={profesional.profesional_id}>{profesional.nombre} {profesional.apellido}</option>
+                            <option key={index} value={profesional.profesional_id}>{profesional.nombre_profesional} {profesional.apellido_profesional}</option>
                         )}
                     </Form.Select>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Fecha subida</Form.Label>
-                    <Form.Control value={fecha_subida} type='date' onChange={(e)=>{
+                    <Form.Control value={fecha_subida_imagen} type='date' onChange={(e)=>{
                         const fechaFormateada = new Date(e.target.value).toISOString().split("T")[0];
                         setFechaSubida(fechaFormateada);
                     }}/>
@@ -165,7 +178,7 @@ export const Galeria = () => {
             </Form>
             <div className='div-botones-editar'>
             <Button style={{marginTop : '1rem'}} variant="success" onClick={()=>{handleClickActualizar()}}>Actualizar</Button>
-            <Button style={{marginTop : '1rem', backgroundColor : '#6c757d'}} onClick={handleClickCancelar}>Cancelar</Button>
+            <Button style={{marginTop : '1rem'}} variant = "secondary" onClick={handleClickCancelar}>Cancelar</Button>
             </div>
             </article> : <></>}
 
@@ -184,14 +197,14 @@ export const Galeria = () => {
 
                 <Form.Group>
                     <Form.Label>Descripcion</Form.Label>
-                    <Form.Control onChange={(e)=> setDescripcion(e.target.value)} value={descripcion}/>
+                    <Form.Control onChange={(e)=> setDescripcion(e.target.value)} value={descripcion_imagen}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Profesional</Form.Label>
                     <Form.Select value={profesional_id} onChange={(e)=> setProfesionalID(e.target.value)}>
                         {profesionales.map((profesional, index)=>
-                            <option key={index} value={profesional.profesional_id}>{profesional.nombre} {profesional.apellido}</option>
+                            <option key={index} value={profesional.profesional_id}>{profesional.nombre_profesional} {profesional.apellido_profesional}</option>
                         )}
                     </Form.Select>
                 </Form.Group>
@@ -201,7 +214,7 @@ export const Galeria = () => {
                     <Form.Control type = 'date' onChange={(e)=>{
                         const fechaFormateada = new Date(e.target.value).toISOString().split("T")[0];
                         setFechaSubida(fechaFormateada);
-                    }} value={fecha_subida}/>
+                    }} value={fecha_subida_imagen}/>
                 </Form.Group>
 
             </Form>
@@ -210,13 +223,11 @@ export const Galeria = () => {
           <Button variant="secondary" onClick={handleClickCancelar}>
             Cancelar
           </Button>
-          <Button style={{backgroundColor: '#28a745'}} onClick={handleClickConfirmar} >
+          <Button variant = "success" onClick={handleClickConfirmar} >
             Confirmar
           </Button>
         </Modal.Footer>
       </Modal>
-
-
     </>
   )
 }

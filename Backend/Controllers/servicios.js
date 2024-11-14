@@ -24,9 +24,9 @@ const obtenerServicio = (req, res) => {
 };
 
 const crearServicio = (req, res) => {
-    const { nombre, descripcion, duracion, precio } = req.body;
-    const query = `INSERT INTO Servicios (nombre, descripcion, duracion, precio) VALUES (?, ?, ?, ?);`;
-    pool.query(query, [nombre, descripcion, duracion, precio], (error, result) => {
+    const { nombre_servicio, descripcion_servicio, duracion_servicio, precio_servicio } = req.body;
+    const query = `INSERT INTO Servicios (nombre_servicio, descripcion_servicio, duracion_servicio, precio_servicio) VALUES (?, ?, ?, ?);`;
+    pool.query(query, [nombre_servicio, descripcion_servicio, duracion_servicio, precio_servicio], (error, result) => {
         if (error) {
             console.error(error);
             return res.status(500).send("Error al crear el servicio");
@@ -37,9 +37,9 @@ const crearServicio = (req, res) => {
 
 const editarServicio = (req, res) => {
     const { id } = req.params;
-    const { nombre, descripcion, duracion, precio } = req.body;
-    const query = `UPDATE Servicios SET nombre = ?, descripcion = ?, duracion = ?, precio = ? WHERE servicio_id = ?`;
-    pool.query(query, [nombre, descripcion, duracion, precio, id], (error, result) => {
+    const { nombre_servicio, descripcion_servicio, duracion_servicio, precio_servicio } = req.body;
+    const query = `UPDATE Servicios SET nombre_servicio = ?, descripcion_servicio = ?, duracion_servicio = ?, precio_servicio = ? WHERE servicio_id = ?`;
+    pool.query(query, [nombre_servicio, descripcion_servicio, duracion_servicio, precio_servicio, id], (error, result) => {
         if (error) {
             console.error(error);
             return res.status(500).send("Error al editar el servicio");

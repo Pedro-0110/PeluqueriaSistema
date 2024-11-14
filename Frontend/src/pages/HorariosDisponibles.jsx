@@ -205,7 +205,7 @@ export const HorariosDisponibles = () => {
                   <td style={{ textAlign: "center" }}>
                     {horario.horario_id}
                   </td>
-                  <td>{horario.nombre} {horario.apellido}</td>
+                  <td>{horario.nombre_profesional} {horario.apellido_profesional}</td>
                   <td>{horario.dia_semana}</td>
                   <td>{horario.hora_inicio}</td>
                   <td>{horario.hora_fin}</td>
@@ -272,7 +272,7 @@ export const HorariosDisponibles = () => {
               <Form.Select onChange={(e) => setProfesionalID(e.target.value)} value={profesional_id}>
                 {profesionales.map((profesional, index) => (
                   <option key={index} value={profesional.profesional_id}>
-                    {profesional.nombre} {profesional.apellido}
+                    {profesional.nombre_profesional} {profesional.apellido_profesional}
                   </option>
                 ))}
               </Form.Select>
@@ -350,7 +350,7 @@ export const HorariosDisponibles = () => {
               <Form.Select onChange={(e) => setProfesionalID(e.target.value)}>
                 {profesionales.map((profesional, index) => (
                   <option key={index} value={profesional.profesional_id}>
-                    {profesional.nombre} {profesional.apellido}
+                    {profesional.nombre_profesional} {profesional.apellido_profesional}
                   </option>
                 ))}
               </Form.Select>

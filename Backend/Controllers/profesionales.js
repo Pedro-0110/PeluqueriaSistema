@@ -24,13 +24,13 @@ const obtenerProfesional = (req, res) => {
 };
 
 const crearProfesional = (req, res) => {
-    const { nombre, apellido, especialidad, descripcion, fecha_ingreso, activo } = req.body;
-    if (!nombre || !apellido || !especialidad || !descripcion || !fecha_ingreso || activo == null) {
+    const { nombre_profesional, apellido_profesional, especialidad_profesional, descripcion_profesional, fecha_ingreso_profesional, activo_profesional } = req.body;
+    if (!nombre_profesional || !apellido_profesional || !especialidad_profesional || !descripcion_profesional || !fecha_ingreso_profesional || activo_profesional == null) {
         return res.status(400).send({ error: "Todos los campos son obligatorios" });
     }
     
-    const query = "INSERT INTO Profesionales (nombre, apellido, especialidad, descripcion, fecha_ingreso, activo) VALUES (?, ?, ?, ?, ?, ?);";
-    pool.query(query, [nombre, apellido, especialidad, descripcion, fecha_ingreso, activo], (error, result) => {
+    const query = "INSERT INTO Profesionales (nombre_profesional, apellido_profesional, especialidad_profesional, descripcion_profesional, fecha_ingreso_profesional, activo_profesional) VALUES (?, ?, ?, ?, ?, ?);";
+    pool.query(query, [nombre_profesional, apellido_profesional, especialidad_profesional, descripcion_profesional, fecha_ingreso_profesional, activo_profesional], (error, result) => {
         if (error) {
             console.error("Error creando profesional:", error);
             return res.status(500).send({ error: "Error al crear el profesional" });
@@ -41,13 +41,13 @@ const crearProfesional = (req, res) => {
 
 const editarProfesional = (req, res) => {
     const { id } = req.params;
-    const { nombre, apellido, especialidad, descripcion, fecha_ingreso, activo } = req.body;
-    if (!nombre || !apellido || !especialidad || !descripcion || !fecha_ingreso || activo == null) {
+    const { nombre_profesional, apellido_profesional, especialidad_profesional, descripcion_profesional, fecha_ingreso_profesional, activo_profesional } = req.body;
+    if (!nombre_profesional || !apellido_profesional || !especialidad_profesional || !descripcion_profesional || !fecha_ingreso_profesional || activo_profesional == null) {
         return res.status(400).send({ error: "Todos los campos son obligatorios" });
     }
     
-    const query = "UPDATE Profesionales SET nombre = ?, apellido = ?, especialidad = ?, descripcion = ?, fecha_ingreso = ?, activo = ? WHERE profesional_id = ?;";
-    pool.query(query, [nombre, apellido, especialidad, descripcion, fecha_ingreso, activo, id], (error, result) => {
+    const query = "UPDATE Profesionales SET nombre_profesional = ?, apellido_profesional = ?, especialidad_profesional = ?, descripcion_profesional = ?, fecha_ingreso_profesional = ?, activo_profesional = ? WHERE profesional_id = ?;";
+    pool.query(query, [nombre_profesional, apellido_profesional, especialidad_profesional, descripcion_profesional, fecha_ingreso_profesional, activo_profesional, id], (error, result) => {
         if (error) {
             console.error("Error editando profesional:", error);
             return res.status(500).send({ error: "Error al editar el profesional" });
@@ -69,7 +69,7 @@ const eliminarProfesional = (req, res) => {
 };
 
 const obtenerNombreIDProfesionales = (req,res) =>{
-    const query = `select nombre, apellido, profesional_id from Profesionales;`
+    const query = `select nombre_profesional, apellido_profesional, profesional_id from Profesionales;`
     pool.query(query,(error,result)=>{
         if (error) {
             console.error("Error obteniendo profesionales:", error);

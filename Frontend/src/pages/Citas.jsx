@@ -3,8 +3,11 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios'
-import iconoBasura from '../Icons/icono-basura.png'
+import iconoCancelar from '../Icons/icono-cancelar.png'
 import iconoLapiz from '../Icons/icono-lapiz.png'
+import iconoConfirmar from '../Icons/icono-confirmar.png'
+import iconoNada from '../Icons/icono-nada.png'
+import iconoPendiente from '../Icons/icono-pendiente.png'
 import {useEffect, useState } from 'react';
 
 export const Citas = () => {
@@ -19,14 +22,14 @@ export const Citas = () => {
     const [profesional_id,setProfesionalID] = useState("")
     const [servicio_id,setServicioID] = useState("")
     const [fecha_cita, setFechaCita] = useState("")
-    const [estado, setEstado] = useState("")
+    const [estado_cita, setEstado] = useState("")
 
     const obtenerCitas = async () =>{
         const response = await axios.get("http://localhost:8000/citas")
         setCitas(response.data)
     }
 
-    const handleClickEditar = (cita_id, usuario_id, profesional_id, servicio_id, fecha_cita, estado) =>{
+    const handleClickEditar = (cita_id, usuario_id, profesional_id, servicio_id, fecha_cita, estado_cita) =>{
         setEditar(true)
         setCitaID(cita_id)
         setUsuarioID(usuario_id)
@@ -34,7 +37,7 @@ export const Citas = () => {
         setServicioID(servicio_id)
         const fechaFormateada = new Date(fecha_cita).toISOString().split("T")[0];
         setFechaCita(fechaFormateada)
-        setEstado(estado)
+        setEstado(estado_cita)
     }
 
     const handleClickActualizar = async () =>{
@@ -43,7 +46,7 @@ export const Citas = () => {
          profesional_id, 
          servicio_id, 
          fecha_cita, 
-         estado
+         estado_cita
         }
     )
             if(response){
@@ -61,44 +64,36 @@ export const Citas = () => {
 
     const handleClickEliminar = async (cita_id) =>{
         const response = await axios.delete(`http://localhost:8000/citas/${cita_id}`)
-        if(response){
+        if(response.status == 200){
             obtenerCitas()
         }
     }
     
-    const handleClickCancelar = () =>{
-        setEditar(false)
-    }
-
-    const handleClickConfirmar = async () =>{
-        const response = await axios.post("http://localhost:8000/citas/",{
-         usuario_id,
-         profesional_id, 
-         servicio_id, 
-         fecha_cita, 
-         estado
-        })
+    const handleClickCancelar = async (cita_id) =>{
+        let response = confirm("¿Esta seguro que desea cancelar la cita?")
         if(response){
-            obtenerCitas()
-            setCitaID("")
-            setUsuarioID("")
-            setProfesionalID("")
-            setServicioID("")
-            setFechaCita("")
-            setEstado("")
-            setShow(false)
+            response = await axios.put(`http://localhost:8000/citas/cancelar/${cita_id}`)
+            if(response.status == 200){
+                alert("Cita cancelada correctamente!")
+                obtenerCitas()
+            }
         }
     }
 
-    const handleClickCrearProfesional = () =>{
-            obtenerCitas()
+    const handleClickConfirmar = async (cita_id) =>{
+       const response = await axios.put(`http://localhost:8000/citas/confirmar/${cita_id}`)
+       if(response.status == 200){
+        obtenerCitas()
+       }
+    }
+
+    const limpiarCampos = () =>{
             setCitaID("")
             setUsuarioID("")
             setProfesionalID("")
             setServicioID("")
             setFechaCita("")
             setEstado("")
-        setShow(true)
     }
 
     useEffect(()=> {obtenerCitas()},[])
@@ -112,10 +107,10 @@ export const Citas = () => {
             <Table striped bordered hover variant="link">
                 <thead>
                     <tr>
-                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Cita ID</td>
-                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Usuario ID</td>
-                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Profesional ID</td>
-                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Servicio ID</td>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Cita</td>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Usuario</td>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Profesional</td>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Servicio</td>
                         <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Fecha</td>
                         <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Estado</td>
                         <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Opciones</td>
@@ -125,17 +120,37 @@ export const Citas = () => {
                     {citas.map((cita, indx)=>
                         <tr key={indx}>
                             <td>{cita.cita_id}</td>
-                            <td>{cita.usuario_id}</td>
-                            <td>{cita.profesional_id}</td>
-                            <td>{cita.servicio_id}</td>
-                            <td>{cita.fecha}</td>
-                            <td>{cita.estado}</td>
+                            <td>{cita.nombre_usuario} {cita.apellido_usuario}</td>
+                            <td>{cita.nombre_profesional} {cita.apellido_profesional}</td>
+                            <td>{cita.nombre_servicio}</td>
+                            <td>{cita.fecha_cita}</td>
+                            <td>{cita.estado_cita == 'Confirmada' 
+                                ?                               
+                                <><img src={iconoConfirmar} alt="" width={'22px'}/></>
+                                :
+                                cita.estado_cita == 'Cancelada'
+                                ?
+                                <><img src= {iconoCancelar} width={'22px'}/></>
+                                :
+                                cita.estado_cita == 'Pendiente'
+                                ?
+                                <><img src={iconoPendiente} alt="" width={'22px'} /></>
+                                :
+                                <></>
+                            }</td>
                             <td>
                                 
                                 <div className='div-botones-editar'>
-                                <Button variant='primary'>Confirmar</Button>
-                                <Button variant = 'warning' onClick={()=> handleClickEditar(cita.cita_id, cita.usuario_id, cita.profesional_id, cita.servicio_id, cita.fecha, cita.estado)}>editar</Button>
-                                <Button variant =  'danger' onClick={()=> handleClickEliminar(cita.cita_id)}>cancelar</Button>
+                                {cita.estado_cita == 'Confirmada' 
+                                ? <> <img src={iconoNada} alt="" width={'22px'} /></> 
+                                : cita.estado_cita == 'Cancelada' 
+                                ? <> <img src={iconoNada} alt="" width={'22px'} /> </>
+                                : 
+                                <>
+                                <Button variant = 'success' onClick={()=> handleClickConfirmar(cita.cita_id)}><img src= {iconoConfirmar} width={'22px'}/></Button>
+                                <Button variant='warning' onClick={()=> handleClickEditar()}><img src= {iconoLapiz} width={'22px'}/></Button>
+                                <Button variant = 'danger' onClick={()=> handleClickCancelar(cita.cita_id)}><img src={iconoCancelar} width={'22px'}/></Button>
+                                </>}
                                 </div>
                             </td>
                         </tr>
@@ -143,7 +158,6 @@ export const Citas = () => {
                 </tbody>
             </Table>
             </div>
-            <Button className='btn-crear' onClick={()=> handleClickCrearProfesional()}>Crear nuevo profesional</Button>
         </article>
     
     </>

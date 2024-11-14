@@ -32,11 +32,11 @@ const obtenerCita = (req, res) => {
 };
 
 const crearCita = (req, res) => {
-    const { usuario_id, profesional_id, servicio_id, fecha_cita, estado } = req.body;
-    const query = `INSERT INTO Citas (usuario_id, profesional_id, servicio_id, fecha_cita, estado) 
+    const { usuario_id, profesional_id, servicio_id, fecha_cita, estado_cita } = req.body;
+    const query = `INSERT INTO Citas (usuario_id, profesional_id, servicio_id, fecha_cita, estado_cita) 
                    VALUES (?, ?, ?, ?, ?);`;
 
-    pool.query(query, [usuario_id, profesional_id, servicio_id, fecha_cita, estado], (error, result) => {
+    pool.query(query, [usuario_id, profesional_id, servicio_id, fecha_cita, estado_cita], (error, result) => {
         if (error) {
             console.error(error);
             return res.status(500).send("Error al crear la cita");
@@ -47,11 +47,11 @@ const crearCita = (req, res) => {
 
 const editarCita = (req, res) => {
     const { id } = req.params;
-    const { usuario_id, profesional_id, servicio_id, fecha_cita, estado } = req.body;
-    const query = `UPDATE Citas SET usuario_id = ?, profesional_id = ?, servicio_id = ?, fecha_cita = ?, estado = ? 
+    const { usuario_id, profesional_id, servicio_id, fecha_cita, estado_cita } = req.body;
+    const query = `UPDATE Citas SET usuario_id = ?, profesional_id = ?, servicio_id = ?, fecha_cita = ?, estado_cita = ? 
                    WHERE cita_id = ?;`;
 
-    pool.query(query, [usuario_id, profesional_id, servicio_id, fecha_cita, estado, id], (error, result) => {
+    pool.query(query, [usuario_id, profesional_id, servicio_id, fecha_cita, estado_cita, id], (error, result) => {
         if (error) {
             console.error(error);
             return res.status(500).send("Error al editar la cita");
@@ -73,10 +73,37 @@ const eliminarCita = (req, res) => {
     });
 };
 
+const cancelarCita = (req,res)=>{
+    const{id} = req.params
+    const query = `update Citas set estado_cita = 'Cancelada' where cita_id = ?;`
+    pool.query(query,[id],(error,result)=>{
+        if(error){
+            console.error(error);
+            return res.status(500).send("Error al cancelar la cita");
+        }
+        res.status(200).json({message: 'Cita cancelada correctamente!'})
+    })
+}
+
+const confirmarCita = (req,res) =>{
+    const {id} = req.params
+    const query = `update Citas set estado_cita = 'Confirmada' where cita_id = ?;`
+    pool.query(query,[id],(error,result)=>{
+        if(error){
+            console.log(error)
+            return res.status(500).send("Error al confirmar la cita!")
+        }
+        res.status(200).json({message: 'Cita confirmada correctamente!'})
+    })
+}
+
+
 module.exports = {
     obtenerCitas,
     obtenerCita,
     crearCita,
     editarCita,
-    eliminarCita
+    eliminarCita,
+    cancelarCita,
+    confirmarCita
 };

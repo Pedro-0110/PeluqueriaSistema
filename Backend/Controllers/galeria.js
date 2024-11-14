@@ -31,10 +31,10 @@ const obtenerGaleria = (req, res) => {
 };
 
 const crearGaleria = (req, res) => {
-    const { profesional_id, url_imagen, descripcion, fecha_subida } = req.body;
-    const query = `INSERT INTO Galeria (profesional_id, url_imagen, descripcion, fecha_subida) VALUES (?, ?, ?, ?);`;
+    const { profesional_id, url_imagen, descripcion_imagen, fecha_subida_imagen } = req.body;
+    const query = `INSERT INTO Galeria (profesional_id, url_imagen, descripcion_imagen, fecha_subida_imagen) VALUES (?, ?, ?, ?);`;
     
-    pool.query(query, [profesional_id, url_imagen, descripcion, fecha_subida], (error, result) => {
+    pool.query(query, [profesional_id, url_imagen, descripcion_imagen, fecha_subida_imagen], (error, result) => {
         if (error) {
             console.error(error);
             return res.status(500).send("Error al crear la galería");
@@ -45,10 +45,10 @@ const crearGaleria = (req, res) => {
 
 const editarGaleria = (req, res) => {
     const { id } = req.params;
-    const { profesional_id, url_imagen, descripcion, fecha_subida } = req.body;
-    const query = `UPDATE Galeria SET profesional_id = ?, url_imagen = ?, descripcion = ?, fecha_subida = ? WHERE imagen_id = ?;`;
+    const { profesional_id, url_imagen, descripcion_imagen, fecha_subida_imagen } = req.body;
+    const query = `UPDATE Galeria SET profesional_id = ?, url_imagen = ?, descripcion_imagen = ?, fecha_subida_imagen = ? WHERE imagen_id = ?;`;
     
-    pool.query(query, [profesional_id, url_imagen, descripcion, fecha_subida, id], (error, result) => {
+    pool.query(query, [profesional_id, url_imagen, descripcion_imagen, fecha_subida_imagen, id], (error, result) => {
         if (error) {
             console.error(error);
             return res.status(500).send("Error al editar la galería");

@@ -14,7 +14,7 @@ export const NavbarAdministrados = () => {
   return (
     <>
         <article className="navegacion-administrador">
-            <div className="div-imagen-administrador"><img width={'14vw'} src="https://i.etsystatic.com/13221305/r/il/e05e10/2306760305/il_fullxfull.2306760305_bvyi.jpg" alt="" />
+            <div className="div-imagen-administrador"><img width={'14vw'} src="https://i.pinimg.com/736x/a9/40/92/a9409281fa230ecd40b7f6e5f0594159.jpg" alt="" />
             </div>
             <ul>
                 <li><NavLink to="/citas" style={({ isActive }) => ({

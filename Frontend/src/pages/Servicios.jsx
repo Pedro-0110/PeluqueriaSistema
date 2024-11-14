@@ -15,10 +15,10 @@ export const Servicios = () => {
     const handleClose = () => setShow(false)
 
     const [servicio_id, setServicioID] = useState("")
-    const [nombre,setNombre] = useState("")
-    const [descripcion,setDescripcion] = useState("")
-    const [duracion,setDuracion] = useState("")
-    const [precio, setPrecio] = useState("")
+    const [nombre_servicio,setNombre] = useState("")
+    const [descripcion_servicio,setDescripcion] = useState("")
+    const [duracion_servicio,setDuracion] = useState("")
+    const [precio_servicio, setPrecio] = useState("")
 
 
     const obtenerServicios = async () =>{
@@ -26,21 +26,21 @@ export const Servicios = () => {
         setServicios(response.data)
     }
 
-    const handleClickEditar = (servicio_id, nombre, descripcion , duracion, precio) =>{
+    const handleClickEditar = (servicio_id, nombre_servicio, descripcion_servicio , duracion_servicio, precio_servicio) =>{
         setEditar(true)
         setServicioID(servicio_id)
-        setNombre(nombre)
-        setDescripcion(descripcion)
-        setDuracion(duracion)
-        setPrecio(precio)
+        setNombre(nombre_servicio)
+        setDescripcion(descripcion_servicio)
+        setDuracion(duracion_servicio)
+        setPrecio(precio_servicio)
     }
 
     const handleClickActualizar = async () =>{
         const response = await axios.put("http://localhost:8000/servicios/" + servicio_id,{
-           nombre,
-           descripcion,
-           duracion,
-           precio
+           nombre_servicio,
+           descripcion_servicio,
+           duracion_servicio,
+           precio_servicio
         }
     )
             if(response){
@@ -56,36 +56,39 @@ export const Servicios = () => {
     }
 
     const handleClickEliminar = async (servicio_id) =>{
-        const response = await axios.delete("http://localhost:8000/servicios/"+servicio_id)
+        let response = confirm("Se eliminara el registro de forma permanente")
         if(response){
-            obtenerServicios()
-        }
+            response = await axios.delete("http://localhost:8000/servicios/"+servicio_id)
+            if(response.status == 200){
+                alert("Registro eliminado")
+                obtenerServicios()
+            }
+        } 
     }
     
-    const handleClickCancelar = () =>{
-        setEditar(false)
-    }
+    const handleClickCancelar = () => setEditar(false)
+    
 
     const handleClickConfirmar = async () =>{
         const response = await axios.post("http://localhost:8000/servicios/",{
-            nombre,
-            descripcion,
-            duracion,
-            precio
+            nombre_servicio,
+            descripcion_servicio,
+            duracion_servicio,
+            precio_servicio
         })
-        if(response){
+        if(response.status == 201){
+            setShow(false)
             obtenerServicios()
-                setServicioID("")
-                setNombre("")
-                setDescripcion("")
-                setDuracion("")
-                setPrecio("")
-                setShow(false)
         }
+        limpiarCampos()
     }
 
     const handleClickCrearServicio = () =>{
         setShow(true)
+    }
+
+    const limpiarCampos = () =>{
+        setServicioID("")
         setNombre("")
         setDescripcion("")
         setDuracion("")
@@ -115,14 +118,14 @@ useEffect(()=> {obtenerServicios()},[])
                 <tbody>
                     {servicios.map((servicio, indx)=>
                         <tr key={indx}>
-                            <td>{servicio.nombre}</td>
-                            <td>{servicio.descripcion}</td>
-                            <td>{servicio.duracion}</td>
-                            <td>{servicio.precio}</td>
+                            <td>{servicio.nombre_servicio}</td>
+                            <td>{servicio.descripcion_servicio}</td>
+                            <td>{servicio.duracion_servicio}</td>
+                            <td>{servicio.precio_servicio}</td>
                             <td>
                                 
                                 <div className='div-botones-editar'>
-                                <Button variant = 'warning' onClick={()=> handleClickEditar(servicio.servicio_id,servicio.nombre, servicio.descripcion, servicio.duracion, servicio.precio)}><img src={iconoLapiz} width={'22px'}/></Button>
+                                <Button variant = 'warning' onClick={()=> handleClickEditar(servicio.servicio_id,servicio.nombre_servicio, servicio.descripcion_servicio, servicio.duracion_servicio, servicio.precio_servicio)}><img src={iconoLapiz} width={'22px'}/></Button>
                                 <Button variant =  'danger' onClick={()=> handleClickEliminar(servicio.servicio_id)}><img src={iconoBasura} width={'22px'}/></Button>
                                 </div>
                             </td>
@@ -139,22 +142,22 @@ useEffect(()=> {obtenerServicios()},[])
             <Form>
                 <Form.Group>
                     <Form.Label>Nombre</Form.Label>
-                    <Form.Control value={nombre}  onChange={(e)=>setNombre(e.target.value)}/>
+                    <Form.Control value={nombre_servicio}  onChange={(e)=>setNombre(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Descripcion</Form.Label>
-                    <Form.Control value={descripcion} onChange={(e)=>{setDescripcion(e.target.value)}}/>
+                    <Form.Control value={descripcion_servicio} onChange={(e)=>{setDescripcion(e.target.value)}}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Duracion</Form.Label>
-                    <Form.Control type='number' value = {duracion} onChange={(e)=> setDuracion(e.target.value)}/>
+                    <Form.Control type='number' value = {duracion_servicio} onChange={(e)=> setDuracion(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Precio</Form.Label>
-                    <Form.Control value={precio} onChange={(e)=>{setPrecio(e.target.value)}}/>
+                    <Form.Control value={precio_servicio} onChange={(e)=>{setPrecio(e.target.value)}}/>
                 </Form.Group>
             </Form>
 
@@ -174,22 +177,22 @@ useEffect(()=> {obtenerServicios()},[])
             <Form>
                 <Form.Group>
                     <Form.Label>Nombre</Form.Label>
-                    <Form.Control value={nombre} onChange={(e)=> setNombre(e.target.value)}/>
+                    <Form.Control value={nombre_servicio} onChange={(e)=> setNombre(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Descripcion</Form.Label>
-                    <Form.Control value = {descripcion} onChange={(e)=> setDescripcion(e.target.value)}/>
+                    <Form.Control value = {descripcion_servicio} onChange={(e)=> setDescripcion(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Duracion</Form.Label>
-                    <Form.Control type = 'number' value = {duracion} onChange={(e)=> setDuracion(e.target.value)}/>
+                    <Form.Control type = 'number' value = {duracion_servicio} onChange={(e)=> setDuracion(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Precio</Form.Label>
-                    <Form.Control value = {precio} onChange={(e)=> setPrecio(e.target.value)}/>
+                    <Form.Control value = {precio_servicio} onChange={(e)=> setPrecio(e.target.value)}/>
                 </Form.Group>
             </Form>
         </Modal.Body>
