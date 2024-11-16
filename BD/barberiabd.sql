@@ -1,8 +1,6 @@
 create database BarberiaBD;
 use BarberiaBD;
 
-
-
 CREATE TABLE Roles (
     rol_id INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(50) NOT NULL UNIQUE
@@ -10,6 +8,8 @@ CREATE TABLE Roles (
 
 insert into Roles (nombre) values ('Administrador');
 insert into Roles (nombre) values ('Cliente');
+
+select * from Roles;
 
 CREATE TABLE Profesionales (
     profesional_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -33,7 +33,6 @@ VALUES
 ('María', 'García', 'Colorista', 'Colorista especializada en balayage y mechas', '2021-04-19'),
 ('Javier', 'Sánchez', 'Barbero', 'Experto en cortes y afeitados con navaja', '2023-02-25'),
 ('Carmen', 'Morales', 'Estilista', 'Estilista creativa con técnicas innovadoras', '2022-12-10');
-
 
 CREATE TABLE Usuarios (
     usuario_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -114,8 +113,6 @@ VALUES
 (9, 1),  -- Javier Sánchez realiza Corte de Cabello
 (10, 10); -- Carmen Morales realiza Maquillaje
 
-
-
 CREATE TABLE Citas (
     cita_id INT PRIMARY KEY AUTO_INCREMENT,
     usuario_id INT NOT NULL,
@@ -132,17 +129,32 @@ CREATE TABLE Citas (
 
 INSERT INTO Citas (usuario_id, profesional_id, servicio_id, fecha_cita, estado_cita)
 VALUES
-(1, 1, 1, '2024-11-15 10:00:00', 'Confirmada'), -- Carlos Pérez reserva con Juan Pérez para Corte de Cabello
+(1, 1, 1, '2024-11-15 10:00:00', 'Pendiente'), -- Carlos Pérez reserva con Juan Pérez para Corte de Cabello
 (2, 2, 3, '2024-11-16 14:00:00', 'Pendiente'),  -- Lucía Martínez reserva con Lucía Martínez para Coloración de Cabello
-(3, 3, 1, '2024-11-17 09:30:00', 'Completada'), -- Juan Gómez reserva con Carlos Gómez para Corte de Cabello
-(4, 4, 2, '2024-11-18 11:00:00', 'Cancelada'),  -- Ana López reserva con Ana López para Afeitado Clásico
-(5, 5, 8, '2024-11-19 15:00:00', 'Confirmada'), -- Pedro Hernández reserva con Pedro Hernández para Masaje Relajante
+(3, 3, 1, '2024-11-17 09:30:00', 'Pendiente'), -- Juan Gómez reserva con Carlos Gómez para Corte de Cabello
+(4, 4, 2, '2024-11-18 11:00:00', 'Pendiente'),  -- Ana López reserva con Ana López para Afeitado Clásico
+(5, 5, 8, '2024-11-19 15:00:00', 'Pendiente'), -- Pedro Hernández reserva con Pedro Hernández para Masaje Relajante
 (6, 6, 5, '2024-11-20 13:00:00', 'Pendiente'),  -- Sofía Ramírez reserva con Sofía Ramírez para Manicura
-(7, 7, 9, '2024-11-21 16:30:00', 'Confirmada'), -- Diego Fernández reserva con Diego Fernández para Peinado
+(7, 7, 9, '2024-11-21 16:30:00', 'Pendiente'), -- Diego Fernández reserva con Diego Fernández para Peinado
 (8, 8, 4, '2024-11-22 12:00:00', 'Pendiente'),  -- María García reserva con María García para Tratamiento Capilar
-(9, 9, 1, '2024-11-23 17:00:00', 'Completada'), -- Javier Sánchez reserva con Javier Sánchez para Corte de Cabello
-(10, 10, 10, '2024-11-24 18:00:00', 'Confirmada'); -- Carmen Morales reserva con Carmen Morales para Maquillaje
+(9, 9, 1, '2024-11-23 17:00:00', 'Pendiente'), -- Javier Sánchez reserva con Javier Sánchez para Corte de Cabello
+(10, 10, 10, '2024-11-24 18:00:00', 'Pendiente'); -- Carmen Morales reserva con Carmen Morales para Maquillaje
 
+select * from Citas;
+
+select * from Citas as c
+inner join Usuarios as u
+on c.usuario_id = u.usuario_id
+inner join Profesionales as p
+on c.profesional_id = p.profesional_id
+inner join Servicios as s
+on c.servicio_id = s.servicio_id
+where upper(nombre_profesional) like upper('%a%')
+or upper(apellido_profesional) like upper('%a%')
+or upper(nombre_usuario) like upper('%a%')
+or u.apellido_usuario like upper('%a%');
+
+select * from Reseñas;
 
 CREATE TABLE HorariosDisponibles (
     horario_id INT PRIMARY KEY AUTO_INCREMENT,

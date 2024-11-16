@@ -4,7 +4,8 @@ const obtenerReseñas = (req, res) => {
     const query = `SELECT * FROM Reseñas AS r
                    INNER JOIN Usuarios AS u ON r.usuario_id = u.usuario_id
                    INNER JOIN Profesionales AS p ON r.profesional_id = p.profesional_id
-                   INNER JOIN Citas AS c ON r.cita_id = c.cita_id;`;
+                   INNER JOIN Citas AS c ON r.cita_id = c.cita_id
+                   order by r.fecha_reseña desc;`;
 
     pool.query(query, (error, result) => {
         if (error) {
@@ -21,7 +22,7 @@ const obtenerReseña = (req, res) => {
                    INNER JOIN Usuarios AS u ON r.usuario_id = u.usuario_id
                    INNER JOIN Profesionales AS p ON r.profesional_id = p.profesional_id
                    INNER JOIN Citas AS c ON r.cita_id = c.cita_id
-                   WHERE r.resena_id = ?;`;
+                   WHERE r.resñna_id = ?;`;
 
     pool.query(query, [id], (error, result) => {
         if (error) {
@@ -48,7 +49,7 @@ const crearReseña = (req, res) => {
 const editarReseña = (req, res) => {
     const { id } = req.params;
     const { usuario_id, profesional_id, cita_id, comentario, puntuacion, fecha_resena } = req.body;
-    const query = `UPDATE Reseñas SET usuario_id = ?, profesional_id = ?, cita_id = ?, comentario = ?, puntuacion = ?, fecha_resena = ? WHERE resena_id = ?;`;
+    const query = `UPDATE Reseñas SET usuario_id = ?, profesional_id = ?, cita_id = ?, comentario = ?, puntuacion = ?, fecha_resena = ? WHERE reseña_id = ?;`;
     
     pool.query(query, [usuario_id, profesional_id, cita_id, comentario, puntuacion, fecha_resena, id], (error, result) => {
         if (error) {
@@ -61,7 +62,7 @@ const editarReseña = (req, res) => {
 
 const eliminarReseña = (req, res) => {
     const { id } = req.params;
-    const query = `DELETE FROM Reseñas WHERE resena_id = ?`;
+    const query = `DELETE FROM Reseñas WHERE reseña_id = ?`;
     
     pool.query(query, [id], (error, result) => {
         if (error) {

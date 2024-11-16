@@ -109,15 +109,15 @@ const buscarUsuarioPorPatrones = (req, res) => {
   const { nombre, apellido } = req.params;
 
   // Construir patrones de búsqueda con los comodines
-  const nombrePatron = `%${nombre}%`;
-  const apellidoPatron = `%${apellido}%`;
+  const nombrePatron = `%${nombre.toUpperCase()}%`;
+  const apellidoPatron = `%${apellido.toUpperCase()}%`;
 
   const query = `SELECT u.usuario_id, u.nombre_usuario, u.apellido_usuario, u.email_usuario, u.telefono_usuario, 
                  u.direccion_usuario, u.username_usuario, u.fecha_registro_usuario, r.nombre AS rol
                  FROM Usuarios AS u
                  INNER JOIN Roles AS r
                  ON u.rol_id = r.rol_id
-                 WHERE BINARY u.nombre_usuario LIKE ? OR u.apellido_usuario LIKE ?;`;
+                 WHERE BINARY upper(u.nombre_usuario) LIKE ? OR upper(u.apellido_usuario) LIKE ?;`;
 
   pool.query(query, [nombrePatron, apellidoPatron], (error, result) => {
     if (error) {

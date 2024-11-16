@@ -5,6 +5,8 @@ import Modal from 'react-bootstrap/Modal';
 import axios from 'axios'
 import iconoBasura from '../Icons/icono-basura.png'
 import iconoLapiz from '../Icons/icono-lapiz.png'
+import iconoVer from '../Icons/icono-ver.png'
+import Swal from 'sweetalert2';
 
 import { useEffect, useState } from 'react'
 
@@ -13,6 +15,8 @@ export const Galeria = () => {
     const[editar,setEditar] = useState(false)
     const[galerias,setGalerias] = useState([])
     const[profesionales,setProfesionales] = useState([])
+
+    const [loading, setLoading] = useState(false);
 
     const[imagen_id, setImagenID] = useState("")
     const[profesional_id, setProfesionalID] = useState("")
@@ -25,8 +29,10 @@ export const Galeria = () => {
 
 
     const obtenerGalerias = async () =>{
+        setLoading(true)
         const response = await axios.get("http://localhost:8000/galeria")
         setGalerias(response.data)
+        setLoading(false)
     }
 
     const obtenerNombresIDsProfesionales = async () =>{
@@ -44,16 +50,45 @@ export const Galeria = () => {
         setFechaSubida(fechaFormateada);
     }
 
-    const handleClickEliminar = async(url_imagen) =>{
-        let response = confirm("Se eliminara el registro de forma permanente")
-        if(response){
-            response = await axios.delete("http://localhost:8000/galeria/"+ url_imagen)
-            if(response.status){
-            alert("Registro eliminado")
-            obtenerGalerias()
+    const handleClickEliminar = async (imagen_id) => {
+        const confirmacion = await Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        });
+      
+        if (confirmacion.isConfirmed) {
+          try {
+            const response = await axios.delete(`http://localhost:8000/galeria/${imagen_id}`);
+            
+            if (response.status === 200) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success",
+              });
+              obtenerGalerias()
+            } else {
+              Swal.fire({
+                title: "Error!",
+                text: "Could not delete the file. Please try again.",
+                icon: "error",
+              });
+            }
+          } catch (error) {
+            console.error(error);
+            Swal.fire({
+              title: "Error!",
+              text: "An error occurred while trying to delete the file.",
+              icon: "error",
+            });
+          }
         }
-    }
-}
+      };
 
     const handleClickActualizar = async () =>{
         const response = await axios.put("http://localhost:8000/galeria/" + imagen_id,{
@@ -88,8 +123,21 @@ export const Galeria = () => {
         if(response.status == 201){
             limpiarCampos()
             setShow(false)
+
+            Swal.fire({
+               position: "top",
+                icon: "success",
+                title: "Nueva imagen guardada!",
+                showConfirmButton: false,
+                timer: 1500
+              });
             obtenerGalerias()
         }
+    }
+
+
+    const handleClickVisualizar = () =>{
+
     }
 
     const limpiarCampos = () => {
@@ -107,7 +155,16 @@ export const Galeria = () => {
     <>
         <article className='contenedor-padre'>
         <h2 style={{padding: '1rem', backgroundColor: '#343a40', color: 'white', border : '1px solid black', borderRadius : '10px'}}>Galeria</h2>
+        {loading ?
+                <div className="text-center">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+             :
         <div className="contenedor-tabla">
+
+             
 
             <Table striped bordered hover variant="link" >
                 <thead >
@@ -121,6 +178,7 @@ export const Galeria = () => {
                 </thead>
                 <tbody>
                     {
+                        !loading && galerias.length > 0 &&
                         galerias.map((galeria,index) => 
                             <tr key={index}>
                                 <td style={{ textAlign: 'center'}}><img src={galeria.url_imagen} alt="" width={'60px'} /></td>
@@ -129,9 +187,9 @@ export const Galeria = () => {
                                 <td>{galeria.fecha_subida_imagen}</td>
                                 <td>
                                     <div className='div-botones-editar'>
-                                    
-                                    <Button variant='warning' onClick={()=>{handleClickEditar(galeria.imagen_id, galeria.profesional_id, galeria.url_imagen, galeria.descripcion_imagen, galeria.fecha_subida_imagen)}}><img src= {iconoLapiz} width={'22px'}/></Button>
-                                    <Button variant='danger' onClick={()=>{handleClickEliminar(galeria.imagen_id)}}><img src= {iconoBasura} width={'22px'}/></Button>
+                                    <Button variant='info' style={{width : '80px'}} onClick={()=>{handleClickVisualizar(galeria.imagen_id)}}><img src= {iconoVer} width={'22px'}/></Button>
+                                    <Button variant='warning' style={{width : '80px'}} onClick={()=>{handleClickEditar(galeria.imagen_id, galeria.profesional_id, galeria.url_imagen, galeria.descripcion_imagen, galeria.fecha_subida_imagen)}}><img src= {iconoLapiz} width={'22px'}/></Button>
+                                    <Button variant='danger' style={{width : '80px'}} onClick={()=>{handleClickEliminar(galeria.imagen_id)}}><img src= {iconoBasura} width={'22px'}/></Button>
                                     </div>
                                 </td>
                             </tr>
@@ -140,6 +198,7 @@ export const Galeria = () => {
                 </tbody>
             </Table>
         </div>
+    }
 
             <Button variant='primary' className='btn-crear' onClick={()=> handleClickCrear()}>Crear nueva imagen</Button> 
 

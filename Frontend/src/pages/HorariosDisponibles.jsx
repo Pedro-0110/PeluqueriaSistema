@@ -5,6 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import axios from "axios";
 import iconoBasura from "../Icons/icono-basura.png";
 import iconoLapiz from "../Icons/icono-lapiz.png";
+import Swal from 'sweetalert2';
 
 import { useEffect, useState } from "react";
 
@@ -29,13 +30,17 @@ export const HorariosDisponibles = () => {
   const [hora_fin, setHoraFin] = useState("");
 
   const [show, setShow] = useState(false);
+
+  const [loading, setLoading] = useState(false);
   const handleClose = () => setShow(false);
 
   const obtenerHorarios = async () => {
+    setLoading(true)
     const response = await axios.get(
       "http://localhost:8000/horariosDisponibles"
     );
     setHorarios(response.data);
+    setLoading(false)
   };
 
   const obtenerNombresIDsProfesionales = async () => {
@@ -61,14 +66,45 @@ export const HorariosDisponibles = () => {
   };
 
   const handleClickEliminar = async (horario_id) => {
-    const response = await axios.delete(
-      "http://localhost:8000/horariosDisponibles/" + horario_id
-    );
-
-    if (response) {
-      obtenerHorarios();
+    const confirmacion = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+  
+    if (confirmacion.isConfirmed) {
+      try {
+        const response = await axios.delete(`http://localhost:8000/horariosDisponibles/${horario_id}`);
+        
+        if (response.status === 200) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
+          obtenerHorarios()
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: "Could not delete the file. Please try again.",
+            icon: "error",
+          });
+        }
+      } catch (error) {
+        console.error(error);
+        Swal.fire({
+          title: "Error!",
+          text: "An error occurred while trying to delete the file.",
+          icon: "error",
+        });
+      }
     }
   };
+  
 
   const handleClickActualizar = async () => {
     const response = await axios.put(
@@ -106,9 +142,26 @@ export const HorariosDisponibles = () => {
       }
     );
     if (response) {
+      Swal.fire({
+        position: "top",
+         icon: "success",
+         title: "Nuevo horario guardado",
+         showConfirmButton: false,
+         timer: 1500
+       });
+      setShow(false) 
+      limpiarCampos()
       obtenerHorarios();
     }
   };
+
+  const limpiarCampos = () =>{
+    setHorarioID("");
+    setProfesionalID("");
+    setDiaSemana("");
+    setHoraInicio("");
+    setHoraFin("");
+  }
 
   useEffect(() => {
     obtenerHorarios();
@@ -131,6 +184,13 @@ export const HorariosDisponibles = () => {
         >
           Horarios Disponibles
         </h2>
+        {loading ?
+                <div className="text-center">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+             :
         <div className="contenedor-tabla">
           <Table striped bordered hover variant="link">
             <thead>
@@ -200,7 +260,9 @@ export const HorariosDisponibles = () => {
               </tr>
             </thead>
             <tbody>
-              {horarios.map((horario, index) => (
+              {
+              !loading && horarios.length > 0 &&
+              horarios.map((horario, index) => (
                 <tr key={index}>
                   <td style={{ textAlign: "center" }}>
                     {horario.horario_id}
@@ -213,7 +275,7 @@ export const HorariosDisponibles = () => {
                     <div className="div-botones-editar">
                       <Button
                         variant="warning"
-                        style={{ backgroundColor: "#ffc107" }}
+                        style={{width : '80px'}}
                         onClick={() => {
                           handleClickEditar(
                             horario.horario_id,
@@ -229,7 +291,7 @@ export const HorariosDisponibles = () => {
                       </Button>
                       <Button
                         variant="danger"
-                        style={{ backgroundColor: "#dc3545" }}
+                        style={{width : '80px'}}
                         onClick={() => {
                           handleClickEliminar(horario.horario_id);
                         }}
@@ -243,10 +305,10 @@ export const HorariosDisponibles = () => {
             </tbody>
           </Table>
         </div>
+}
 
         <Button
-          variant="success"
-          style={{ backgroundColor: "#007bff" }}
+          variant="primary"
           className="btn-crear"
           onClick={() => handleClickCrear()}
         >
@@ -328,7 +390,8 @@ export const HorariosDisponibles = () => {
               Actualizar
             </Button>
             <Button
-              style={{ marginTop: "1rem", backgroundColor: "#6c757d" }}
+              variant="secondary"
+              style={{ marginTop: "1rem"}}
               onClick={handleClickCancelar}
             >
               Cancelar
@@ -400,7 +463,7 @@ export const HorariosDisponibles = () => {
             Cancelar
           </Button>
           <Button
-            style={{ backgroundColor: "#28a745" }}
+            variant = 'primary'
             onClick={handleClickConfirmar}
           >
             Confirmar

@@ -4,7 +4,9 @@ const obtenerCitas = (req, res) => {
     const query = `SELECT * FROM Citas AS c
                    INNER JOIN Usuarios AS u ON c.usuario_id = u.usuario_id
                    INNER JOIN Profesionales AS p ON c.profesional_id = p.profesional_id
-                   INNER JOIN Servicios AS s ON c.servicio_id = s.servicio_id;`;
+                   INNER JOIN Servicios AS s ON c.servicio_id = s.servicio_id
+                   order by c.fecha_cita desc
+                   ;`;
     pool.query(query, (error, result) => {
         if (error) {
             console.error(error);
@@ -97,6 +99,27 @@ const confirmarCita = (req,res) =>{
     })
 }
 
+const busquedaCitas = (req, res) =>{
+    const {nombre_apellido} = req.params
+    const valorNombreApellido = `%${nombre_apellido.toUpperCase()}%`
+    const query = `select * from Citas as c
+                   inner join Usuarios as u
+                   on c.usuario_id = u.usuario_id
+                   inner join Profesionales as p
+                   on c.profesional_id = p.profesional_id
+                   inner join Servicios as s
+                   on c.servicio_id = s.servicio_id
+                   where upper(p.nombre_profesional) like ?
+                   or upper(p.apellido_profesional) like ?
+                   or upper(u.nombre_usuario) like ?
+                   or upper(u.apellido_usuario) like ?;`
+    pool.query(query,[valorNombreApellido,valorNombreApellido,valorNombreApellido,valorNombreApellido],(error,result)=>{
+                        if(error){
+                            return res.status(500).send('Error al realizar la busqueda de Citas')
+                        }
+                        res.status(200).json(result)     
+                    })}
+
 
 module.exports = {
     obtenerCitas,
@@ -105,5 +128,6 @@ module.exports = {
     editarCita,
     eliminarCita,
     cancelarCita,
-    confirmarCita
+    confirmarCita,
+    busquedaCitas
 };

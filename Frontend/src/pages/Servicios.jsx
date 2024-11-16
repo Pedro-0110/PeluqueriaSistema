@@ -6,6 +6,7 @@ import axios from 'axios'
 import iconoBasura from '../Icons/icono-basura.png'
 import iconoLapiz from '../Icons/icono-lapiz.png'
 import {useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 export const Servicios = () => {
     const [servicios,setServicios] = useState([])
@@ -20,10 +21,14 @@ export const Servicios = () => {
     const [duracion_servicio,setDuracion] = useState("")
     const [precio_servicio, setPrecio] = useState("")
 
+    const [loading, setLoading] = useState(false);
+
 
     const obtenerServicios = async () =>{
+        setLoading(true)
         const response = await axios.get("http://localhost:8000/servicios")
         setServicios(response.data)
+        setLoading(false)
     }
 
     const handleClickEditar = (servicio_id, nombre_servicio, descripcion_servicio , duracion_servicio, precio_servicio) =>{
@@ -55,16 +60,45 @@ export const Servicios = () => {
 
     }
 
-    const handleClickEliminar = async (servicio_id) =>{
-        let response = confirm("Se eliminara el registro de forma permanente")
-        if(response){
-            response = await axios.delete("http://localhost:8000/servicios/"+servicio_id)
-            if(response.status == 200){
-                alert("Registro eliminado")
-                obtenerServicios()
+    const handleClickEliminar = async (servicio_id) => {
+        const confirmacion = await Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!",
+        });
+      
+        if (confirmacion.isConfirmed) {
+          try {
+            const response = await axios.delete(`http://localhost:8000/servicios/${servicio_id}`);
+            
+            if (response.status === 200) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+              });
+              obtenerServicios()
+            } else {
+              Swal.fire({
+                title: "Error!",
+                text: "Could not delete the file. Please try again.",
+                icon: "error",
+              });
             }
-        } 
-    }
+          } catch (error) {
+            console.error(error);
+            Swal.fire({
+              title: "Error!",
+              text: "An error occurred while trying to delete the file.",
+              icon: "error",
+            });
+          }
+        }
+      };
     
     const handleClickCancelar = () => setEditar(false)
     
@@ -77,6 +111,13 @@ export const Servicios = () => {
             precio_servicio
         })
         if(response.status == 201){
+            Swal.fire({
+                position: "top",
+                 icon: "success",
+                 title: "Nuevo profesional guardado",
+                 showConfirmButton: false,
+                 timer: 1500
+               });
             setShow(false)
             obtenerServicios()
         }
@@ -103,6 +144,13 @@ useEffect(()=> {obtenerServicios()},[])
     <>
         <article className="contenedor-padre">
             <h2 style={{padding: '1rem', backgroundColor: '#343a40', color: 'white', border : '1px solid black', borderRadius : '10px'}}>Servicios</h2>
+            {loading ?
+                <div className="text-center">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+             :
             <div className='contenedor-tabla'>
 
             <Table striped bordered hover variant="link">
@@ -116,7 +164,9 @@ useEffect(()=> {obtenerServicios()},[])
                     </tr>
                 </thead>
                 <tbody>
-                    {servicios.map((servicio, indx)=>
+                    {
+                    !loading && servicios.length > 0 &&
+                    servicios.map((servicio, indx)=>
                         <tr key={indx}>
                             <td>{servicio.nombre_servicio}</td>
                             <td>{servicio.descripcion_servicio}</td>
@@ -125,8 +175,8 @@ useEffect(()=> {obtenerServicios()},[])
                             <td>
                                 
                                 <div className='div-botones-editar'>
-                                <Button variant = 'warning' onClick={()=> handleClickEditar(servicio.servicio_id,servicio.nombre_servicio, servicio.descripcion_servicio, servicio.duracion_servicio, servicio.precio_servicio)}><img src={iconoLapiz} width={'22px'}/></Button>
-                                <Button variant =  'danger' onClick={()=> handleClickEliminar(servicio.servicio_id)}><img src={iconoBasura} width={'22px'}/></Button>
+                                <Button variant = 'warning' style={{width : '80px'}} onClick={()=> handleClickEditar(servicio.servicio_id,servicio.nombre_servicio, servicio.descripcion_servicio, servicio.duracion_servicio, servicio.precio_servicio)}><img src={iconoLapiz} width={'22px'}/></Button>
+                                <Button variant =  'danger' style={{width : '80px'}} onClick={()=> handleClickEliminar(servicio.servicio_id)}><img src={iconoBasura} width={'22px'}/></Button>
                                 </div>
                             </td>
                         </tr>
@@ -134,6 +184,8 @@ useEffect(()=> {obtenerServicios()},[])
                 </tbody>
             </Table>
             </div>
+
+                }
             <Button className='btn-crear' onClick={()=> handleClickCrearServicio()}>Crear nuevo servicio</Button>
         </article>
 

@@ -1,5 +1,5 @@
 const express = require('express')
-const {obtenerCitas, obtenerCita, crearCita, editarCita, eliminarCita, cancelarCita, confirmarCita} = require('../Controllers/citas')
+const {obtenerCitas, obtenerCita, crearCita, editarCita, eliminarCita, cancelarCita, confirmarCita, busquedaCitas} = require('../Controllers/citas')
 const router = express.Router()
 
 router.get('/citas',obtenerCitas)
@@ -9,5 +9,6 @@ router.put('/citas/:id',editarCita)
 router.delete('/citas/:id',eliminarCita)
 router.put('/citas/cancelar/:id',cancelarCita)
 router.put('/citas/confirmar/:id',confirmarCita)
+router.get('/citas/busqueda/:nombre_apellido',busquedaCitas)
 
 module.exports = router

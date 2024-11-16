@@ -8,6 +8,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import iconoBasura from '../Icons/icono-basura.png'
 import iconoLapiz from '../Icons/icono-lapiz.png'
 import iconoVer from '../Icons/icono-ver.png'
+import Swal from 'sweetalert2';
 
 export const Usuarios = () => {
 
@@ -22,11 +23,14 @@ export const Usuarios = () => {
     const[telefono_usuario,setTelefono] = useState("")
     const[username_usuario, setUsername] = useState("")
     const[fecha_registro_usuario,setFechaRegistro] = useState("")
-    const[rol_id, setRolID] = useState(1)
+    const[rol_id, setRolID] = useState(2)
     const[password_usuario,setPassword] = useState("")
     const[email_usuario, setEmail] = useState("")
 
     const[show, setShow] = useState(false)
+
+    const [loading, setLoading] = useState(false);
+
     const handleClose = () => setShow(false)
     const handleShow = () => setShow(true)
 
@@ -35,8 +39,10 @@ export const Usuarios = () => {
     
 
     const obtenerUsuarios = async () =>{
+        setLoading(true)
         const response = await axios.get("http://localhost:8000/usuarios")
        setUsuarios(response.data)
+       setLoading(false)
     }
 
     const obtenerRoles = async () =>{
@@ -73,21 +79,50 @@ export const Usuarios = () => {
         setUsername(username_usuario)
         setPassword(password_usuario)
         setRolID(rol_id)
-        setFechaRegistro(fecha_registro_usuario)
+        const fechaFormateada = new Date(fecha_registro_usuario).toISOString().split("T")[0];
+        setFechaRegistro(fechaFormateada)
         setEditar(true)
     }
 
- const handleClickEliminar = async (usuario_id) =>{
-
-    let response = confirm("Se eliminara el registro de forma permanente")
-    if(response){
-        response = await axios.delete("http://localhost:8000/usuarios/"+usuario_id)
-    if(response.status == 200){
-        alert("Registro eliminado")
-        obtenerUsuarios()
+const handleClickEliminar = async (usuario_id) => {
+    const confirmacion = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+  
+    if (confirmacion.isConfirmed) {
+      try {
+        const response = await axios.delete(`http://localhost:8000/usuarios/${usuario_id}`);
+        
+        if (response.status === 200) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success"
+          });
+          obtenerUsuarios()
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: "Could not delete the file. Please try again.",
+            icon: "error",
+          });
+        }
+      } catch (error) {
+        console.error(error);
+        Swal.fire({
+          title: "Error!",
+          text: "An error occurred while trying to delete the file.",
+          icon: "error",
+        });
+      }
     }
- }
-} 
+  };
 
     const handleClickCancelar = () =>{
         limpiarCampos()
@@ -128,7 +163,13 @@ export const Usuarios = () => {
             
         })
         if(response.status == 201){
-            alert("Registro ingresado")
+            Swal.fire({
+                position: "top",
+                 icon: "success",
+                 title: "Nuevo usuario guardado",
+                 showConfirmButton: false,
+                 timer: 1500
+               });
             setShow(false)
             obtenerUsuarios()
         }
@@ -145,6 +186,7 @@ export const Usuarios = () => {
         setUsername("")
         setFechaRegistro("")
         setPassword("")
+        setEmail("")
     }
 
     useEffect(()=> {obtenerUsuarios()},[])
@@ -167,6 +209,13 @@ export const Usuarios = () => {
           onChange={(e) => setValorBusqueda(e.target.value)}
         />
       </InputGroup>
+      {loading ?
+                <div className="text-center">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+             :
 
         <article className="contenedor-tabla">
 
@@ -186,7 +235,9 @@ export const Usuarios = () => {
                 </tr>
                 </thead>
                 <tbody>
-                    {usuarios.map((usuario,indx) =>
+                    {
+                    !loading && usuarios.length > 0 &&
+                    usuarios.map((usuario,indx) =>
                         <tr key={indx}>
                             <td>{usuario.nombre_usuario}</td>
                             <td>{usuario.apellido_usuario}</td>
@@ -195,10 +246,10 @@ export const Usuarios = () => {
                             <td>{usuario.username_usuario}</td>
                             <td>{usuario.fecha_registro_usuario}</td>
                             <td>{usuario.rol}</td>
-                            <td><Button variant = 'info'> <img src={iconoVer} width={'22px'} alt="" /></Button></td>
+                            <td><Button variant = 'info' style={{width : '80px'}}> <img src={iconoVer} width={'22px'} alt="" /></Button></td>
                             <td>
                                 <div className='div-botones-editar'>
-                                <Button variant = 'warning' onClick={()=> handleClickEditar(usuario.usuario_id,usuario.nombre_usuario,
+                                <Button variant = 'warning' style={{width : '80px'}} onClick={()=> handleClickEditar(usuario.usuario_id,usuario.nombre_usuario,
             usuario.apellido_usuario,
             usuario.email_usuario,
             usuario.telefono_usuario, 
@@ -207,7 +258,7 @@ export const Usuarios = () => {
             usuario.password_usuario, 
             usuario.rol_id, 
             usuario.fecha_registro_usuario)}><img src={iconoLapiz} width={'22px'}/></Button>
-                                <Button variant = 'danger' onClick={()=> handleClickEliminar(usuario.usuario_id)}><img src={iconoBasura} width={'22px'}/></Button>
+                                <Button variant = 'danger'style={{width : '80px'}} onClick={()=> handleClickEliminar(usuario.usuario_id)}><img src={iconoBasura} width={'22px'}/></Button>
                                 </div>
                             </td>
                         </tr>
@@ -215,6 +266,7 @@ export const Usuarios = () => {
                 </tbody>
             </Table>
          </article>
+}
 
             <Button variant='primary' className='btn-crear' onClick={handleShow}>Crear nuevo usuario</Button>
         </div>
@@ -260,7 +312,10 @@ export const Usuarios = () => {
 
                 <Form.Group>
                     <Form.Label>Fecha de registro</Form.Label>
-                    <Form.Control type="date" value = {fecha_registro_usuario} onChange = {(e) => setFechaRegistro(e.target.value)}/>
+                    <Form.Control type="date" value = {fecha_registro_usuario} onChange = {(e) => {
+                        const fechaFormateada = new Date(e.target.value).toISOString().split("T")[0]
+                        setFechaRegistro(fechaFormateada)
+                    }}/>
                 </Form.Group>
 
                 <Form.Group>

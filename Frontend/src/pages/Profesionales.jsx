@@ -6,6 +6,7 @@ import axios from 'axios'
 import iconoBasura from '../Icons/icono-basura.png'
 import iconoLapiz from '../Icons/icono-lapiz.png'
 import {useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 
 export const Profesionales = () => {
 
@@ -23,10 +24,14 @@ export const Profesionales = () => {
     const [fecha_ingreso_profesional, setFechaIngreso] = useState("") 
     const [activo_profesional,setActivo] = useState(1)
 
+    const [loading, setLoading] = useState(false);
+
 
     const obtenerProfesionales = async () =>{
+        setLoading(true)
         const response = await axios.get("http://localhost:8000/profesionales")
         setProfesionales(response.data)
+        setLoading(false)
     }
 
     const handleClickEditar = (profesional_id, nombre_profesional, apellido_profesional, especialidad_profesional, descripcion_profesional, fecha_ingreso_profesional, activo_profesional) =>{
@@ -58,17 +63,45 @@ export const Profesionales = () => {
 
     }
 
-    const handleClickEliminar = async (profesional_id) =>{
-    let response = confirm("Se eliminara de forma permanente el registro")
-    if(response){
-        response = ""
-        response = await axios.delete("http://localhost:8000/profesionales/"+profesional_id)
-        if(response.status == 200){
-            alert("Registro eliminado")
-            obtenerProfesionales()
+const handleClickEliminar = async (profesional_id) => {
+    const confirmacion = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+  
+    if (confirmacion.isConfirmed) {
+      try {
+        const response = await axios.delete(`http://localhost:8000/profesionales/${profesional_id}`);
+        
+        if (response.status === 200) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success"
+          });
+          obtenerProfesionales()
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: "Could not delete the file. Please try again.",
+            icon: "error",
+          });
         }
+      } catch (error) {
+        console.error(error);
+        Swal.fire({
+          title: "Error!",
+          text: "An error occurred while trying to delete the file.",
+          icon: "error",
+        });
+      }
     }
-}
+  };
 
     const handleClickCancelar = () => setEditar(false)
 
@@ -81,10 +114,18 @@ export const Profesionales = () => {
             fecha_ingreso_profesional,
             activo_profesional
         })
-        if(response){
+        if(response.status === 200){
+            Swal.fire({
+                position: "top",
+                 icon: "success",
+                 title: "Nuevo profesional guardado",
+                 showConfirmButton: false,
+                 timer: 1500
+               });
             limpiarCampos()
             obtenerProfesionales()
         }
+        setShow(false)
     }
 
     const handleClickCrearProfesional = () => setShow(true)
@@ -104,7 +145,15 @@ export const Profesionales = () => {
   return (
     <>
         <article className="contenedor-padre">
+
             <h2 style={{padding: '1rem', backgroundColor: '#343a40', color: 'white', border : '1px solid black', borderRadius : '10px'}}>Profesionales</h2>
+            {loading ?
+                <div className="text-center">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+             :
             <div className='contenedor-tabla'>
 
             
@@ -121,7 +170,9 @@ export const Profesionales = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {profesionales.map((profesional, indx)=>
+                    {
+                    !loading && profesionales.length > 0 &&
+                    profesionales.map((profesional, indx)=>
                         <tr key={indx}>
                             <td>{profesional.nombre_profesional}</td>
                             <td>{profesional.apellido_profesional}</td>
@@ -132,8 +183,8 @@ export const Profesionales = () => {
                             <td>
                                 
                                 <div className='div-botones-editar'>
-                                <Button variant = 'warning' onClick={()=> handleClickEditar(profesional.profesional_id,profesional.nombre_profesional, profesional.apellido_profesional, profesional.especialidad_profesional, profesional.descripcion_profesional, profesional.fecha_ingreso_profesional, profesional.activo_profesional)}><img src={iconoLapiz} width={'22px'}/></Button>
-                                <Button variant =  'danger' onClick={()=> {handleClickEliminar(profesional.profesional_id)}}><img src={iconoBasura} width={'22px'}/></Button>
+                                <Button variant = 'warning' style={{width : '80px'}} onClick={()=> handleClickEditar(profesional.profesional_id,profesional.nombre_profesional, profesional.apellido_profesional, profesional.especialidad_profesional, profesional.descripcion_profesional, profesional.fecha_ingreso_profesional, profesional.activo_profesional)}><img src={iconoLapiz} width={'22px'}/></Button>
+                                <Button variant =  'danger' style={{width : '80px'}} onClick={()=> {handleClickEliminar(profesional.profesional_id)}}><img src={iconoBasura} width={'22px'}/></Button>
                                 </div>
                             </td>
                         </tr>
@@ -141,6 +192,7 @@ export const Profesionales = () => {
                 </tbody>
             </Table>
             </div>
+}
             <Button className='btn-crear' onClick={()=> handleClickCrearProfesional()}>Crear nuevo profesional</Button>
         </article>
 

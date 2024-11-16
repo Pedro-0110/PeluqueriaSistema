@@ -1,7 +1,7 @@
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
-import Modal from 'react-bootstrap/Modal';
+import InputGroup from 'react-bootstrap/InputGroup';
 import axios from 'axios'
 import iconoCancelar from '../Icons/icono-cancelar.png'
 import iconoLapiz from '../Icons/icono-lapiz.png'
@@ -13,62 +13,17 @@ import {useEffect, useState } from 'react';
 export const Citas = () => {
     const [citas,setCitas] = useState([])
     const [editar,setEditar] = useState(false)
+    const [valorBusqueda, setValorBusqueda] = useState("")
+    const [loading, setLoading] = useState(false);
 
-    const[show, setShow] = useState(false)
-    const handleClose = () => setShow(false)
-
-    const [cita_id, setCitaID] = useState("")
-    const [usuario_id,setUsuarioID] = useState("")
-    const [profesional_id,setProfesionalID] = useState("")
-    const [servicio_id,setServicioID] = useState("")
-    const [fecha_cita, setFechaCita] = useState("")
-    const [estado_cita, setEstado] = useState("")
 
     const obtenerCitas = async () =>{
+        setLoading(true)
         const response = await axios.get("http://localhost:8000/citas")
         setCitas(response.data)
+        setLoading(false)
     }
 
-    const handleClickEditar = (cita_id, usuario_id, profesional_id, servicio_id, fecha_cita, estado_cita) =>{
-        setEditar(true)
-        setCitaID(cita_id)
-        setUsuarioID(usuario_id)
-        setProfesionalID(profesional_id)
-        setServicioID(servicio_id)
-        const fechaFormateada = new Date(fecha_cita).toISOString().split("T")[0];
-        setFechaCita(fechaFormateada)
-        setEstado(estado_cita)
-    }
-
-    const handleClickActualizar = async () =>{
-        const response = await axios.put("http://localhost:8000/citas/" + cita_id,{
-         usuario_id,
-         profesional_id, 
-         servicio_id, 
-         fecha_cita, 
-         estado_cita
-        }
-    )
-            if(response){
-                obtenerCitas()
-                setEditar(false)
-                setCitaID("")
-                setUsuarioID("")
-                setProfesionalID("")
-                setServicioID("")
-                setFechaCita("")
-                setEstado("")
-        }
-
-    }
-
-    const handleClickEliminar = async (cita_id) =>{
-        const response = await axios.delete(`http://localhost:8000/citas/${cita_id}`)
-        if(response.status == 200){
-            obtenerCitas()
-        }
-    }
-    
     const handleClickCancelar = async (cita_id) =>{
         let response = confirm("¿Esta seguro que desea cancelar la cita?")
         if(response){
@@ -87,20 +42,44 @@ export const Citas = () => {
        }
     }
 
-    const limpiarCampos = () =>{
-            setCitaID("")
-            setUsuarioID("")
-            setProfesionalID("")
-            setServicioID("")
-            setFechaCita("")
-            setEstado("")
+    const obtenerBusqueda = async () =>{
+        if(valorBusqueda === ""){
+            obtenerCitas()
+            console.log(citas)
+        }
+        const response = await axios.get(`http://localhost:8000/citas/busqueda/${valorBusqueda}`)
+        setCitas(response.data)
     }
 
+    const handleClickEditar = () =>{}
+
     useEffect(()=> {obtenerCitas()},[])
+    useEffect(()=> {obtenerBusqueda()},[valorBusqueda])
   return (
     <>
         <article className="contenedor-padre">
             <h2 style={{padding: '1rem', backgroundColor: '#343a40', color: 'white', border : '1px solid black', borderRadius : '10px'}}>Citas</h2>
+
+            <InputGroup className="mb-3">
+        <InputGroup.Text id="inputGroup-sizing-default">
+          Busqueda de cliente o profesional
+        </InputGroup.Text>
+        <Form.Control
+          
+          placeholder="Ingrese el nombre o apellido"
+          onChange={(e) => setValorBusqueda(e.target.value)
+          
+          }
+        />
+      </InputGroup>
+
+      {loading ?
+                <div className="text-center">
+                    <div className="spinner-border text-primary" role="status">
+                        <span className="visually-hidden">Cargando...</span>
+                    </div>
+                </div>
+             :
             <div className='contenedor-tabla'>
 
             
@@ -114,10 +93,13 @@ export const Citas = () => {
                         <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Fecha</td>
                         <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Estado</td>
                         <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Opciones</td>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Nota</td>
                     </tr>
                 </thead>
                 <tbody>
-                    {citas.map((cita, indx)=>
+                    {
+                    !loading && citas.length > 0 &&
+                    citas.map((cita, indx)=>
                         <tr key={indx}>
                             <td>{cita.cita_id}</td>
                             <td>{cita.nombre_usuario} {cita.apellido_usuario}</td>
@@ -147,17 +129,25 @@ export const Citas = () => {
                                 ? <> <img src={iconoNada} alt="" width={'22px'} /> </>
                                 : 
                                 <>
-                                <Button variant = 'success' onClick={()=> handleClickConfirmar(cita.cita_id)}><img src= {iconoConfirmar} width={'22px'}/></Button>
-                                <Button variant='warning' onClick={()=> handleClickEditar()}><img src= {iconoLapiz} width={'22px'}/></Button>
-                                <Button variant = 'danger' onClick={()=> handleClickCancelar(cita.cita_id)}><img src={iconoCancelar} width={'22px'}/></Button>
+                                <Button variant = 'success' style={{width : '80px'}} onClick={()=> handleClickConfirmar(cita.cita_id)}><img src= {iconoConfirmar} width={'22px'}/></Button>
+                                <Button variant='warning' style={{width : '80px'}} onClick={()=> handleClickEditar()}><img src= {iconoLapiz} width={'22px'}/></Button>
+                                <Button variant = 'danger' style={{width : '80px'}} onClick={()=> handleClickCancelar(cita.cita_id)}><img src={iconoCancelar} width={'22px'}/></Button>
                                 </>}
                                 </div>
+                            </td>
+                            <td>
+                                {cita.estado_cita === 'Pendiente' 
+                                ?
+                                <Form.Control placeholder='Ingresar nota..'/>
+                                :
+                                <></> }
                             </td>
                         </tr>
                     )}
                 </tbody>
             </Table>
             </div>
+}
         </article>
     
     </>
