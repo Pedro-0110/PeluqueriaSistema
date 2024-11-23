@@ -72,7 +72,7 @@ export const Reseñas = () => {
              :
             <div className='contenedor-tabla'>
 
-            <Table striped bordered hover variant="link">
+            <Table striped bordered hover variant="dark">
                 <thead>
                     <tr>
                         <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Reseña ID</td>

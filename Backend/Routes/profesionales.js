@@ -1,8 +1,8 @@
 const express = require ('express')
-const {obtenerNombreIDProfesionales,obtenerProfesionales,obtenerProfesional,crearProfesional,editarProfesional,eliminarProfesional} = require('../Controllers/profesionales')
+const {obtenerNombreIDImagenProfesionales,obtenerProfesionales,obtenerProfesional,crearProfesional,editarProfesional,eliminarProfesional} = require('../Controllers/profesionales')
 const router = express.Router()
 
-router.get('/profesionales/nombres',obtenerNombreIDProfesionales)
+router.get('/profesionales/nombres',obtenerNombreIDImagenProfesionales)
 router.get('/profesionales',obtenerProfesionales)
 router.get('/profesionales/:id', obtenerProfesional)
 router.post('/profesionales', crearProfesional)

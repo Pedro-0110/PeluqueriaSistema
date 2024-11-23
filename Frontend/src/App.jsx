@@ -15,7 +15,7 @@ import { Perfil } from './pages/Perfil';
 function App() {
   return (
     <>
-    <div className='contenedor-navbar-opcion'>
+     <div className='contenedor-navbar-opcion'>
      <NavbarAdministrados/>
       <Routes>
         <Route path='/' element = ''/>
@@ -30,7 +30,7 @@ function App() {
         <Route path = '/horariosDisponibles' element = {<HorariosDisponibles/>}/>
         <Route path='*' element = {<NotFound/>}/>
       </Routes>
-     </div>
+     </div> 
     </>
   )
 }

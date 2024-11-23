@@ -153,7 +153,7 @@ useEffect(()=> {obtenerServicios()},[])
              :
             <div className='contenedor-tabla'>
 
-            <Table striped bordered hover variant="link">
+            <Table striped bordered hover variant="dark">
                 <thead>
                     <tr>
                         <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Nombre</td>
@@ -194,7 +194,7 @@ useEffect(()=> {obtenerServicios()},[])
             <Form>
                 <Form.Group>
                     <Form.Label>Nombre</Form.Label>
-                    <Form.Control value={nombre_servicio}  onChange={(e)=>setNombre(e.target.value)}/>
+                    <Form.Control required value={nombre_servicio}  onChange={(e)=>setNombre(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
@@ -204,12 +204,12 @@ useEffect(()=> {obtenerServicios()},[])
 
                 <Form.Group>
                     <Form.Label>Duracion</Form.Label>
-                    <Form.Control type='number' value = {duracion_servicio} onChange={(e)=> setDuracion(e.target.value)}/>
+                    <Form.Control required type='number' value = {duracion_servicio} onChange={(e)=> setDuracion(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Precio</Form.Label>
-                    <Form.Control value={precio_servicio} onChange={(e)=>{setPrecio(e.target.value)}}/>
+                    <Form.Control required value={precio_servicio} onChange={(e)=>{setPrecio(e.target.value)}}/>
                 </Form.Group>
             </Form>
 

@@ -1,6 +1,7 @@
 create database BarberiaBD;
 use BarberiaBD;
 
+
 CREATE TABLE Roles (
     rol_id INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(50) NOT NULL UNIQUE
@@ -127,6 +128,19 @@ CREATE TABLE Citas (
     on update cascade
 );
 
+ALTER TABLE Citas
+ADD COLUMN nota varchar(150) default 'sin agregar';
+
+
+update Citas as c set estado_cita = 'Confirmada', nota = 'crack' where cita_id = 10;
+
+select * from Citas as c 
+inner join Usuarios as u
+on c.usuario_id = u.usuario_id
+inner join Servicios as s
+on c.servicio_id = s.servicio_id
+where c.estado_cita = 'Confirmada';
+
 INSERT INTO Citas (usuario_id, profesional_id, servicio_id, fecha_cita, estado_cita)
 VALUES
 (1, 1, 1, '2024-11-15 10:00:00', 'Pendiente'), -- Carlos Pérez reserva con Juan Pérez para Corte de Cabello
@@ -140,7 +154,25 @@ VALUES
 (9, 9, 1, '2024-11-23 17:00:00', 'Pendiente'), -- Javier Sánchez reserva con Javier Sánchez para Corte de Cabello
 (10, 10, 10, '2024-11-24 18:00:00', 'Pendiente'); -- Carmen Morales reserva con Carmen Morales para Maquillaje
 
-select * from Citas;
+insert into Citas (usuario_id,profesional_id,servicio_id,fecha_cita,estado_cita) values (1,3,3,'2024-11-19-','Pendiente');
+
+
+update Citas as c set estado_cita = 'Confirmada', nota = '50% rubio' where cita_id = 4;
+
+
+select u.nombre_usuario, u.apellido_usuario, c.fecha_cita, c.nota from Citas as c
+inner join Usuarios as u
+on c.usuario_id = u.usuario_id
+where c.usuario_id = 10;
+
+select u.nombre_usuario, u.apellido_usuario, c.fecha_cita, c.nota, s.nombre_servicio
+from Citas as c
+inner join Usuarios as u
+on c.usuario_id = u.usuario_id
+inner join Servicios as s
+on c.servicio_id = s.servicio_id
+where c.usuario_id = 10 and c.estado_cita = 'Confirmada';
+
 
 select * from Citas as c
 inner join Usuarios as u

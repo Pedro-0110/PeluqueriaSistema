@@ -24,8 +24,12 @@ export const Galeria = () => {
     const[descripcion_imagen, setDescripcion] = useState("")
     const[fecha_subida_imagen, setFechaSubida] = useState("")
 
+    const [showImagen, setShowImagen] = useState(false);
+    const [imagen, setImagen] = useState("")
+
     const[show, setShow] = useState(false)
     const handleClose = () => setShow(false)
+    const handleCloseImagen = () => setShowImagen(false)
 
 
     const obtenerGalerias = async () =>{
@@ -114,6 +118,7 @@ export const Galeria = () => {
   
 
     const handleClickConfirmar = async () =>{
+
         const response = await axios.post("http://localhost:8000/galeria/",{
             profesional_id,
             url_imagen,
@@ -136,8 +141,12 @@ export const Galeria = () => {
     }
 
 
-    const handleClickVisualizar = () =>{
-
+    const handleClickVisualizar = async (imagen_id) =>{
+        setShowImagen(true)
+        const response = await axios.get(`http://localhost:8000/galeria/${imagen_id}`)
+        if(response.status === 200){
+            setImagen(response.data[0])
+        }
     }
 
     const limpiarCampos = () => {
@@ -166,7 +175,7 @@ export const Galeria = () => {
 
              
 
-            <Table striped bordered hover variant="link" >
+            <Table striped bordered hover variant="dark" >
                 <thead >
                     <tr>
                         <td style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Img</td>
@@ -209,7 +218,7 @@ export const Galeria = () => {
             <Form>
                 <Form.Group>
                     <Form.Label>URL imagen</Form.Label>
-                    <Form.Control onChange={(e)=> setUrlImagen(e.target.value)} value={url_imagen} />
+                    <Form.Control required onChange={(e)=> setUrlImagen(e.target.value)} value={url_imagen} />
                 </Form.Group>
 
                 <Form.Group>
@@ -286,6 +295,19 @@ export const Galeria = () => {
             Confirmar
           </Button>
         </Modal.Footer>
+      </Modal>
+
+
+      <Modal className='modal-imagen' show={showImagen} onHide={handleCloseImagen}>
+        <Modal.Header closeButton>
+          <Modal.Title>{imagen.nombre_profesional} {imagen.apellido_profesional}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+
+         <div className='div-modal-imagen'>
+            <img src={imagen.url_imagen} alt="" />
+         </div>
+        </Modal.Body>
       </Modal>
     </>
   )

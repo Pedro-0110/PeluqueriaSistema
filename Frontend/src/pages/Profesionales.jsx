@@ -23,6 +23,7 @@ export const Profesionales = () => {
     const [descripcion_profesional, setDescripcion] = useState("")
     const [fecha_ingreso_profesional, setFechaIngreso] = useState("") 
     const [activo_profesional,setActivo] = useState(1)
+    const [imagen_profesional, setImagenProfesional] = useState("")
 
     const [loading, setLoading] = useState(false);
 
@@ -34,7 +35,7 @@ export const Profesionales = () => {
         setLoading(false)
     }
 
-    const handleClickEditar = (profesional_id, nombre_profesional, apellido_profesional, especialidad_profesional, descripcion_profesional, fecha_ingreso_profesional, activo_profesional) =>{
+    const handleClickEditar = (profesional_id, nombre_profesional, apellido_profesional, especialidad_profesional, descripcion_profesional, fecha_ingreso_profesional, activo_profesional, imagen_profesional) =>{
         setEditar(true)
         setProfesionalID(profesional_id)
         setNombre(nombre_profesional)
@@ -44,6 +45,7 @@ export const Profesionales = () => {
         const fechaFormateada = new Date(fecha_ingreso_profesional).toISOString().split("T")[0];
         setFechaIngreso(fechaFormateada);
         setActivo(activo_profesional)
+        setImagenProfesional(imagen_profesional)
     }
 
     const handleClickActualizar = async () =>{
@@ -53,7 +55,8 @@ export const Profesionales = () => {
             especialidad_profesional,
             descripcion_profesional,
             fecha_ingreso_profesional,
-            activo_profesional
+            activo_profesional,
+            imagen_profesional
         })
             if(response.status == 200){
                 limpiarCampos()
@@ -112,7 +115,8 @@ const handleClickEliminar = async (profesional_id) => {
             especialidad_profesional,
             descripcion_profesional,
             fecha_ingreso_profesional,
-            activo_profesional
+            activo_profesional,
+            imagen_profesional
         })
         if(response.status === 200){
             Swal.fire({
@@ -138,6 +142,7 @@ const handleClickEliminar = async (profesional_id) => {
         setDescripcion("")
         setFechaIngreso("")
         setActivo("")
+        setImagenProfesional("")
     }
 
     useEffect(()=> {obtenerProfesionales()},[])
@@ -157,9 +162,10 @@ const handleClickEliminar = async (profesional_id) => {
             <div className='contenedor-tabla'>
 
             
-            <Table striped bordered hover variant="link">
+            <Table striped bordered hover variant="dark">
                 <thead>
                     <tr>
+                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Imagen</td>
                         <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Nombre</td>
                         <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Apellido</td>
                         <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Especialidad</td>
@@ -174,6 +180,7 @@ const handleClickEliminar = async (profesional_id) => {
                     !loading && profesionales.length > 0 &&
                     profesionales.map((profesional, indx)=>
                         <tr key={indx}>
+                            <td><img src={profesional.imagen_profesional} alt="" width={'60px'} /></td>
                             <td>{profesional.nombre_profesional}</td>
                             <td>{profesional.apellido_profesional}</td>
                             <td>{profesional.especialidad_profesional}</td>
@@ -183,7 +190,7 @@ const handleClickEliminar = async (profesional_id) => {
                             <td>
                                 
                                 <div className='div-botones-editar'>
-                                <Button variant = 'warning' style={{width : '80px'}} onClick={()=> handleClickEditar(profesional.profesional_id,profesional.nombre_profesional, profesional.apellido_profesional, profesional.especialidad_profesional, profesional.descripcion_profesional, profesional.fecha_ingreso_profesional, profesional.activo_profesional)}><img src={iconoLapiz} width={'22px'}/></Button>
+                                <Button variant = 'warning' style={{width : '80px'}} onClick={()=> handleClickEditar(profesional.profesional_id,profesional.nombre_profesional, profesional.apellido_profesional, profesional.especialidad_profesional, profesional.descripcion_profesional, profesional.fecha_ingreso_profesional, profesional.activo_profesional, profesional.imagen_profesional)}><img src={iconoLapiz} width={'22px'}/></Button>
                                 <Button variant =  'danger' style={{width : '80px'}} onClick={()=> {handleClickEliminar(profesional.profesional_id)}}><img src={iconoBasura} width={'22px'}/></Button>
                                 </div>
                             </td>
@@ -201,12 +208,12 @@ const handleClickEliminar = async (profesional_id) => {
             <Form>
                 <Form.Group>
                     <Form.Label>Nombre</Form.Label>
-                    <Form.Control value={nombre_profesional}  onChange={(e)=>setNombre(e.target.value)}/>
+                    <Form.Control required value={nombre_profesional}  onChange={(e)=>setNombre(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Apellido</Form.Label>
-                    <Form.Control value={apellido_profesional} onChange={(e)=>{setApellido(e.target.value)}}/>
+                    <Form.Control required value={apellido_profesional} onChange={(e)=>{setApellido(e.target.value)}}/>
                 </Form.Group>
 
                 <Form.Group>
@@ -217,6 +224,12 @@ const handleClickEliminar = async (profesional_id) => {
                 <Form.Group>
                     <Form.Label>Descripcion</Form.Label>
                     <Form.Control value={descripcion_profesional} onChange={(e)=>{setDescripcion(e.target.value)}}/>
+                </Form.Group>
+
+
+                <Form.Group>
+                    <Form.Label>Imagen</Form.Label>
+                    <Form.Control value={imagen_profesional} onChange={(e)=>{setImagenProfesional(e.target.value)}}/>
                 </Form.Group>
 
                 <Form.Group>
@@ -270,6 +283,10 @@ const handleClickEliminar = async (profesional_id) => {
                     <Form.Control value = {descripcion_profesional} onChange={(e)=> setDescripcion(e.target.value)}/>
                 </Form.Group>
 
+                <Form.Group>
+                    <Form.Label>Imagen</Form.Label>
+                    <Form.Control value = {imagen_profesional} onChange={(e)=> setImagenProfesional(e.target.value)}/>
+                </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Fecha de registro</Form.Label>

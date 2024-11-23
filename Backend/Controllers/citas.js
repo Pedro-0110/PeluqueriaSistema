@@ -7,6 +7,7 @@ const obtenerCitas = (req, res) => {
                    INNER JOIN Servicios AS s ON c.servicio_id = s.servicio_id
                    order by c.fecha_cita desc
                    ;`;
+
     pool.query(query, (error, result) => {
         if (error) {
             console.error(error);
@@ -15,6 +16,7 @@ const obtenerCitas = (req, res) => {
         res.status(200).json(result);
     });
 };
+
 
 const obtenerCita = (req, res) => {
     const { id } = req.params;
@@ -33,6 +35,7 @@ const obtenerCita = (req, res) => {
     });
 };
 
+
 const crearCita = (req, res) => {
     const { usuario_id, profesional_id, servicio_id, fecha_cita, estado_cita } = req.body;
     const query = `INSERT INTO Citas (usuario_id, profesional_id, servicio_id, fecha_cita, estado_cita) 
@@ -46,6 +49,7 @@ const crearCita = (req, res) => {
         res.status(201).json({ message: "Cita creada exitosamente", citaId: result.insertId });
     });
 };
+
 
 const editarCita = (req, res) => {
     const { id } = req.params;
@@ -62,6 +66,7 @@ const editarCita = (req, res) => {
     });
 };
 
+
 const eliminarCita = (req, res) => {
     const { id } = req.params;
     const query = `DELETE FROM Citas WHERE cita_id = ?`;
@@ -75,9 +80,11 @@ const eliminarCita = (req, res) => {
     });
 };
 
+
 const cancelarCita = (req,res)=>{
     const{id} = req.params
     const query = `update Citas set estado_cita = 'Cancelada' where cita_id = ?;`
+
     pool.query(query,[id],(error,result)=>{
         if(error){
             console.error(error);
@@ -87,10 +94,13 @@ const cancelarCita = (req,res)=>{
     })
 }
 
+
 const confirmarCita = (req,res) =>{
     const {id} = req.params
-    const query = `update Citas set estado_cita = 'Confirmada' where cita_id = ?;`
-    pool.query(query,[id],(error,result)=>{
+    const {nota} = req.body
+    const query = `update Citas as c set estado_cita = 'Confirmada', nota = ? where cita_id = ?;`
+
+    pool.query(query,[nota, id],(error,result)=>{
         if(error){
             console.log(error)
             return res.status(500).send("Error al confirmar la cita!")
@@ -98,6 +108,7 @@ const confirmarCita = (req,res) =>{
         res.status(200).json({message: 'Cita confirmada correctamente!'})
     })
 }
+
 
 const busquedaCitas = (req, res) =>{
     const {nombre_apellido} = req.params
@@ -113,12 +124,35 @@ const busquedaCitas = (req, res) =>{
                    or upper(p.apellido_profesional) like ?
                    or upper(u.nombre_usuario) like ?
                    or upper(u.apellido_usuario) like ?;`
+
     pool.query(query,[valorNombreApellido,valorNombreApellido,valorNombreApellido,valorNombreApellido],(error,result)=>{
                         if(error){
                             return res.status(500).send('Error al realizar la busqueda de Citas')
                         }
                         res.status(200).json(result)     
                     })}
+
+
+const obtenerHistorialCitasCliente = (req,res) =>{
+    const{id} = req.params
+    const query = `select u.nombre_usuario, u.apellido_usuario, c.fecha_cita, c.nota, s.nombre_servicio, p.nombre_profesional, p.apellido_profesional
+                   from Citas as c
+                   inner join Usuarios as u
+                   on c.usuario_id = u.usuario_id
+                   inner join Servicios as s
+                   on c.servicio_id = s.servicio_id
+                   inner join Profesionales as p
+                   on c.profesional_id = p.profesional_id
+                   where c.usuario_id = ?
+                   and c.estado_cita = 'Confirmada';`
+
+    pool.query(query,[id],(error,result)=>{
+        if(error){
+            return res.status(500).send('Error al obtener el historial del cliente!')
+            }
+        res.status(200).json(result)
+        })
+    } 
 
 
 module.exports = {
@@ -129,5 +163,6 @@ module.exports = {
     eliminarCita,
     cancelarCita,
     confirmarCita,
-    busquedaCitas
+    busquedaCitas,
+    obtenerHistorialCitasCliente
 };

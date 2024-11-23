@@ -5,6 +5,7 @@ const obtenerUsuarios = (req, res) => {
                  u.fecha_registro_usuario, r.nombre as rol from Usuarios as u
                  inner join Roles as r
                  on u.rol_id = r.rol_id;`;
+
   pool.query(query, (error, result) => {
     if (error) {
       console.error(error);
@@ -13,6 +14,7 @@ const obtenerUsuarios = (req, res) => {
     res.status(200).json(result);
   });
 };
+
 
 const obtenerUsuario = (req, res) => {
   const { id } = req.params;
@@ -31,6 +33,7 @@ const obtenerUsuario = (req, res) => {
   });
 };
 
+
 const crearUsuario = (req, res) => {
   const { nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, direccion_usuario, username_usuario, password_usuario, rol_id, fecha_registro_usuario } = req.body;
   const query = `insert into Usuarios (nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, direccion_usuario, username_usuario, password_usuario, rol_id, fecha_registro_usuario)
@@ -44,6 +47,7 @@ const crearUsuario = (req, res) => {
     res.status(201).json({ message: "Usuario creado exitosamente", usuarioId: result.insertId });
   });
 };
+
 
 const editarUsuario = (req, res) => {
   const { id } = req.params;
@@ -59,6 +63,7 @@ const editarUsuario = (req, res) => {
     res.status(200).json({ message: "Usuario actualizado exitosamente" });
   });
 };
+
 
 const eliminarUsuario = (req, res) => {
   const { id } = req.params;
@@ -80,6 +85,7 @@ const obtenerAdministradores = (req,res) =>{
                  on u.rol_id = r.rol_id
                  where r.nombre_usuario = 'Administrador'
                  ;`
+
   pool.query(query,(error,result)=>{
     if (error) {
       console.error(error);
@@ -89,6 +95,7 @@ const obtenerAdministradores = (req,res) =>{
   })
 }
 
+
 const obtenerAdministrador = (req,res) =>{
   const {id} = req.params
   const query = `select * from Usuarios as u
@@ -96,6 +103,7 @@ const obtenerAdministrador = (req,res) =>{
                  on u.rol_id = r.rol_id
                  where r.nombre_usuario = 'Administrador' and u.usuario_id = ?
                  ;`
+
   pool.query(query,[id],(error,result)=>{
     if (error) {
       console.error(error);
@@ -105,13 +113,13 @@ const obtenerAdministrador = (req,res) =>{
   })
 }
 
+
 const buscarUsuarioPorPatrones = (req, res) => {
   const { nombre, apellido } = req.params;
 
   // Construir patrones de búsqueda con los comodines
   const nombrePatron = `%${nombre.toUpperCase()}%`;
   const apellidoPatron = `%${apellido.toUpperCase()}%`;
-
   const query = `SELECT u.usuario_id, u.nombre_usuario, u.apellido_usuario, u.email_usuario, u.telefono_usuario, 
                  u.direccion_usuario, u.username_usuario, u.fecha_registro_usuario, r.nombre AS rol
                  FROM Usuarios AS u

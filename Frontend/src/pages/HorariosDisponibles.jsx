@@ -192,7 +192,7 @@ export const HorariosDisponibles = () => {
                 </div>
              :
         <div className="contenedor-tabla">
-          <Table striped bordered hover variant="link">
+          <Table striped bordered hover variant="dark">
             <thead>
               <tr>
                 <td
@@ -331,7 +331,7 @@ export const HorariosDisponibles = () => {
           <Form>
             <Form.Group>
               <Form.Label>Profesional</Form.Label>
-              <Form.Select onChange={(e) => setProfesionalID(e.target.value)} value={profesional_id}>
+              <Form.Select required onChange={(e) => setProfesionalID(e.target.value)} value={profesional_id}>
                 {profesionales.map((profesional, index) => (
                   <option key={index} value={profesional.profesional_id}>
                     {profesional.nombre_profesional} {profesional.apellido_profesional}
@@ -353,7 +353,8 @@ export const HorariosDisponibles = () => {
 
             <Form.Group controlId="horaFin">
               <Form.Label>Hora Inicio</Form.Label>
-              <Form.Control
+              <Form.Control 
+                required
                 type="time"
                 name="hora"
                 min="09:00"
@@ -366,7 +367,8 @@ export const HorariosDisponibles = () => {
 
             <Form.Group controlId="horaFin">
               <Form.Label>Hora Fin</Form.Label>
-              <Form.Control
+              <Form.Control 
+                required
                 type="time"
                 name="hora"
                 min="09:00"

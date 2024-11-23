@@ -1,5 +1,5 @@
 body{
-    background-color: #ffffff !important;
+    background-color: rgb(252, 252, 252)!important;
 }
 h1{
     font-size: 28px;
@@ -43,9 +43,12 @@ h3{
     background-color: #ffffff;
     color: black;
     border-radius: 10px;
-    text-align: center;
     list-style-type: none;
-    border: 1px solid rgb(0, 0, 0);
+    border: 1px solid black;
+}
+
+.navegacion-administrador span{
+  margin-left: 1rem;
 }
 
 
@@ -57,9 +60,10 @@ h3{
     flex-direction: column;
     justify-content: center;
     justify-content: space-evenly;
-    border: 2px solid rgb(255, 255, 255);
+    border: 0;
     border-radius: 10px;
     margin: 1rem;
+    
 }
 
 .navegacion-administrador li{
@@ -120,6 +124,7 @@ h3{
     height: 60vh;
     overflow-y: auto; 
     text-align: center;
+    margin-right: 1rem;
   }
 
   .btn-crear{
@@ -127,7 +132,7 @@ h3{
     bottom: 0; /* Se posiciona en la parte inferior */
     right:  0; /* Opcional: puedes centrarlo o ajustarlo según el diseño */
  /* Hace que el botón ocupe todo el ancho si deseas */
- margin: 1rem;
+    margin: 2rem;
     padding: 15px;
     text-align: center;
     background-color: #3c7aee !important; /* Color del botón */
@@ -163,3 +168,166 @@ h3{
   .text-center{
     margin-top: 25vh;
   }
+
+  .modal-imagen{
+    margin-top: 20vh;
+  }
+
+  .div-modal-imagen{
+    width: 20vw;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .div-modal-imagen img{
+    width: 20vw;
+    height: 26vh;
+  }
+
+
+  /* Personalizar barra de scroll */
+::-webkit-scrollbar {
+  width: 12px; /* Ancho del scroll vertical */
+  height: 12px; /* Alto del scroll horizontal */
+}
+
+/* Fondo de la barra de scroll */
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 10px;
+}
+
+/* Color de la barra */
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+/* Color cuando el mouse está sobre la barra */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+
+.contenedor-botones-navbar{
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 1rem;
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+  flex-wrap: wrap;
+  
+}
+.contenedor-botones-navbar button{
+  width: 12vw;
+}
+
+.logo-navbar{
+  margin-top: 1rem;
+  width: 10vw;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 50%;
+
+}
+.logo-navbar img{
+  width: 10vw;
+  border-radius: 50%;
+
+}
+
+.contenedor-boton{
+  width: 12vw;
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+}
+
+.contenedor-boton button{
+  width: 12vw;
+
+}
+
+.contenedor-profesionales{
+  width: 80vw;
+  margin-top: 3rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contenedor-datos-profesional{
+  margin-top: 5rem;
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.contenedor-servicios{
+  width: 35vw;
+  height: 12rem;
+}
+
+.contenedor-horarios{
+  width: 35vw;
+  height: 12rem;
+}
+
+.contenedor-trabajos-realizados{
+  width: 80vw;
+  margin-top: 5rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contenedor-reseñas{
+  width: 80vw;
+  margin-top: 3rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.trabajos{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.contenedor-reseñas{
+  height: 30vh;
+  overflow-y: auto; 
+  margin-top: 5rem;
+}
+.contenedor-reseñas input{
+  width: 40vw;
+  border: 1px solid rgb(0, 0, 0);
+}
+
+.contenedor-reseñas button{
+  margin-top: 1rem;
+}
+
+.contenedor-profesional h3{
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.contenedor-footer {
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+  background-repeat: no-repeat;
+  height: 20rem;
+}
+
+.contenedor-footer {
+ background-color: #0d6dfc;
+ width: 90vw;
+ height: 10vh;
+ margin-left: auto;
+ margin-right: auto;
+ border-radius: 10px;
+}

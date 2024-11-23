@@ -23,7 +23,7 @@ export const Usuarios = () => {
     const[telefono_usuario,setTelefono] = useState("")
     const[username_usuario, setUsername] = useState("")
     const[fecha_registro_usuario,setFechaRegistro] = useState("")
-    const[rol_id, setRolID] = useState(2)
+    const[rol_id, setRolID] = useState()
     const[password_usuario,setPassword] = useState("")
     const[email_usuario, setEmail] = useState("")
 
@@ -130,7 +130,7 @@ const handleClickEliminar = async (usuario_id) => {
     }
 
     const handleClickActualizar = async () =>{
-        const response = axios.put("http://localhost:8000/usuarios/" + usuario_id,{
+        const response = await axios.put("http://localhost:8000/usuarios/" + usuario_id,{
             nombre_usuario,
             apellido_usuario,
             email_usuario,
@@ -142,7 +142,7 @@ const handleClickEliminar = async (usuario_id) => {
             fecha_registro_usuario
 
         })
-        if(response.status == 200){
+        if(response.status === 200){
             setEditar(false)
             obtenerUsuarios()
         }
@@ -198,7 +198,7 @@ const handleClickEliminar = async (usuario_id) => {
         <div className="contenedor-padre">
             <h2 style={{padding: '0.5rem', backgroundColor: '#343a40', color: 'white', border : '1px solid black', borderRadius : '10px'}}>Usuarios</h2>
           
-            <InputGroup className="mb-3">
+        <InputGroup className="mb-3">
         <InputGroup.Text id="inputGroup-sizing-default">
           Buscar usuario
         </InputGroup.Text>
@@ -220,7 +220,7 @@ const handleClickEliminar = async (usuario_id) => {
         <article className="contenedor-tabla">
 
            
-            <Table striped bordered hover variant="link">
+            <Table striped bordered hover variant="dark">
                 <thead>
                 <tr>
                     <td style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Nombre</td>
@@ -230,7 +230,6 @@ const handleClickEliminar = async (usuario_id) => {
                     <td style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Username</td>
                     <td style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Fecha de registro</td>
                     <td style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Rol</td>
-                    <td style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Trabajo</td>
                     <td style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Opciones</td>
                 </tr>
                 </thead>
@@ -246,7 +245,6 @@ const handleClickEliminar = async (usuario_id) => {
                             <td>{usuario.username_usuario}</td>
                             <td>{usuario.fecha_registro_usuario}</td>
                             <td>{usuario.rol}</td>
-                            <td><Button variant = 'info' style={{width : '80px'}}> <img src={iconoVer} width={'22px'} alt="" /></Button></td>
                             <td>
                                 <div className='div-botones-editar'>
                                 <Button variant = 'warning' style={{width : '80px'}} onClick={()=> handleClickEditar(usuario.usuario_id,usuario.nombre_usuario,
@@ -277,17 +275,17 @@ const handleClickEliminar = async (usuario_id) => {
             <Form>
                 <Form.Group>
                     <Form.Label>Nombre</Form.Label>
-                    <Form.Control value={nombre_usuario} onChange={(e) => setNombre(e.target.value)}/>
+                    <Form.Control required value={nombre_usuario} onChange={(e) => setNombre(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Apellido</Form.Label>
-                    <Form.Control value={apellido_usuario} onChange = {(e) => setApellido(e.target.value)}/>
+                    <Form.Control required value={apellido_usuario} onChange = {(e) => setApellido(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Email</Form.Label>
-                    <Form.Control value={email_usuario} onChange = {(e) => setEmail(e.target.value)}/>
+                    <Form.Control required value={email_usuario} onChange = {(e) => setEmail(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
@@ -302,12 +300,12 @@ const handleClickEliminar = async (usuario_id) => {
 
                 <Form.Group>
                     <Form.Label>Username</Form.Label>
-                    <Form.Control value = {username_usuario} onChange = {(e) => setUsername(e.target.value)}/>
+                    <Form.Control required value = {username_usuario} onChange = {(e) => setUsername(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
                     <Form.Label>Password</Form.Label>
-                    <Form.Control value = {password_usuario} onChange = {(e)=> setPassword(e.target.value)}/>
+                    <Form.Control required value = {password_usuario} onChange = {(e)=> setPassword(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
@@ -320,7 +318,7 @@ const handleClickEliminar = async (usuario_id) => {
 
                 <Form.Group>
                     <Form.Label>Rol</Form.Label>
-                    <Form.Select onChange = {(e) => setRolID(e.target.value)} value={rol_id}>
+                    <Form.Select required onChange = {(e) => setRolID(e.target.value)} value={rol_id}>
                         {
                             roles.map((rol, index) => 
                                 <option key={index} value={rol.rol_id}>{rol.nombre}</option>
