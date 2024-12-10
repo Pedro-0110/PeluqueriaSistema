@@ -4,7 +4,6 @@ const obtenerReseñas = (req, res) => {
     const query = `SELECT * FROM Reseñas AS r
                    INNER JOIN Usuarios AS u ON r.usuario_id = u.usuario_id
                    INNER JOIN Profesionales AS p ON r.profesional_id = p.profesional_id
-                   INNER JOIN Citas AS c ON r.cita_id = c.cita_id
                    order by r.fecha_reseña desc;`;
 
     pool.query(query, (error, result) => {
@@ -22,7 +21,6 @@ const obtenerReseña = (req, res) => {
     const query = `SELECT * FROM Reseñas AS r
                    INNER JOIN Usuarios AS u ON r.usuario_id = u.usuario_id
                    INNER JOIN Profesionales AS p ON r.profesional_id = p.profesional_id
-                   INNER JOIN Citas AS c ON r.cita_id = c.cita_id
                    WHERE r.resñna_id = ?;`;
 
     pool.query(query, [id], (error, result) => {
@@ -36,10 +34,10 @@ const obtenerReseña = (req, res) => {
 
 
 const crearReseña = (req, res) => {
-    const { usuario_id, profesional_id, cita_id, comentario, puntuacion, fecha_resena } = req.body;
-    const query = `INSERT INTO Reseñas (usuario_id, profesional_id, cita_id, comentario, puntuacion, fecha_resena) VALUES (?, ?, ?, ?, ?, ?);`;
+    const { usuario_id, profesional_id, comentario, puntuacion} = req.body;
+    const query = `INSERT INTO Reseñas (usuario_id, profesional_id, comentario, puntuacion) VALUES (?, ?, ?, ?);`;
     
-    pool.query(query, [usuario_id, profesional_id, cita_id, comentario, puntuacion, fecha_resena], (error, result) => {
+    pool.query(query, [usuario_id, profesional_id, comentario, puntuacion], (error, result) => {
         if (error) {
             console.error(error);
             return res.status(500).send("Error al crear la reseña");
@@ -51,10 +49,10 @@ const crearReseña = (req, res) => {
 
 const editarReseña = (req, res) => {
     const { id } = req.params;
-    const { usuario_id, profesional_id, cita_id, comentario, puntuacion, fecha_resena } = req.body;
-    const query = `UPDATE Reseñas SET usuario_id = ?, profesional_id = ?, cita_id = ?, comentario = ?, puntuacion = ?, fecha_resena = ? WHERE reseña_id = ?;`;
+    const { usuario_id, profesional_id, comentario, puntuacion, fecha_resena } = req.body;
+    const query = `UPDATE Reseñas SET usuario_id = ?, profesional_id = ?, comentario = ?, puntuacion = ?, fecha_resena = ? WHERE reseña_id = ?;`;
     
-    pool.query(query, [usuario_id, profesional_id, cita_id, comentario, puntuacion, fecha_resena, id], (error, result) => {
+    pool.query(query, [usuario_id, profesional_id, comentario, puntuacion, fecha_resena, id], (error, result) => {
         if (error) {
             console.error(error);
             return res.status(500).send("Error al editar la reseña");
@@ -95,6 +93,20 @@ const obtenerReseñasRealizadasAlProfesional = (req,res) =>{
     })
 }
 
+const verificarCantidadDeComentariosDelUsuario = (req, res) =>{
+    const {profesional_id, usuario_id} = req.params
+    const query = `
+    select count(usuario_id) as cantidadReseñas from Reseñas
+    where profesional_id = ? and usuario_id = ?;`
+    pool.query(query,[profesional_id, usuario_id],(error, result)=>{
+        if(error){
+            return res.status(500).send("Error al obtner cantidad de reseñas")
+        }
+    res.status(200).json(result)
+    })
+
+}
+
 
 module.exports = {
     obtenerReseñas,
@@ -102,5 +114,6 @@ module.exports = {
     crearReseña,
     editarReseña,
     eliminarReseña,
-    obtenerReseñasRealizadasAlProfesional
+    obtenerReseñasRealizadasAlProfesional,
+    verificarCantidadDeComentariosDelUsuario
 };

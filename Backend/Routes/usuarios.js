@@ -3,8 +3,8 @@ const {obtenerUsuarios, obtenerUsuario, crearUsuario, editarUsuario, eliminarUsu
 
 const router = express.Router()
 
-router.get('/usuarios',obtenerUsuarios)
-router.get('/usuarios/:id',obtenerUsuarios)
+router.get('/usuarios/',obtenerUsuarios)
+router.get('/usuarios/:id',obtenerUsuario)
 router.get('/usuarios/administradores',obtenerAdministradores)
 router.get('/usuarios/administradores/:id',obtenerAdministrador)
 router.get('/usuarios/busqueda/:nombre/:apellido',buscarUsuarioPorPatrones)

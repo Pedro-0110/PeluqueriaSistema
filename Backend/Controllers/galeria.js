@@ -90,6 +90,34 @@ const obtenerGaleriaDelProfesional = (req,res) => {
     })
 }
 
+const obtenerTinturasDelProfesional = (req,res) =>{
+    const {id} = req.params
+    const query = `select * from Galeria as g
+                   inner join Profesionales as p
+                   on g.profesional_id = p.profesional_id
+                   where p.profesional_id = ? and (g.descripcion_imagen like '%tintura%' or g.descripcion_imagen like '%Tintura%');`
+    pool.query(query,[id],(error,result)=>{
+        if(error){
+            return res.status(500).send("Error al obtener las tinturas del profesional")
+        }
+        res.status(200).json(result)
+    })
+}
+
+const obtenerCortesDelProfesional = (req,res) =>{
+    const {id} = req.params
+    const query = `select * from Galeria as g
+                   inner join Profesionales as p
+                   on g.profesional_id = p.profesional_id
+                   where p.profesional_id = ? and (g.descripcion_imagen like '%corte%' or g.descripcion_imagen like '%Corte%');`
+    pool.query(query,[id],(error,result)=>{
+        if(error){
+            return res.status(500).send("Error al obtener las tinturas del profesional")
+        }
+        res.status(200).json(result)
+    })
+}
+
 
 module.exports = {
     obtenerGalerias,
@@ -97,5 +125,7 @@ module.exports = {
     crearGaleria,
     editarGaleria,
     eliminarGaleria,
-    obtenerGaleriaDelProfesional
+    obtenerGaleriaDelProfesional,
+    obtenerCortesDelProfesional,
+    obtenerTinturasDelProfesional
 };

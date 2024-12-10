@@ -18,8 +18,6 @@ import iconoPendiente from '../Icons/icono-pendiente.png'
 import iconoVer from '../Icons/icono-ver.png'
 
 
-
-
 export const Citas = () => {
     const [citas,setCitas] = useState([])
     const [valorBusqueda, setValorBusqueda] = useState("")
@@ -71,15 +69,16 @@ export const Citas = () => {
             console.error(error);
             Swal.fire({
               title: "Error!",
-              text: "An error occurred while trying to delete the file.",
+              text: "",
               icon: "error",
             });
           }
         }
       };
 
-    const handleClickConfirmar = async (cita_id) =>{
-       const response = await axios.put(`http://localhost:8000/citas/confirmar/${cita_id}`,{nota})
+
+    const handleClickConfirmarCita = async (cita_id, profesional_id) =>{
+       const response = await axios.put(`http://localhost:8000/citas/confirmar/${cita_id}/profesional/${profesional_id}`,{nota})
 
        if(response.status == 200){
         Swal.fire({
@@ -93,7 +92,8 @@ export const Citas = () => {
           }
           }
 
-    const obtenerBusqueda = async () =>{
+
+    const buscarCitaDeUsuario = async () =>{
         if(valorBusqueda === ""){
             obtenerCitas()
         }
@@ -101,20 +101,21 @@ export const Citas = () => {
         setCitas(response.data)
         }
 
-    const handleClickVerHistorialCitas = async (usuario_id) =>{
+
+    const handleClickVerNotasDeCitasAnteriores = async (usuario_id, profesional_id) =>{
         setShowHistorial(true)
-        const response = await axios.get(`http://localhost:8000/citas/historial/${usuario_id}`)
+        const response = await axios.get(`http://localhost:8000/citas/historial/${usuario_id}/profesional/${profesional_id}`)
         setHistorialCliente(response.data)   
       }
+      
 
     useEffect(()=> {obtenerCitas()},[])
-    useEffect(()=> {obtenerBusqueda()},[valorBusqueda])
+    useEffect(()=> {buscarCitaDeUsuario()},[valorBusqueda])
 
   return (
     <>
         <article className="contenedor-padre">
-            <h2 style={{padding: '1rem', backgroundColor: '#343a40', color: 'white', border : '1px solid black', borderRadius : '10px'}}>Citas</h2>
-
+            <h2>Citas</h2>
             <InputGroup className="mb-3">
               <InputGroup.Text id="inputGroup-sizing-default">Busqueda de cliente o profesional</InputGroup.Text>
 
@@ -136,17 +137,18 @@ export const Citas = () => {
         :
           <div className='contenedor-tabla'>
             <Table striped bordered hover variant="dark">
-                <thead>
+                <thead className="cabeza-tabla">
                     <tr>
-                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Cita</td>
-                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Usuario</td>
-                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Profesional</td>
-                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Servicio</td>
-                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Fecha</td>
-                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Estado</td>
-                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Opciones</td>
-                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Nota</td>
-                        <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Historial</td>
+                        <td>Cita</td>
+                        <td>Usuario</td>
+                        <td>Profesional</td>
+                        <td>Servicio</td>
+                        <td>Fecha</td>
+                        <td>Horario</td>
+                        <td>Estado</td>
+                        <td>Opciones</td>
+                        <td>Nota</td>
+                        <td>Historial</td>
                     </tr>
                 </thead>
                 <tbody>
@@ -156,7 +158,8 @@ export const Citas = () => {
                             <td>{cita.nombre_usuario} {cita.apellido_usuario}</td>
                             <td>{cita.nombre_profesional} {cita.apellido_profesional}</td>
                             <td>{cita.nombre_servicio}</td>
-                            <td>{cita.fecha_cita}</td>
+                            <td>{new Date(cita.fecha_cita).getDay()}/{new Date(cita.fecha_cita).getMonth()}/{new Date(cita.fecha_cita).getFullYear()}</td>
+                            <td>{new Date(cita.fecha_cita).getHours()}:{new Date(cita.fecha_cita).getMinutes()}{new Date(cita.fecha_cita).getMinutes()}</td>
                             <td>{cita.estado_cita == 'Confirmada' 
                                 ?                               
                                   <><img src={iconoConfirmarColor} alt="" width={'22px'}/></>
@@ -177,16 +180,16 @@ export const Citas = () => {
                                 <div className='div-botones-editar'>
                                   {cita.estado_cita == 'Confirmada' 
                                     ? 
-                                      <> <img src={iconoNada} alt="" width={'22px'} /></> 
+                                      <> <img src={iconoNada} alt="" /></> 
                                     :
                                       cita.estado_cita == 'Cancelada'  
                                     ? 
-                                      <> <img src={iconoNada} alt="" width={'22px'} /> </>
+                                      <> <img src={iconoNada} alt="" /> </>
                                     : 
                                       <>
-                                        <Button variant = 'success' style={{width : '80px'}} onClick={()=> handleClickConfirmar(cita.cita_id)}><img src= {iconoConfirmar} width={'24px'}/></Button>
-                                        <Button variant='warning' style={{width : '80px'}}><img src= {iconoLapiz} width={'24px'}/></Button>
-                                        <Button variant = 'danger' style={{width : '80px'}} onClick={()=> handleClickCancelar(cita.cita_id)}><img src={iconoCancelar} width={'24px'}/></Button>
+                                        <Button variant = 'success'  onClick={()=> handleClickConfirmarCita(cita.cita_id, cita.profesional_id)}><img src= {iconoConfirmar} /></Button>
+                                        <Button variant='warning' ><img src= {iconoLapiz} /></Button>
+                                        <Button variant = 'danger' onClick={()=> handleClickCancelar(cita.cita_id)}><img src={iconoCancelar}/></Button>
                                       </>}
                                 </div>
                             </td>
@@ -199,44 +202,42 @@ export const Citas = () => {
                                   <></> }
                             </td>
 
-                            <td><Button variant = 'info' style={{width : '80px'}} onClick = {()=> handleClickVerHistorialCitas(cita.usuario_id)}><img src={iconoVer} alt="" width={'24px'}/></Button></td>
+                            <td><Button variant = 'info'  onClick = {()=> handleClickVerNotasDeCitasAnteriores(cita.usuario_id, cita.profesional_id)}><img src={iconoVer} alt=""/></Button></td>
                         </tr>
                     )}
                 </tbody>
             </Table>
-          </div>}
-          
+          </div>}          
         </article>
 
-
-        <Modal show={showHistorial} onHide={handleClose} >
-        <Modal.Header closeButton>
-          <Modal.Title>Historial</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+        <Modal show={showHistorial} onHide={handleClose}size='lg' >
+          <Modal.Header closeButton>
+            <Modal.Title>Historial</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
             <label htmlFor=""> </label>
             <Table striped bordered hover variant = 'dark' >
-      <thead>
-        <tr>
-          <th>Fecha</th>
-          <th>Trabajo</th>
-          <th>Profesional</th>
-          <th>Descripcion</th>
-        </tr>
-      </thead>
-      <tbody>
-        {historialCliente.map((historia ,index)=>
-            <tr key={index}>
-                <td>{historia.fecha_cita}</td>
-                <td>{historia.nombre_servicio}</td>
-                <td>{historia.nombre_profesional} {historia.apellido_profesional}</td>
-                <td>{historia.nota}</td>
-            </tr>
-)}
-      </tbody>
-    </Table>
-        </Modal.Body>
-      </Modal>
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Trabajo</th>
+                  <th>Profesional</th>
+                  <th>Descripcion</th>
+                </tr>
+              </thead>
+              <tbody>
+                {historialCliente.map((historia ,index)=>
+                <tr key={index}>
+                  <td>{historia.fecha_cita}</td>
+                  <td>{historia.nombre_servicio}</td>
+                  <td>{historia.nombre_profesional} {historia.apellido_profesional}</td>
+                  <td>{historia.nota}</td>
+                </tr>
+                  )}
+              </tbody>
+            </Table>
+          </Modal.Body>
+        </Modal>
     
     </>
   )

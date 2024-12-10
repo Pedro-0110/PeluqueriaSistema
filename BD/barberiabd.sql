@@ -1,16 +1,13 @@
 create database BarberiaBD;
 use BarberiaBD;
-
+drop database BarberiaBD;
 
 CREATE TABLE Roles (
     rol_id INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(50) NOT NULL UNIQUE
 );
-
 insert into Roles (nombre) values ('Administrador');
 insert into Roles (nombre) values ('Cliente');
-
-select * from Roles;
 
 CREATE TABLE Profesionales (
     profesional_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -19,21 +16,12 @@ CREATE TABLE Profesionales (
     especialidad_profesional VARCHAR(100),
     descripcion_profesional TEXT,
     fecha_ingreso_profesional DATE,
-    activo_profesional BOOLEAN DEFAULT TRUE
+    activo_profesional BOOLEAN DEFAULT TRUE,
+    imagen_profesional varchar(500) default 'sin agregar'
 );
 
-INSERT INTO Profesionales (nombre_profesional, apellido_profesional, especialidad_profesional, descripcion_profesional, fecha_ingreso_profesional)
-VALUES
-('Juan', 'Pérez', 'Barbero', 'Especialista en cortes clásicos y modernos', '2023-01-15'),
-('Lucía', 'Martínez', 'Colorista', 'Experta en técnicas de coloración avanzadas', '2022-03-22'),
-('Carlos', 'Gómez', 'Estilista', 'Estilista con enfoque en moda actual', '2021-07-30'),
-('Ana', 'López', 'Barbera', 'Barbera con experiencia en afeitados y cortes a navaja', '2020-11-05'),
-('Pedro', 'Hernández', 'Masajista', 'Masajista terapéutico especializado en técnicas de relajación', '2021-09-17'),
-('Sofía', 'Ramírez', 'Manicurista', 'Especialista en cuidado y diseño de uñas', '2023-05-08'),
-('Diego', 'Fernández', 'Estilista', 'Estilista con enfoque en cortes y peinados personalizados', '2022-06-12'),
-('María', 'García', 'Colorista', 'Colorista especializada en balayage y mechas', '2021-04-19'),
-('Javier', 'Sánchez', 'Barbero', 'Experto en cortes y afeitados con navaja', '2023-02-25'),
-('Carmen', 'Morales', 'Estilista', 'Estilista creativa con técnicas innovadoras', '2022-12-10');
+insert into Profesionales (nombre_profesional, apellido_profesional, especialidad_profesional, descripcion_profesional, fecha_ingreso_profesional, activo_profesional) values('Nicolas', 'Navarro', 'Barbero', 'Detalles', '24-12-9', 1);
+insert into Profesionales (nombre_profesional, apellido_profesional, especialidad_profesional, descripcion_profesional, fecha_ingreso_profesional, activo_profesional) values('Nahuel', 'Navarro', 'Barbero', 'Detalles', '24-12-9', 1);
 
 CREATE TABLE Usuarios (
     usuario_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -48,21 +36,19 @@ CREATE TABLE Usuarios (
     fecha_registro_usuario TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (rol_id) REFERENCES Roles(rol_id)
     on delete restrict
-    on update cascade
-);
-
+    on update cascade);
+    
+    -- Insertar usuario administrador (rol_id = 1)
 INSERT INTO Usuarios (nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, direccion_usuario, username_usuario, password_usuario, rol_id)
-VALUES
-('Carlos', 'Pérez', 'carlos.perez@example.com', '1234567890', 'Calle Falsa 123', 'carlos_p', 'hashed_password_1', 1),
-('Lucía', 'Martínez', 'lucia.martinez@example.com', '0987654321', 'Avenida Siempre Viva 456', 'lucia_m', 'hashed_password_2', 2),
-('Juan', 'Gómez', 'juan.gomez@example.com', '1122334455', 'Boulevard Central 789', 'juan_g', 'hashed_password_3', 2),
-('Ana', 'López', 'ana.lopez@example.com', '6677889900', 'Plaza Mayor 101', 'ana_l', 'hashed_password_4', 1),
-('Pedro', 'Hernández', 'pedro.hernandez@example.com', '5566778899', 'Callejón Sin Salida 202', 'pedro_h', 'hashed_password_5', 2),
-('Sofía', 'Ramírez', 'sofia.ramirez@example.com', '4433221100', 'Paseo de la Reforma 303', 'sofia_r', 'hashed_password_6', 2),
-('Diego', 'Fernández', 'diego.fernandez@example.com', '1234432109', 'Avenida Las Palmas 404', 'diego_f', 'hashed_password_7', 2),
-('María', 'García', 'maria.garcia@example.com', '9988776655', 'Paseo del Bosque 505', 'maria_g', 'hashed_password_8', 1),
-('Javier', 'Sánchez', 'javier.sanchez@example.com', '5544332211', 'Colina Azul 606', 'javier_s', 'hashed_password_9', 2),
-('Carmen', 'Morales', 'carmen.morales@example.com', '7766554433', 'Calle Principal 707', 'carmen_m', 'hashed_password_10', 2);
+VALUES('Admin', 'Principal', 'admin@example.com', '123456789', 'Calle Ficticia 123', 'admin', 'hashed_password_admin', 1);
+INSERT INTO Usuarios (nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, direccion_usuario, username_usuario, password_usuario, rol_id)
+VALUES('Nicolas', 'Pomares', 'nico@example.com', '123456789', 'Calle Ficticia 123', 'client1e', 'hashed_password_admin', 2),
+('Rodrigo', 'Sandrus', 'rodrigo@example.com', '123456789', 'Calle Ficticia 123', 'cliente2', 'hashed_password_admin', 2),
+('Pedro', 'Cordoba', 'pedro@example.com', '123456789', 'Calle Ficticia 123', 'cliente3', 'hashed_password_admin', 2),
+('Nahuel', 'Rodriguez', 'nahuel@example.com', '123456789', 'Calle Ficticia 123', 'cliente4', 'hashed_password_admin', 2),
+('Jonathan', 'Cordoba', 'jonathan@example.com', '123456789', 'Calle Ficticia 123', 'cliente5', 'hashed_password_admin', 2),
+('Gonzalo', 'Manzone', 'gonzalo@example.com', '123456789', 'Calle Ficticia 123', 'cliente6', 'hashed_password_admin', 2),
+('Henry', 'Chinaski', 'henry@example.com', '123456789', 'Calle Ficticia 123', 'cliente7', 'hashed_password_admin', 2);
 
 
 CREATE TABLE Servicios (
@@ -73,19 +59,7 @@ CREATE TABLE Servicios (
     precio_servicio DECIMAL(10, 2) NOT NULL
 );
 
-INSERT INTO Servicios (nombre_servicio, descripcion_servicio, duracion_servicio, precio_servicio)
-VALUES
-('Corte de Cabello', 'Corte de cabello personalizado según el estilo deseado.', 30, 15.00),
-('Afeitado Clásico', 'Afeitado completo con navaja y productos de alta calidad.', 20, 10.00),
-('Coloración de Cabello', 'Aplicación de color en el cabello, incluye productos de cuidado.', 90, 50.00),
-('Tratamiento Capilar', 'Tratamiento intensivo para fortalecer y nutrir el cabello.', 45, 25.00),
-('Manicura', 'Cuidado de uñas con limpieza, corte y esmaltado.', 30, 20.00),
-('Pedicura', 'Tratamiento de cuidado para los pies, incluye exfoliación y esmaltado.', 45, 30.00),
-('Depilación Facial', 'Depilación de cejas, bozo o zona facial deseada.', 15, 12.00),
-('Masaje Relajante', 'Masaje completo para aliviar tensiones y reducir el estrés.', 60, 40.00),
-('Peinado', 'Peinado para eventos especiales, incluye productos de fijación.', 45, 35.00),
-('Maquillaje', 'Maquillaje completo para eventos, incluye asesoría de estilo.', 60, 50.00);
-
+insert into Servicios (nombre_servicio, descripcion_servicio, duracion_servicio, precio_servicio) values ('Tintura', 'Coloracion', 120, 10000),('Corte de cabello', '', 120, 10000);
 
 CREATE TABLE Profesionales_Servicios (
     profesional_id INT NOT NULL,
@@ -93,26 +67,10 @@ CREATE TABLE Profesionales_Servicios (
     PRIMARY KEY (profesional_id, servicio_id),
     FOREIGN KEY (profesional_id) REFERENCES Profesionales(profesional_id),
     FOREIGN KEY (servicio_id) REFERENCES Servicios(servicio_id)
-    on delete cascade
-);
-
-INSERT INTO Profesionales_Servicios (profesional_id, servicio_id)
-VALUES
-(1, 1),  -- Juan Pérez realiza Corte de Cabello
-(1, 2),  -- Juan Pérez realiza Afeitado Clásico
-(2, 3),  -- Lucía Martínez realiza Coloración de Cabello
-(3, 1),  -- Carlos Gómez realiza Corte de Cabello
-(3, 4),  -- Carlos Gómez realiza Tratamiento Capilar
-(4, 2),  -- Ana López realiza Afeitado Clásico
-(4, 7),  -- Ana López realiza Depilación Facial
-(5, 8),  -- Pedro Hernández realiza Masaje Relajante
-(6, 5),  -- Sofía Ramírez realiza Manicura
-(6, 6),  -- Sofía Ramírez realiza Pedicura
-(7, 9),  -- Diego Fernández realiza Peinado
-(8, 3),  -- María García realiza Coloración de Cabello
-(8, 4),  -- María García realiza Tratamiento Capilar
-(9, 1),  -- Javier Sánchez realiza Corte de Cabello
-(10, 10); -- Carmen Morales realiza Maquillaje
+    on delete cascade);
+    
+    insert into Profesionales_Servicios (profesional_id,servicio_id) values (1,1);
+    insert into Profesionales_Servicios (profesional_id,servicio_id) values (1,2);
 
 CREATE TABLE Citas (
     cita_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -121,6 +79,7 @@ CREATE TABLE Citas (
     servicio_id INT NOT NULL,
     fecha_cita DATETIME NOT NULL,
     estado_cita ENUM('Pendiente', 'Confirmada', 'Cancelada', 'Completada') DEFAULT 'Pendiente',
+    nota varchar(150) default 'sin agregar',
     FOREIGN KEY (usuario_id) REFERENCES Usuarios(usuario_id),
     FOREIGN KEY (profesional_id) REFERENCES Profesionales(profesional_id),
     FOREIGN KEY (servicio_id) REFERENCES Servicios(servicio_id)
@@ -128,65 +87,34 @@ CREATE TABLE Citas (
     on update cascade
 );
 
-ALTER TABLE Citas
-ADD COLUMN nota varchar(150) default 'sin agregar';
-
-
-update Citas as c set estado_cita = 'Confirmada', nota = 'crack' where cita_id = 10;
-
-select * from Citas as c 
-inner join Usuarios as u
-on c.usuario_id = u.usuario_id
-inner join Servicios as s
-on c.servicio_id = s.servicio_id
-where c.estado_cita = 'Confirmada';
-
-INSERT INTO Citas (usuario_id, profesional_id, servicio_id, fecha_cita, estado_cita)
-VALUES
-(1, 1, 1, '2024-11-15 10:00:00', 'Pendiente'), -- Carlos Pérez reserva con Juan Pérez para Corte de Cabello
-(2, 2, 3, '2024-11-16 14:00:00', 'Pendiente'),  -- Lucía Martínez reserva con Lucía Martínez para Coloración de Cabello
-(3, 3, 1, '2024-11-17 09:30:00', 'Pendiente'), -- Juan Gómez reserva con Carlos Gómez para Corte de Cabello
-(4, 4, 2, '2024-11-18 11:00:00', 'Pendiente'),  -- Ana López reserva con Ana López para Afeitado Clásico
-(5, 5, 8, '2024-11-19 15:00:00', 'Pendiente'), -- Pedro Hernández reserva con Pedro Hernández para Masaje Relajante
-(6, 6, 5, '2024-11-20 13:00:00', 'Pendiente'),  -- Sofía Ramírez reserva con Sofía Ramírez para Manicura
-(7, 7, 9, '2024-11-21 16:30:00', 'Pendiente'), -- Diego Fernández reserva con Diego Fernández para Peinado
-(8, 8, 4, '2024-11-22 12:00:00', 'Pendiente'),  -- María García reserva con María García para Tratamiento Capilar
-(9, 9, 1, '2024-11-23 17:00:00', 'Pendiente'), -- Javier Sánchez reserva con Javier Sánchez para Corte de Cabello
-(10, 10, 10, '2024-11-24 18:00:00', 'Pendiente'); -- Carmen Morales reserva con Carmen Morales para Maquillaje
-
-insert into Citas (usuario_id,profesional_id,servicio_id,fecha_cita,estado_cita) values (1,3,3,'2024-11-19-','Pendiente');
-
-
-update Citas as c set estado_cita = 'Confirmada', nota = '50% rubio' where cita_id = 4;
-
-
-select u.nombre_usuario, u.apellido_usuario, c.fecha_cita, c.nota from Citas as c
-inner join Usuarios as u
-on c.usuario_id = u.usuario_id
-where c.usuario_id = 10;
-
-select u.nombre_usuario, u.apellido_usuario, c.fecha_cita, c.nota, s.nombre_servicio
-from Citas as c
-inner join Usuarios as u
-on c.usuario_id = u.usuario_id
-inner join Servicios as s
-on c.servicio_id = s.servicio_id
-where c.usuario_id = 10 and c.estado_cita = 'Confirmada';
-
-
-select * from Citas as c
-inner join Usuarios as u
-on c.usuario_id = u.usuario_id
+-- En caso de consultar una fecha en un tipo de dato datetime debo ser explicito que estoy buscando un date ya que sino tomara el time como 00:00
+select dayname(fecha_cita), time(fecha_cita) 
+from Citas as c 
 inner join Profesionales as p
-on c.profesional_id = p.profesional_id
-inner join Servicios as s
+on c.profesional_id = p.profesional_id 
+inner join Servicios as s 
 on c.servicio_id = s.servicio_id
-where upper(nombre_profesional) like upper('%a%')
-or upper(apellido_profesional) like upper('%a%')
-or upper(nombre_usuario) like upper('%a%')
-or u.apellido_usuario like upper('%a%');
+ where estado_cita = 'Pendiente' and date(fecha_cita) = '25-11-24' and p.profesional_id = 1;
+ 
+ select dayname(fecha_cita) as dia, time(fecha_cita) as hora 
+                        from Citas as c 
+                        inner join Profesionales as p
+                        on c.profesional_id = p.profesional_id 
+                        inner join Servicios as s 
+                        on c.servicio_id = s.servicio_id
+                        where estado_cita = 'Pendiente' and date(fecha_cita) = '17-11-24' and p.profesional_id = 1;
+ 
+ select h.hora_inicio, h.hora_fin from HorariosDisponibles as h
+                   inner join Profesionales as p
+                   on h.profesional_id = p.profesional_id
+                   where h.profesional_id = 1 and h.dia_semana = 'Lunes';
 
-select * from Reseñas;
+select dia_semana, hora_inicio, hora_fin from HorariosDisponibles as h
+inner join Profesionales as p
+on h.profesional_id = p.profesional_id
+where p.profesional_id = 1;
+
+SET lc_time_names = 'es_ES';
 
 CREATE TABLE HorariosDisponibles (
     horario_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -197,18 +125,37 @@ CREATE TABLE HorariosDisponibles (
     FOREIGN KEY (profesional_id) REFERENCES Profesionales(profesional_id)
 );
 
+-- Inserción de horarios para el profesional con ID 1
 INSERT INTO HorariosDisponibles (profesional_id, dia_semana, hora_inicio, hora_fin)
 VALUES
-(1, 'Lunes', '09:00:00', '13:00:00'),       -- Juan Pérez disponible el lunes por la mañana
-(1, 'Martes', '14:00:00', '18:00:00'),      -- Juan Pérez disponible el martes por la tarde
-(2, 'Miércoles', '10:00:00', '14:00:00'),   -- Lucía Martínez disponible el miércoles por la mañana
-(2, 'Viernes', '09:00:00', '12:00:00'),     -- Lucía Martínez disponible el viernes por la mañana
-(3, 'Jueves', '15:00:00', '19:00:00'),      -- Carlos Gómez disponible el jueves por la tarde
-(3, 'Sábado', '10:00:00', '14:00:00'),      -- Carlos Gómez disponible el sábado por la mañana
-(4, 'Lunes', '08:00:00', '12:00:00'),       -- Ana López disponible el lunes por la mañana
-(4, 'Martes', '15:00:00', '19:00:00'),      -- Ana López disponible el martes por la tarde
-(5, 'Viernes', '14:00:00', '18:00:00'),     -- Pedro Hernández disponible el viernes por la tarde
-(6, 'Sábado', '09:00:00', '13:00:00');      -- Sofía Ramírez disponible el sábado por la mañana
+    (1, 'Lunes', '09:00:00', '13:00:00'),
+    (1, 'Lunes', '17:00:00', '22:00:00'),
+    (1, 'Martes', '09:00:00', '13:00:00'),
+    (1, 'Martes', '17:00:00', '22:00:00'),
+    (1, 'Miércoles', '09:00:00', '13:00:00'),
+    (1, 'Miércoles', '17:00:00', '22:00:00'),
+    (1, 'Jueves', '09:00:00', '13:00:00'),
+    (1, 'Jueves', '17:00:00', '22:00:00'),
+    (1, 'Viernes', '09:00:00', '13:00:00'),
+    (1, 'Viernes', '17:00:00', '22:00:00'),
+    (1, 'Sábado', '09:00:00', '13:00:00'),
+    (1, 'Sábado', '17:00:00', '22:00:00');
+
+-- Inserción de horarios para el profesional con ID 2
+INSERT INTO HorariosDisponibles (profesional_id, dia_semana, hora_inicio, hora_fin)
+VALUES
+    (2, 'Lunes', '09:00:00', '13:00:00'),
+    (2, 'Lunes', '17:00:00', '22:00:00'),
+    (2, 'Martes', '09:00:00', '13:00:00'),
+    (2, 'Martes', '17:00:00', '22:00:00'),
+    (2, 'Miércoles', '09:00:00', '13:00:00'),
+    (2, 'Miércoles', '17:00:00', '22:00:00'),
+    (2, 'Jueves', '09:00:00', '13:00:00'),
+    (2, 'Jueves', '17:00:00', '22:00:00'),
+    (2, 'Viernes', '09:00:00', '13:00:00'),
+    (2, 'Viernes', '17:00:00', '22:00:00'),
+    (2, 'Sábado', '09:00:00', '13:00:00'),
+    (2, 'Sábado', '17:00:00', '22:00:00');
 
 
 CREATE TABLE Galeria (
@@ -222,31 +169,56 @@ CREATE TABLE Galeria (
     on update cascade
 );
 
+insert into Galeria (profesional_id, url_imagen, descripcion_imagen) values 
+(1, 'https://i.imgur.com/e79xA9m.jpeg', 'Tintura'),
+(1, 'https://i.imgur.com/krBNfaJ.jpeg', 'Tintura'),
+(1, 'https://i.imgur.com/ZS3Alyr.jpeg', 'Tintura'),
+(1, 'https://i.imgur.com/dzIwruK.jpeg', 'Tintura'),
+(1, 'https://i.imgur.com/tVrCVud.jpeg', 'Tintura'),
+(1, 'https://i.imgur.com/gRrb5Er.jpeg', 'Tintura'),
+(1, 'https://i.imgur.com/13nptTS.jpeg', 'Corte'),
+(1, 'https://i.imgur.com/RvLXzg4.jpeg', 'Corte'),
+(1, 'https://i.imgur.com/wM7tS41.jpeg', 'Corte'),
+(1, 'https://i.imgur.com/U3Gn5MF.jpeg', 'Corte'),
+(1, 'https://i.imgur.com/0egwas3.jpeg', 'Corte'),
+( 1, 'https://i.imgur.com/8jDAwHH.jpeg', 'Corte'),
+(1, 'https://i.imgur.com/B6qUVbS.jpeg', 'Corte'),
+(1, 'https://i.imgur.com/8j7hMoO.jpeg', 'Corte');
+
+
 CREATE TABLE Reseñas (
     reseña_id INT PRIMARY KEY AUTO_INCREMENT,
     usuario_id INT NOT NULL,
     profesional_id INT NOT NULL,
-    cita_id INT NOT NULL,
     comentario TEXT,
     puntuacion INT CHECK(puntuacion BETWEEN 1 AND 5),
     fecha_reseña TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES Usuarios(usuario_id),
-    FOREIGN KEY (profesional_id) REFERENCES Profesionales(profesional_id),
-    FOREIGN KEY (cita_id) REFERENCES Citas(cita_id)
+    FOREIGN KEY (profesional_id) REFERENCES Profesionales(profesional_id)
     on delete restrict
     on update cascade
 );
 
-INSERT INTO Reseñas (usuario_id, profesional_id, cita_id, comentario, puntuacion)
-VALUES
-(1, 1, 1, 'Excelente atención y profesionalismo. Quedé muy satisfecho con el servicio.', 5),
-(2, 2, 2, 'El color quedó muy bien, pero el tiempo de espera fue largo.', 4),
-(3, 3, 3, 'Muy contento con el corte. El profesional es muy detallista.', 5),
-(4, 4, 4, 'El afeitado fue rápido y eficiente, pero esperaba algo más.', 3),
-(5, 5, 5, 'Un masaje muy relajante, realmente lo recomiendo.', 5),
-(6, 6, 6, 'Buen trabajo, pero el esmalte no duró tanto como esperaba.', 3),
-(7, 7, 7, 'Peinado excelente, duró toda la noche del evento.', 5),
-(8, 8, 8, 'El tratamiento dejó mi cabello suave y brillante. Muy recomendable.', 5),
-(9, 9, 9, 'El corte fue decente, aunque no era exactamente lo que pedí.', 3),
-(10, 10, 10, 'El maquillaje fue espectacular, pero tardaron más de lo esperado.', 4);
+SELECT DISTINCT h.hora_inicio, h.hora_fin
+FROM HorariosDisponibles h
+LEFT JOIN Citas c
+  ON h.profesional_id = c.profesional_id
+  AND DATE(c.fecha_cita) = '2024-12-02' -- Cambia por la fecha deseada
+  AND TIME(c.fecha_cita) BETWEEN h.hora_inicio AND h.hora_fin
+  AND c.estado_cita = 'Pendiente' -- Solo consideramos las citas pendientes
+WHERE h.profesional_id = 1 -- ID del profesional
+  AND h.dia_semana = DAYNAME('2024-12-02') -- Obtiene el día en texto como 'Lunes', 'Martes', etc.
+  AND c.cita_id IS NULL; -- Excluye horarios ocupados por citas pendientes
+
+update Citas as c set estado_cita = 'Confirmada', nota = "" where cita_id = 2 and profesional_id = 1;
+
+select * from Reseñas;
+
+-- Consulta para verificar que el usuario solo haya dejado como maximo un comentario por profesional
+select count(usuario_id) from Reseñas
+where profesional_id = 1 and usuario_id = 12;
+
+select * from Usuarios;
+
+select count(estado_cita) as cantidadCitasPendientes from Citas where estado_cita = 'Pendiente' and usuario_id = 4;
 

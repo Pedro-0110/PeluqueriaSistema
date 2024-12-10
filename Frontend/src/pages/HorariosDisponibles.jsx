@@ -2,18 +2,19 @@ import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
+
 import axios from "axios";
+import Swal from 'sweetalert2';
+import { useEffect, useState } from "react";
+
 import iconoBasura from "../Icons/icono-basura.png";
 import iconoLapiz from "../Icons/icono-lapiz.png";
-import Swal from 'sweetalert2';
-
-import { useEffect, useState } from "react";
 
 export const HorariosDisponibles = () => {
   const diasSemana = [
     "Lunes",
     "Martes",
-    "Miercoles",
+    "Miércoles",
     "Jueves",
     "Viernes",
     "Sábado",
@@ -22,41 +23,31 @@ export const HorariosDisponibles = () => {
   const [editar, setEditar] = useState(false);
   const [horarios, setHorarios] = useState([]);
   const [profesionales, setProfesionales] = useState([]);
-
   const [horario_id, setHorarioID] = useState("");
   const [profesional_id, setProfesionalID] = useState("");
   const [dia_semana, setDiaSemana] = useState("");
   const [hora_inicio, setHoraInicio] = useState("");
   const [hora_fin, setHoraFin] = useState("");
-
-  const [show, setShow] = useState(false);
-
+  const [showModalAgregar, setShowModalAgregar] = useState(false);
   const [loading, setLoading] = useState(false);
-  const handleClose = () => setShow(false);
+
+  const handleClose = () => setShowModalAgregar(false);
 
   const obtenerHorarios = async () => {
     setLoading(true)
-    const response = await axios.get(
-      "http://localhost:8000/horariosDisponibles"
-    );
+    const response = await axios.get("http://localhost:8000/horariosDisponibles");
     setHorarios(response.data);
     setLoading(false)
   };
 
   const obtenerNombresIDsProfesionales = async () => {
-    const response = await axios.get(
-      "http://localhost:8000/profesionales/nombres"
-    );
+    setLoading(true)
+    const response = await axios.get("http://localhost:8000/profesionales/nombres");
     setProfesionales(response.data);
+    setLoading(false)
   };
 
-  const handleClickEditar = (
-    horario_id,
-    profesional_id,
-    dia_semana,
-    hora_inicio,
-    hora_fin
-  ) => {
+  const handleClickEditar = (horario_id,profesional_id,dia_semana,hora_inicio,hora_fin) => {
     setEditar(true);
     setHorarioID(horario_id);
     setProfesionalID(profesional_id);
@@ -67,13 +58,13 @@ export const HorariosDisponibles = () => {
 
   const handleClickEliminar = async (horario_id) => {
     const confirmacion = await Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: "Se eliminara el registro de forma permanente!",
+      text: "",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Sí, eliminar!",
     });
   
     if (confirmacion.isConfirmed) {
@@ -82,15 +73,15 @@ export const HorariosDisponibles = () => {
         
         if (response.status === 200) {
           Swal.fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
+            title: "Registro eliminado!",
+            text: "",
             icon: "success",
           });
           obtenerHorarios()
         } else {
           Swal.fire({
             title: "Error!",
-            text: "Could not delete the file. Please try again.",
+            text: "",
             icon: "error",
           });
         }
@@ -98,60 +89,64 @@ export const HorariosDisponibles = () => {
         console.error(error);
         Swal.fire({
           title: "Error!",
-          text: "An error occurred while trying to delete the file.",
+          text: "",
           icon: "error",
         });
       }
     }
   };
   
-
   const handleClickActualizar = async () => {
-    const response = await axios.put(
-      "http://localhost:8000/horariosDisponibles/" + horario_id,
-      {
-
-        profesional_id,
-        dia_semana,
-        hora_inicio,
-        hora_fin
+    if(verificarLlenadoDeCampos()){
+      const response = await axios.put("http://localhost:8000/horariosDisponibles/" + horario_id,{
+          profesional_id,
+          dia_semana,
+          hora_inicio,
+          hora_fin
+        }
+      );
+      if (response.status === 201) {
+        obtenerHorarios();
       }
-    );
-    if (response) {
-      obtenerHorarios();
+    }else{
+      Swal.fire("Llenar todos los campos!");
     }
   };
 
   const handleClickCancelar = () => {
     setEditar(false);
-    setShow(false);
+    setShowModalAgregar(false);
   };
 
   const handleClickCrear = () => {
-    setShow(true);
+    setShowModalAgregar(true);
   };
 
   const handleClickConfirmar = async () => {
-    const response = await axios.post(
-      "http://localhost:8000/horariosDisponibles/",
-      {
-        profesional_id,
-        dia_semana,
-        hora_inicio,
-        hora_fin
+    if(verificarLlenadoDeCampos()){
+      const response = await axios.post(
+        "http://localhost:8000/horariosDisponibles/",
+        {
+          profesional_id,
+          dia_semana,
+          hora_inicio,
+          hora_fin
+        }
+      );
+      if (response) {
+        Swal.fire({
+          position: "top",
+           icon: "success",
+           title: "Nuevo horario agregado",
+           showConfirmButton: false,
+           timer: 1500
+         });
+        setShowModalAgregar(false) 
+        limpiarCampos()
+        obtenerHorarios();
       }
-    );
-    if (response) {
-      Swal.fire({
-        position: "top",
-         icon: "success",
-         title: "Nuevo horario guardado",
-         showConfirmButton: false,
-         timer: 1500
-       });
-      setShow(false) 
-      limpiarCampos()
-      obtenerHorarios();
+    }else{
+      Swal.fire("Llenar todos los campos!");
     }
   };
 
@@ -163,12 +158,14 @@ export const HorariosDisponibles = () => {
     setHoraFin("");
   }
 
-  useEffect(() => {
-    obtenerHorarios();
-  }, []);
-  useEffect(() => {
-    obtenerNombresIDsProfesionales();
-  }, []);
+  const verificarLlenadoDeCampos = () =>{
+    if(profesional_id != "" && dia_semana != "" && hora_inicio != "" && hora_fin != ""){
+      return true
+    }
+  }
+
+  useEffect(() => {obtenerHorarios()}, []);
+  useEffect(() => {obtenerNombresIDsProfesionales()}, []);
 
   return (
     <>
@@ -178,144 +175,85 @@ export const HorariosDisponibles = () => {
             padding: "1rem",
             backgroundColor: "#343a40",
             color: "white",
-            border: "1px solid black",
             borderRadius: "10px",
           }}
         >
           Horarios Disponibles
         </h2>
-        {loading ?
-                <div className="text-center">
-                    <div className="spinner-border text-primary" role="status">
-                        <span className="visually-hidden">Cargando...</span>
-                    </div>
-                </div>
-             :
-        <div className="contenedor-tabla">
-          <Table striped bordered hover variant="dark">
-            <thead>
-              <tr>
-                <td
-                  style={{
-                    backgroundColor: "#343a40",
-                    fontWeight: "700",
-                    textAlign: "center",
-                    color: "white",
-                  }}
-                >
-                  Horario ID
-                </td>
-                <td
-                  style={{
-                    backgroundColor: "#343a40",
-                    fontWeight: "700",
-                    textAlign: "center",
-                    color: "white",
-                  }}
-                >
-                  Profesional
-                </td>
-                <td
-                  style={{
-                    backgroundColor: "#343a40",
-                    fontWeight: "700",
-                    textAlign: "center",
-                    color: "white",
-                  }}
-                >
-                  Dia semana
-                </td>
-                <td
-                  style={{
-                    backgroundColor: "#343a40",
-                    fontWeight: "700",
-                    textAlign: "center",
-                    color: "white",
-                  }}
-                >
-                  Hora inicio
-                </td>
-                <td
-                  style={{
-                    backgroundColor: "#343a40",
-                    fontWeight: "700",
-                    textAlign: "center",
-                    color: "white",
-                  }}
-                >
-                  Hora fin
-                </td>
-                <td
-                  style={{
-                    backgroundColor: "#343a40",
-                    fontWeight: "700",
-                    textAlign: "center",
-                    color: "white",
-                  }}
-                >
-                  Opciones
-                </td>
+
+        {loading 
+          ?
+            <div className="text-center">
+                <div className="spinner-border text-primary" role="status">
+                    <span className="visually-hidden">Cargando...</span>
+                  </div>
+            </div>
+          :
+            <div className="contenedor-tabla">
+              <Table striped bordered hover variant="dark">
+                <thead>
+                  <tr>
+                    <td
+                      
+                      >
+                      Profesional
+                    </td>
+
+                    <td
+                      
+                      >
+                      Dia semana
+                    </td>
+
+                    <td
+                      >
+                        Hora inicio
+                    </td>
+
+                    <td
+                      
+                      >
+                      Hora fin
+                    </td>
+
+                    <td
+                      >
+                        Opciones
+                    </td>
 
                   
-              </tr>
-            </thead>
-            <tbody>
-              {
-              !loading && horarios.length > 0 &&
-              horarios.map((horario, index) => (
-                <tr key={index}>
-                  <td style={{ textAlign: "center" }}>
-                    {horario.horario_id}
-                  </td>
-                  <td>{horario.nombre_profesional} {horario.apellido_profesional}</td>
-                  <td>{horario.dia_semana}</td>
-                  <td>{horario.hora_inicio}</td>
-                  <td>{horario.hora_fin}</td>
-                  <td>
-                    <div className="div-botones-editar">
-                      <Button
-                        variant="warning"
-                        style={{width : '80px'}}
-                        onClick={() => {
-                          handleClickEditar(
-                            horario.horario_id,
-                            horario.profesional_id,
-                            horario.dia_semana,
-                            horario.hora_inicio,
-                            horario.hora_fin,
-                            horario.estado
-                          );
-                        }}
-                      >
-                        <img src={iconoLapiz} width={"22px"} />
-                      </Button>
-                      <Button
-                        variant="danger"
-                        style={{width : '80px'}}
-                        onClick={() => {
-                          handleClickEliminar(horario.horario_id);
-                        }}
-                      >
-                        <img src={iconoBasura} width={"22px"} />
-                      </Button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
-}
+                  </tr>
+                </thead>
+                <tbody>
+                  {!loading && horarios.length > 0 && horarios.map((horario, index) => (
+                    <tr key={index}>
+                      <td>{horario.nombre_profesional} {horario.apellido_profesional}</td>
+                      <td>{horario.dia_semana}</td>
+                      <td>{horario.hora_inicio}</td>
+                      <td>{horario.hora_fin}</td>
+                      <td>
+                        <div className="div-botones-editar">
+                          <Button variant="warning" style={{width : '80px'}} onClick={() => {
+                            handleClickEditar(horario.horario_id,horario.profesional_id,horario.dia_semana,horario.hora_inicio,horario.hora_fin,horario.estado);}}>
+                            <img src={iconoLapiz} width={"22px"} />
+                          </Button>
 
-        <Button
-          variant="primary"
-          className="btn-crear"
-          onClick={() => handleClickCrear()}
-        >
-          Crear nuevo horario
-        </Button>
+                          <Button variant="danger" style={{width : '80px'}} onClick={() => { handleClickEliminar(horario.horario_id); }}>
+                              <img src={iconoBasura} width={"22px"} />
+                          </Button> 
+                        </div>
+                      </td>
+                    </tr>))}
+                </tbody>
+              </Table>
+        </div>}
+
+        <Button variant="primary" className="btn-crear" onClick={() => handleClickCrear()}>Crear nuevo horario</Button>
       </article>
-      {editar ? (
+
+      {editar 
+      ? 
+        (
         <article className="contenedor-editar">
           <h4
             style={{
@@ -325,7 +263,7 @@ export const HorariosDisponibles = () => {
               border: "1px solid black",
               borderRadius: "10px",
             }}
-          >
+            >
             Datos a actualizar
           </h4>
           <Form>
@@ -378,33 +316,18 @@ export const HorariosDisponibles = () => {
                 value = {hora_fin}
               />
             </Form.Group>
-
-            
           </Form>
+
           <div className="div-botones-editar">
-            <Button
-              style={{ marginTop: "1rem" }}
-              variant="success"
-              onClick={() => {
-                handleClickActualizar();
-              }}
-            >
-              Actualizar
-            </Button>
-            <Button
-              variant="secondary"
-              style={{ marginTop: "1rem"}}
-              onClick={handleClickCancelar}
-            >
-              Cancelar
-            </Button>
+            <Button style={{ marginTop: "1rem" }} variant="success" onClick={() => {   handleClickActualizar(); }}>Actualizar </Button>
+            <Button variant="secondary" style={{ marginTop: "1rem"}} onClick={handleClickCancelar}>Cancelar</Button>
           </div>
         </article>
-      ) : (
-        <></>
-      )}
+        ) 
+      :
+        (<></>)}
 
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={showModalAgregar} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Nuevo horario</Modal.Title>
         </Modal.Header>
@@ -461,15 +384,8 @@ export const HorariosDisponibles = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClickCancelar}>
-            Cancelar
-          </Button>
-          <Button
-            variant = 'primary'
-            onClick={handleClickConfirmar}
-          >
-            Confirmar
-          </Button>
+          <Button variant="secondary" onClick={handleClickCancelar}>Cancelar</Button>
+          <Button variant = 'primary' onClick={handleClickConfirmar}>Confirmar</Button>
         </Modal.Footer>
       </Modal>
     </>

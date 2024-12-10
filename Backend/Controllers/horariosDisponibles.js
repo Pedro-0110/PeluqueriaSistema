@@ -92,6 +92,21 @@ const obtenerHorarioDisponibleDelProfesional = (req,res) =>{
     })
 }
 
+const obtenerHorariosDeAtencionDeTalDia = (req,res) =>{
+    const {dia,id} = req.params
+    const query = ` select h.hora_inicio, h.hora_fin from HorariosDisponibles as h
+                   inner join Profesionales as p
+                   on h.profesional_id = p.profesional_id
+                   where h.profesional_id = ? and h.dia_semana = ?;`
+
+    pool.query(query,[id, dia],(error,result)=>{
+        if(error){
+            return res.status(500).json('Error al obtener los horarios del profesional')
+        }
+        res.status(200).json(result)
+    })
+}
+
 
 module.exports = {
     obtenerHorariosDisponibles,
@@ -99,5 +114,6 @@ module.exports = {
     crearHorarioDisponible,
     editarHorarioDisponible,
     eliminarHorarioDisponible,
-    obtenerHorarioDisponibleDelProfesional
+    obtenerHorarioDisponibleDelProfesional,
+    obtenerHorariosDeAtencionDeTalDia
 };

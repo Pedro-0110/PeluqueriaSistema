@@ -1,38 +1,34 @@
 body{
-    background-color: rgb(252, 252, 252)!important;
-}
-h1{
-    font-size: 28px;
-    font-weight: 600;
-}
-
-h2{
-    font-size: 22px;
-    font-weight: 600;
+  background: linear-gradient(to bottom, #1a237e, #4257df, #3849fd);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; 
 }
 
-h3{
-    font-size: 18px;
-}
+ /* body{
+   background: linear-gradient(to bottom, #000000,  #4a4d4a, #f7f7f7);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; 
+  }  */
 
-*{
-    line-height: 1.5;
-    font-weight: 400;
-}
 /*-------------------------------------------------------------------------------------------------------------------------------------*/
 .navegacion-administrador{
-    font-size: 16px;
-    width: 18vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Distribuye los elementos proporcionalmente */
-    height: 100vh; /* Altura total de la columna, ajustable según tus necesidades */
-    margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 18vw;
+  font-size: 16px;
+  justify-content: space-between; /* Distribuye los elementos proporcionalmente */
+  height: 100vh; /* Altura total de la columna, ajustable según tus necesidades */
+  margin-top: 1rem;
 }
 
 .navegacion-administrador a{
     text-decoration: none;
     font-weight: 600;
+    font-size: 20px;
     color: black; 
 }
 
@@ -40,21 +36,23 @@ h3{
     margin-top: 1rem;
     margin-right: 2rem;
     padding: 0.5rem;
-    background-color: #ffffff;
+    background-color: #bababa;
     color: black;
     border-radius: 10px;
     list-style-type: none;
-    border: 1px solid black;
+}
+
+.navegacion-administrador li:hover{
+  background-color: #ffffff;
 }
 
 .navegacion-administrador span{
   margin-left: 1rem;
 }
 
-
 .navegacion-administrador{
     height: 100vh;
-    background-color:#343a40;
+    background-color:#2b2f33;
     color: black;
     display: flex;
     flex-direction: column;
@@ -62,14 +60,10 @@ h3{
     justify-content: space-evenly;
     border: 0;
     border-radius: 10px;
-    margin: 1rem;
-    
+    margin: 1rem;   
 }
 
-.navegacion-administrador li{
-  font-weight: 700;
-  font-size: 18px;
-}
+
 
 .contenedor-navbar-opcion{
     display: flex;
@@ -77,17 +71,87 @@ h3{
 /*--------------------------------------------------------------------------------------------------------------*/
 
 .contenedor-padre{
-    width: 82vw;
-   margin-top: 1rem;
+    width: 80vw;
+    margin-top: 1rem;
 }
+
+.contenedor-padre h2{
+  padding: 1rem;
+  background-color: #000000;
+  color: white;
+  border-radius: 10px;
+  margin-right: 1rem;
+}
+
+.contenedor-padre input{
+  margin-right: 1rem;
+}
+
+
+.contenedor-tabla thead{
+  font-weight: 700 !important;
+  text-align: center !important;
+  color: white !important;
+  background-color: #000000!important;
+}
+
+.contenedor-tabla img{
+  width: 22px;
+}
+
+.contenedor-tabla{
+  height: 60vh;
+  overflow-y: auto; 
+  text-align: center;
+  margin-right: 1rem;
+}
+
+
+
+
+
+
+.div-botones-editar img{
+  width: 22px;
+}
+
+.div-botones-editar{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.div-botones-editar button{
+  width: 80px;
+  margin-top: 1rem;
+}
+
+.div-botones-editar button img{
+  width: 24px;
+}
+
+
+
+
 
 /*----------------------------------------------------------------------------------------------------------------*/
 .contenedor-editar{
     width: 20vw;
     margin: 1rem;
-    margin-top: 1rem;
-    
+    margin-top: 1rem; 
 }
+
+.contenedor-editar h4{
+  padding: 1rem;
+  background-color: #000000;
+  color: white;
+  border-radius: 10px;
+}
+
+
+
+
+
+
 .contenedor-pagina-no-encontrada{
     width: 82vw;
 }
@@ -95,36 +159,60 @@ h3{
     background-size: cover; /* La imagen cubre todo el contenedor */
     background-position: center; /* Centra la imagen */
     background-repeat: no-repeat; /* Evita que la imagen se repita */
+  }
+  
+  .contenedor-pagina-no-encontrada{
+    width: 80vw;
+    height: 100%;
+    margin-top: 1rem;
+  }
+  
+  .contenedor-pagina-no-encontrada img{
+    width: 100%;
+    height: 1000px;
+  }
+  
 
+
+
+
+.contenedor-perfil{
+  margin-top: 1rem;
 }
+
+.contenedor-perfil{
+  width: 70vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+
+
+
 
 .div-imagen-administrador{
   width: 14vw;
+  height: 14vw;
   margin-left: auto;
   margin-right: auto;
 }
 
 .div-imagen-administrador img{
     width: 14vw;
-    border: 2px solid rgb(221, 221, 221);
+    height: 14vw;
     border-radius: 100%;
     display: flex;
     justify-content: center;
   }
+
+
+
+
+
+
   .btn-crear{
     float: right;
-  }
-
-  .div-botones-editar{
-    display: flex;
-    justify-content: space-evenly;
-  }
-
-  .contenedor-tabla{
-    height: 60vh;
-    overflow-y: auto; 
-    text-align: center;
-    margin-right: 1rem;
   }
 
   .btn-crear{
@@ -143,6 +231,8 @@ h3{
     height: 6vh;
     font-size: 22px !important;
   }
+  
+
 
   .contenedor-tabla-btn-h-galeria{
     width: 82vw;
@@ -153,15 +243,12 @@ h3{
     display: flex;
     justify-content: space-evenly;
   }
-
+  
+  .encabezado-tabla td{
+    font-size: 38px !important;
+  }
   .encabezado-tabla td{
     background-color: violet;
-  }
-
-  .contenedor-perfil{
-    width: 70vw;
-    margin-left: auto;
-    margin-right: auto;
   }
 
 
@@ -183,7 +270,6 @@ h3{
     width: 20vw;
     height: 26vh;
   }
-
 
   /* Personalizar barra de scroll */
 ::-webkit-scrollbar {
@@ -208,106 +294,189 @@ h3{
   background: #555;
 }
 
-
+.contenedor-botones-navbar a{
+  width: 15vw;
+  padding: 0.5rem;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+}
 .contenedor-botones-navbar{
   display: flex;
   justify-content: space-evenly;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   width: 80vw;
   margin-left: auto;
   margin-right: auto;
-  flex-wrap: wrap;
-  
+  flex-wrap: wrap; 
+}
+
+.contenedor-botones-navbar a:hover{
+  background-color:  rgb(94, 169, 255) !important;
 }
 .contenedor-botones-navbar button{
-  width: 12vw;
+  width: 14vw;
+}
+
+
+
+
+
+.contenedor-profesionales{
+  width: 25vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+.contenedor-profesionales h2{
+  padding: 0.5rem;
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 25vw;
+  background-color: #000000;
+  color: white;
+}
+
+
+
+.contenedor-servicios{
+  width: 25vw;
+}
+
+.contenedor-servicios h2{
+  padding: 0.5rem;
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 25vw;
+  background-color: #000000;
+  color: white;
+}
+
+
+.contenedor-horarios{
+  width: 25vw;
+  margin-left: 2rem;
+  color: #000000;
+}
+
+.contenedor-horarios h2{
+  padding: 0.5rem;
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 25vw;
+  background-color: #000000;
+  color: white;
+}
+
+.contenedor-horarios button{
+  margin-top: 1rem;
+  width: 25vw;
+  background-color: #ddd900;
+  color: rgb(0, 0, 0);
+  font-size: 22px;
+}
+.contenedor-trabajos-realizados{
+  width: 80vw;
+  margin-top: 3rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contenedor-trabajos-realizados h2{
+  padding: 0.5rem;
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 30vw;
+  background-color: #000000;
+  color: white;
+}
+
+.contenedor-trabajos-realizados
+{
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 3rem ;
+}
+
+.contenedor-trabajos-realizados h3{
+  text-indent: 1rem;
+  color:   #ffffff;
+
 }
 
 .logo-navbar{
   margin-top: 1rem;
-  width: 10vw;
+  width: 18vw !important;
+  height: 16vh !important;
   margin-left: auto;
   margin-right: auto;
-  border-radius: 50%;
-
+  border-radius: 10px;
 }
+
 .logo-navbar img{
-  width: 10vw;
-  border-radius: 50%;
-
+  width: 18vw !important;
+  height: 16vh !important;
+  box-shadow: inset;
+  height: auto;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5); /* Sombra */
+  border-radius: 10px;
 }
+
 
 .contenedor-boton{
   width: 12vw;
   position: absolute;
   top: 1rem;
-  right: 2rem;
+  right: 0;
 }
 
 .contenedor-boton button{
   width: 12vw;
-
 }
 
-.contenedor-profesionales{
-  width: 80vw;
-  margin-top: 3rem;
-  margin-left: auto;
-  margin-right: auto;
+.contenedor-boton a{
+  width: 12vw;
+  padding: 0.5rem;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: white;
+  color: black;
 }
+
 
 .contenedor-datos-profesional{
-  margin-top: 5rem;
-  width: 80vw;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  justify-content: space-evenly;
-}
-
-.contenedor-servicios{
-  width: 35vw;
-  height: 12rem;
-}
-
-.contenedor-horarios{
-  width: 35vw;
-  height: 12rem;
-}
-
-.contenedor-trabajos-realizados{
-  width: 80vw;
-  margin-top: 5rem;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.contenedor-reseñas{
-  width: 80vw;
   margin-top: 3rem;
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.contenedor-datos-profesional h2{
+  background-color: #000000 !important;
+}
+
+.reseñas{
+  width: 80vw;
+
   margin-left: auto;
   margin-right: auto;
 }
 
-
-.trabajos{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-}
-
-.contenedor-reseñas{
+.reseñas{
   height: 30vh;
   overflow-y: auto; 
-  margin-top: 5rem;
-}
-.contenedor-reseñas input{
-  width: 40vw;
-  border: 1px solid rgb(0, 0, 0);
+
 }
 
-.contenedor-reseñas button{
-  margin-top: 1rem;
+.reseñas input{
+  width: 40vw;
+  border: 1px solid rgb(0, 0, 0);
 }
 
 .contenedor-profesional h3{
@@ -330,4 +499,445 @@ h3{
  margin-left: auto;
  margin-right: auto;
  border-radius: 10px;
+}
+
+
+.trabajos{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.trabajos img{
+  margin-right: 1rem;
+}
+
+.form-reseña{
+  width: 40vw;
+  margin-left: 10vw;
+  margin-top: 2rem;
+}
+.form-reseña button{
+  width: 30vw;
+  
+}
+.form-reseña input{
+  width: 20vw;
+}
+.form-reseña button{
+  margin-top: 0.5rem;
+  width: 20vw !important;
+}
+
+
+.imagenes{
+  width: 55vw;
+}
+
+.imagenes img{
+  width: 8vw;
+  height: 16vh;
+  margin-right: 1rem;
+}
+.videos{
+  width: 20vw;
+  border-radius: 10px;
+  height: 60vh;
+  overflow-y: auto; 
+  display: flex;
+  flex-direction: column;
+}
+
+.videos{
+  margin-top: 10vh;
+}
+.videos video{
+  padding: 1rem;
+  background-color: #020202;
+  border-radius: 10px;
+}
+
+
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  margin: auto;
+  overflow: hidden;
+}
+
+.carousel {
+  display: flex;
+  gap: 16px;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  padding: 10px;
+}
+
+.product-card {
+  min-width: 250px;
+  background-color: rgb(0, 0, 0);
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+  width: 100%;
+  height: 16vh;
+  margin-top: 8px;
+  border-radius: 8px;
+}
+
+.product-info {
+  margin-top: 8px;
+}
+
+.product-name {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.product-price {
+  color: #ff5733;
+  font-size: 14px;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #0099ff;
+  border: none;
+ 
+  font-size: 30px;
+  cursor: pointer;
+  border-radius: 100%;
+  z-index: 1;
+  color: white;
+  width: 50px;
+  height: 50px;
+}
+
+.arrow.left {
+  left: 10px;
+}
+
+.arrow.right {
+  right: 10px;
+}
+
+
+.horarios{
+  display: flex;
+  justify-content: space-evenly;
+  width: 25vw;
+}
+
+.horarios h3{
+  text-align: center;
+  width: 12vw;
+  background-color: #fcfcfc;
+  color: rgb(0, 0, 0);
+  border-radius: 10px;
+}
+
+.dia{
+  width: 12vw;
+}
+.tarde{
+  width: 12vw;
+}
+
+
+
+.contenedor-redes{
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #000000;
+  margin-top: 3rem;
+  border-radius: 10px;
+}
+
+.ubicacion{
+  width: 30vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+.ubicacion iframe{
+  margin-top: 1rem;
+  width: 30vw;
+  height: 18vh;
+}
+
+.redes{
+  width: 30vw;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 1rem;
+}
+.redes img{
+  width: 80px;
+}
+
+.contenedor-login{
+  width: 30vw;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 100%;
+  margin-top: 10%;
+  font-size: 28px;
+  color: #000000;
+}
+
+.imagen{
+  width: 12vw;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 100%;
+  background-color: #000000;
+}
+
+.imagen img{
+  width: 12vw;
+  padding: 0.3rem;
+  border-radius: 100%;
+}
+
+.botones{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.botones button{
+  width: 10vw;
+}
+
+.campos input{
+  width: 30vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.contenedor-reseñas h2{
+  margin-left: 9.8vw;
+  padding: 0.5rem;
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 30vw;
+  background-color: #000000;
+  color: white;
+}
+
+.contenedor-descuentos{
+  width: 60vw;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 3rem;
+}
+
+.contenedor-descuentos img{
+  width: 100%;
+  border-radius: 10px;
+}
+
+.contenedor-descuentos h2{
+  width: 20vw;
+  padding: 0.5rem;
+  color: white;
+  background-color: #000000;
+  border-radius: 10px;
+  margin-left: 0.5rem;
+}
+
+
+.contenedor-imagen-administrador{
+  width: 16vw;
+}
+
+.contenedor-imagen-administrador img{
+  width: 16vw;
+  height: 40vh;
+  
+}
+.contenedor-imagen-administrador h2{
+  width: 16vw;
+  background-color: transparent;
+  color: black;
+  text-align: center;
+}
+
+.contenedor-imagen-administrador button{
+  width: 100%;
+  color: rgb(5, 5, 5);
+  font-size: 22px;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+.contenedor-imagen-administrador {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
+
+}
+
+
+/* Cambiar color del Modal */
+
+.modal-header-custom {
+  background-color: #000000; /* Color del header */
+  color: white; /* Color del texto */
+}
+
+.modal-title-custom {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.modal-body-custom {
+
+  color: #333; /* Color del texto */
+}
+
+/* Personalizar el botón de cierre */
+.modal-header-custom .btn-close {
+  filter: invert(1); /* Cambiar el color del ícono de cierre */
+}
+
+
+.reserva{display: flex; justify-content: space-evenly;}
+.reserva li{
+  list-style: none;
+  margin-top: 0.2rem;
+}
+
+.reserva h2{
+  margin-top: 0.5rem;
+}
+
+.campos-reserva li{
+  font-size: 18px;
+}
+
+.campos-reserva{
+  width: 20vw;
+  border-right: 1px solid black;
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
+
+.datos-reserva button{
+  width: 100%;
+}
+
+.datos-reserva li{
+  font-size: 18px;
+}
+.datos-reserva{
+  width: 20vw;
+  border-left: 1px solid black;
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
+
+.carrusel-imagen{
+  display: flex;
+  justify-content: space-evenly;
+}
+.carrusel-imagen img{
+  margin: 0.5rem;
+}
+
+.reserva-profesional{
+  display: flex;
+  width: 8vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.reserva-profesional img{
+  width: 8vw;
+}
+
+
+.nombre-profesional{
+  width: 6vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.rating-container {
+  /* text-align: center; */
+  font-family: Arial, sans-serif;
+}
+
+.stars {
+  display: flex;
+  /* justify-content: center; */
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.star {
+  font-size: 2rem;
+  color: #ccc;
+  transition: color 0.3s ease;
+  margin: 0 5px;
+}
+
+.star.selected {
+  color: #ffc107;
+}
+
+.star:hover {
+  color: #ff9800;
+}
+
+
+.datos-usuario-reseña img{
+  width: 50px;
+  border-radius: 100%;
+}
+
+.datos-usuario-reseña h3{
+  margin-left: 1rem;
+  margin-top: 0.5rem;
+  color: black;
+}
+
+.datos-usuario-reseña{
+  display: flex;
+}
+
+.botones-video{
+  width: 16vw;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+
+.div-botones-editar{}
+
+
+.contenedor{
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media screen and (max-width: 959px) {
+  .contenedor{
+    width: 100%;
+  }
+  .logo-navbar img{
+    width: 100%;
+  }
+  
 }

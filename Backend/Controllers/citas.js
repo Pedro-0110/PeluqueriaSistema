@@ -96,11 +96,11 @@ const cancelarCita = (req,res)=>{
 
 
 const confirmarCita = (req,res) =>{
-    const {id} = req.params
+    const {cita_id,profesional_id} = req.params
     const {nota} = req.body
-    const query = `update Citas as c set estado_cita = 'Confirmada', nota = ? where cita_id = ?;`
+    const query = `update Citas as c set estado_cita = 'Confirmada', nota = ? where cita_id = ? and profesional_id = ?;`
 
-    pool.query(query,[nota, id],(error,result)=>{
+    pool.query(query,[nota, cita_id, profesional_id],(error,result)=>{
         if(error){
             console.log(error)
             return res.status(500).send("Error al confirmar la cita!")
@@ -134,7 +134,7 @@ const busquedaCitas = (req, res) =>{
 
 
 const obtenerHistorialCitasCliente = (req,res) =>{
-    const{id} = req.params
+    const{usuario_id, profesional_id} = req.params
     const query = `select u.nombre_usuario, u.apellido_usuario, c.fecha_cita, c.nota, s.nombre_servicio, p.nombre_profesional, p.apellido_profesional
                    from Citas as c
                    inner join Usuarios as u
@@ -144,15 +144,45 @@ const obtenerHistorialCitasCliente = (req,res) =>{
                    inner join Profesionales as p
                    on c.profesional_id = p.profesional_id
                    where c.usuario_id = ?
-                   and c.estado_cita = 'Confirmada';`
+                   and c.estado_cita = 'Confirmada'
+                   and c.profesional_id = ?;`
 
-    pool.query(query,[id],(error,result)=>{
+    pool.query(query,[usuario_id, profesional_id],(error,result)=>{
         if(error){
             return res.status(500).send('Error al obtener el historial del cliente!')
             }
         res.status(200).json(result)
         })
     } 
+
+
+    const obtenerCitasPendientes = (req, res) =>{
+        const {fecha ,id} = req.params
+        const query = `select dayname(fecha_cita) as dia, time(fecha_cita) as hora 
+                        from Citas as c 
+                        inner join Profesionales as p
+                        on c.profesional_id = p.profesional_id 
+                        inner join Servicios as s 
+                        on c.servicio_id = s.servicio_id
+                        where estado_cita = 'Pendiente' and date(fecha_cita) = ? and p.profesional_id = ?;`
+        pool.query(query, [fecha, id], (error, result)=>{
+            if(error){
+                return res.status(500).send('Error al obtener los horarios ocupados del profesional!')
+            }
+            res.status(200).json(result)
+        })
+    }
+
+    const obtenerCantidadDeCitasPendientes = (req, res) =>{
+        const {usuario_id} = req.params
+        const query = `select count(estado_cita) as cantidadCitasPendientes from Citas where estado_cita = 'Pendiente' and usuario_id = ?;`
+        pool.query(query,[usuario_id],(error,result)=>{
+            if(error){
+                return res.status(500).send("Error al obtener la cantidad de citas pendientes del cliente")
+            }
+            res.status(200).json(result)
+        })
+    }
 
 
 module.exports = {
@@ -164,5 +194,7 @@ module.exports = {
     cancelarCita,
     confirmarCita,
     busquedaCitas,
-    obtenerHistorialCitasCliente
+    obtenerHistorialCitasCliente,
+    obtenerCitasPendientes,
+    obtenerCantidadDeCitasPendientes
 };

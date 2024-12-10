@@ -1,23 +1,22 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import {useEffect, useState} from 'react'
+
 import Button from 'react-bootstrap/esm/Button';
 import Form from 'react-bootstrap/Form';
+import Image from 'react-bootstrap/Image';
 
 export const Perfil = () => {
+
     const[administradores, setAdministradores] = useState([])
     const[usuario_id, setUsuarioID] = useState("")
     const[editar,setEditar] = useState(false)
     const[administrador,setAdministrador] = useState([])
-
     const[username_usuario, setUsername] = useState("")
     const[password_usuario, setPassword] = useState("")
     const[nombre_usuario, setNombre] = useState("")
     const[apellido_usuario, setApellido] = useState("")
     const[telefono_usuario, setTelefono] = useState("")
     const[email_usuario, setEmail] = useState("")
-
-    const [loading, setLoading] = useState(false);
-
 
     const obtenerAdministradores = async () =>{
       const response = await axios.get("http://localhost:8000/usuarios/administradores")
@@ -28,7 +27,6 @@ export const Perfil = () => {
       const response = await axios.get("http://localhost:8000/usuarios/administradores/" + usuario_id)
       console.log(response.data)
       setAdministrador(response.data[0])
-
     }
 
     const handleClickEditar = () =>{
@@ -39,8 +37,6 @@ export const Perfil = () => {
       setApellido(administrador.apellido_usuario)
       setTelefono(administrador.telefono_usuario)
       setEmail(administrador.email_usuario)
-
-
     }
 
     useEffect(()=> {obtenerAdministradores()},[])
@@ -48,57 +44,53 @@ export const Perfil = () => {
 
   return (
     <>
-    <div className='contenedor-perfil'>
-      <article>
-        <img src="https://img.freepik.com/vector-premium/pictograma-persona_764382-14126.jpg?semt=ais_hybrid" alt="" width={'200px'} />
-        <h2>Administrador</h2>
-      </article>
+      <div className='contenedor-perfil'>
+        <article className='contenedor-imagen-administrador'>
+          <Image src="https://i.etsystatic.com/36512112/r/il/3f098c/4274900077/il_fullxfull.4274900077_dg5t.jpg" rounded width={'250px'} height={'300px'}/>
+          <Button variant='warning'>Editar</Button>
+        </article>
 
-      <article className='inputs-perfil'>
-          <Form.Group>
-          <Form.Select onChange={(e)=> setUsuarioID(e.target.value)} value={usuario_id} >
-            {administradores.map((admin, index)=>
-              <option key={index} value={admin.usuario_id}>{admin.nombre_usuario} {admin.apellido_usuario}</option>
-            )}
-          </Form.Select>
-        </Form.Group>
-        {editar ? <></>  :  <Button variant = 'warning' onClick={()=> handleClickEditar()}>Editar</Button>}
-      </article>
-      {editar ? <article>
-        <Form.Group>
-          <Form.Label>Username</Form.Label>
-          <Form.Control value={username_usuario} onChange={(e)=> setUsername(e.target.value)}/>
-        </Form.Group>
+      
+        {editar 
+        ? 
+          <article>
+            <Form.Group>
+              <Form.Label>Username</Form.Label>
+              <Form.Control value={username_usuario} onChange={(e)=> setUsername(e.target.value)}/>
+            </Form.Group>
 
-        <Form.Group>
-          <Form.Label>Password</Form.Label>
-          <Form.Control value = {password_usuario} onChange = {(e)=> setPassword(e.target.value)}/>
-        </Form.Group>
+            <Form.Group>
+              <Form.Label>Password</Form.Label>
+              <Form.Control value = {password_usuario} onChange = {(e)=> setPassword(e.target.value)}/>
+            </Form.Group>
 
-        <Form.Group>
-          <Form.Label>Nombre</Form.Label>
-          <Form.Control value = {nombre_usuario} onChange={(e)=> setNombre(e.target.value)}/>
-        </Form.Group>
+            <Form.Group>
+              <Form.Label>Nombre</Form.Label>
+              <Form.Control value = {nombre_usuario} onChange={(e)=> setNombre(e.target.value)}/>
+            </Form.Group>
 
-        <Form.Group>
-          <Form.Label>Apellido</Form.Label>
-          <Form.Control value = {apellido_usuario} onChange={(e)=> setApellido(e.target.value)}/>
-        </Form.Group>
+            <Form.Group>
+              <Form.Label>Apellido</Form.Label>
+              <Form.Control value = {apellido_usuario} onChange={(e)=> setApellido(e.target.value)}/>
+            </Form.Group>
 
-        <Form.Group>
-          <Form.Label>Email</Form.Label>
-          <Form.Control value = {email_usuario} onChange = {(e)=> setEmail(e.target.value)}/>
-        </Form.Group>
+            <Form.Group>
+              <Form.Label>Email</Form.Label>
+              <Form.Control value = {email_usuario} onChange = {(e)=> setEmail(e.target.value)}/>
+            </Form.Group>
 
-        <Form.Group>
-          <Form.Label>Telefono</Form.Label>
-          <Form.Control value = {telefono_usuario} onChange={(e)=> setTelefono(e.target.value)}/>
-        </Form.Group>
+            <Form.Group>
+              <Form.Label>Telefono</Form.Label>
+              <Form.Control value = {telefono_usuario} onChange={(e)=> setTelefono(e.target.value)}/>
+            </Form.Group>
 
-        <>  <Button variant = 'secondary' onClick={() => setEditar(false)}>Cancelar</Button>  <Button variant='primary'>Guardar</Button></>
-      </article> 
-    : <></>}
-    </div>  
+            <><Button variant = 'secondary' onClick={() => setEditar(false)}>Cancelar</Button>  <Button variant='primary'>Guardar</Button></>
+
+          </article> 
+
+        : 
+          <></>}
+      </div>  
     </>
   )
 }
