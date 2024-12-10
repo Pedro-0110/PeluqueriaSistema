@@ -171,12 +171,6 @@ export const HorariosDisponibles = () => {
     <>
       <article className="contenedor-padre">
         <h2
-          style={{
-            padding: "1rem",
-            backgroundColor: "#343a40",
-            color: "white",
-            borderRadius: "10px",
-          }}
         >
           Horarios Disponibles
         </h2>

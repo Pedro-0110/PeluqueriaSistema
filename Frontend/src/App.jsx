@@ -11,6 +11,7 @@ import { Reseñas } from './pages/Reseñas';
 import { Citas } from './pages/Citas';
 import { HorariosDisponibles } from './pages/HorariosDisponibles';
 import { Perfil } from './pages/Perfil';
+import { NavBarPrincipal } from './ComponentesCliente/NavBarPrincipal';
 
 function App() {
   return (

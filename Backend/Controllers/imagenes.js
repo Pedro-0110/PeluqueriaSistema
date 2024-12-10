@@ -1,90 +1,90 @@
 const pool = require('../Config/conexionbd');
 
-const obtenerGalerias = (req, res) => {
-    const query = `SELECT * FROM Galeria AS g
+const obtenerImagenes = (req, res) => {
+    const query = `SELECT * FROM Imagenes AS i
                    INNER JOIN Profesionales AS p
-                   ON g.profesional_id = p.profesional_id;`;
+                   ON i.profesional_id = p.profesional_id;`;
 
     pool.query(query, (error, result) => {
         if (error) {
             console.error(error);
-            return res.status(500).send("Error al obtener las galerías");
+            return res.status(500).send("Error al obtener las imagenes");
         }
         res.status(200).json(result);
     });
 };
 
 
-const obtenerGaleria = (req, res) => {
+const obtenerImagen = (req, res) => {
     const { id } = req.params;
-    const query = `SELECT * FROM Galeria AS g
+    const query = `SELECT * FROM Imagenes AS i
                    INNER JOIN Profesionales AS p
-                   ON g.profesional_id = p.profesional_id
-                   WHERE g.imagen_id = ?;`;
+                   ON i.profesional_id = p.profesional_id
+                   WHERE i.imagen_id = ?;`;
 
     pool.query(query, [id], (error, result) => {
         if (error) {
             console.error(error);
-            return res.status(500).send("Error al obtener la galería");
+            return res.status(500).send("Error al obtener la imagen");
         }
         res.status(200).json(result);
     });
 };
 
 
-const crearGaleria = (req, res) => {
+const crearImagen = (req, res) => {
     const { profesional_id, url_imagen, descripcion_imagen, fecha_subida_imagen } = req.body;
-    const query = `INSERT INTO Galeria (profesional_id, url_imagen, descripcion_imagen, fecha_subida_imagen) VALUES (?, ?, ?, ?);`;
+    const query = `INSERT INTO Imagenes (profesional_id, url_imagen, descripcion_imagen, fecha_subida_imagen) VALUES (?, ?, ?, ?);`;
     
     pool.query(query, [profesional_id, url_imagen, descripcion_imagen, fecha_subida_imagen], (error, result) => {
         if (error) {
             console.error(error);
-            return res.status(500).send("Error al crear la galería");
+            return res.status(500).send("Error al crear la imagen");
         }
-        res.status(201).json({ message: "Galería creada exitosamente", galeriaId: result.insertId });
+        res.status(201).json({ message: "Imagen ingresada exitosamente", imagenId: result.insertId });
     });
 };
 
 
-const editarGaleria = (req, res) => {
+const editarImagen = (req, res) => {
     const { id } = req.params;
     const { profesional_id, url_imagen, descripcion_imagen, fecha_subida_imagen } = req.body;
-    const query = `UPDATE Galeria SET profesional_id = ?, url_imagen = ?, descripcion_imagen = ?, fecha_subida_imagen = ? WHERE imagen_id = ?;`;
+    const query = `UPDATE Imagenes SET profesional_id = ?, url_imagen = ?, descripcion_imagen = ?, fecha_subida_imagen = ? WHERE imagen_id = ?;`;
     
     pool.query(query, [profesional_id, url_imagen, descripcion_imagen, fecha_subida_imagen, id], (error, result) => {
         if (error) {
             console.error(error);
-            return res.status(500).send("Error al editar la galería");
+            return res.status(500).send("Error al editar la imagen");
         }
-        res.status(200).json({ message: "Galería actualizada exitosamente" });
+        res.status(200).json({ message: "Imagen actualizada exitosamente" });
     });
 };
 
 
-const eliminarGaleria = (req, res) => {
+const eliminarImagen = (req, res) => {
     const { id } = req.params;
-    const query = `DELETE FROM Galeria WHERE imagen_id = ?;`;
+    const query = `DELETE FROM Imagenes WHERE imagen_id = ?;`;
     
     pool.query(query, [id], (error, result) => {
         if (error) {
             console.error(error);
-            return res.status(500).send("Error al eliminar la galería");
+            return res.status(500).send("Error al eliminar la imagen");
         }
-        res.status(200).json({ message: "Galería eliminada exitosamente" });
+        res.status(200).json({ message: "Imagen eliminada exitosamente" });
     });
 };
 
 
-const obtenerGaleriaDelProfesional = (req,res) => {
+const obtenerImagenesDelProfesional = (req,res) => {
     const {id} = req.params
-    const query = `select * from Galeria as g
+    const query = `select * from Imagenes as i
                    inner join Profesionales as p
-                   on g.profesional_id = p.profesional_id
+                   on i.profesional_id = p.profesional_id
                    where p.profesional_id = ?;`
                    
     pool.query(query, [id], (error,result)=>{
         if(error){
-            return res.status(500).send("Error al obtener la galeria del profesional")
+            return res.status(500).send("Error al obtener las imagenes del profesional")
         }
         res.status(200).json(result)
     })
@@ -92,10 +92,10 @@ const obtenerGaleriaDelProfesional = (req,res) => {
 
 const obtenerTinturasDelProfesional = (req,res) =>{
     const {id} = req.params
-    const query = `select * from Galeria as g
+    const query = `select * from Imagenes as i
                    inner join Profesionales as p
-                   on g.profesional_id = p.profesional_id
-                   where p.profesional_id = ? and (g.descripcion_imagen like '%tintura%' or g.descripcion_imagen like '%Tintura%');`
+                   on i.profesional_id = p.profesional_id
+                   where p.profesional_id = ? and (i.descripcion_imagen like '%tintura%' or i.descripcion_imagen like '%Tintura%');`
     pool.query(query,[id],(error,result)=>{
         if(error){
             return res.status(500).send("Error al obtener las tinturas del profesional")
@@ -106,10 +106,10 @@ const obtenerTinturasDelProfesional = (req,res) =>{
 
 const obtenerCortesDelProfesional = (req,res) =>{
     const {id} = req.params
-    const query = `select * from Galeria as g
+    const query = `select * from Imagenes as i
                    inner join Profesionales as p
-                   on g.profesional_id = p.profesional_id
-                   where p.profesional_id = ? and (g.descripcion_imagen like '%corte%' or g.descripcion_imagen like '%Corte%');`
+                   on i.profesional_id = p.profesional_id
+                   where p.profesional_id = ? and (i.descripcion_imagen like '%corte%' or i.descripcion_imagen like '%Corte%');`
     pool.query(query,[id],(error,result)=>{
         if(error){
             return res.status(500).send("Error al obtener las tinturas del profesional")
@@ -120,12 +120,12 @@ const obtenerCortesDelProfesional = (req,res) =>{
 
 
 module.exports = {
-    obtenerGalerias,
-    obtenerGaleria,
-    crearGaleria,
-    editarGaleria,
-    eliminarGaleria,
-    obtenerGaleriaDelProfesional,
+    obtenerImagenes,
+    obtenerImagen,
+    crearImagen,
+    editarImagen,
+    eliminarImagen,
+    obtenerImagenesDelProfesional,
     obtenerCortesDelProfesional,
     obtenerTinturasDelProfesional
 };

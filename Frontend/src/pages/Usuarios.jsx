@@ -199,7 +199,7 @@ export const Usuarios = () => {
   return (
     <>
         <div className="contenedor-padre">
-            <h2 style={{padding: '1rem', backgroundColor: '#343a40', color: 'white' , borderRadius : '10px'}}>Usuarios</h2>
+            <h2>Usuarios</h2>
           
             <InputGroup className="mb-3">
                 <InputGroup.Text id="inputGroup-sizing-default">

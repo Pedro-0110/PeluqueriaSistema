@@ -162,7 +162,7 @@ export const Profesionales = () => {
     <>
         <article className="contenedor-padre">
 
-            <h2 style={{padding: '1rem', backgroundColor: '#343a40', color: 'white', borderRadius : '10px'}}>Profesionales</h2>
+            <h2>Profesionales</h2>
                 {loading 
                 ?
                     <div className="text-center">

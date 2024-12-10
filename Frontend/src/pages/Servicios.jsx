@@ -150,7 +150,7 @@ useEffect(()=> {obtenerServicios()},[])
   return (
     <>
         <article className="contenedor-padre">
-            <h2 style={{padding: '1rem', backgroundColor: '#343a40', color: 'white', borderRadius : '10px'}}>Servicios</h2>
+            <h2>Servicios</h2>
               {loading 
               ?
                 <div className="text-center">

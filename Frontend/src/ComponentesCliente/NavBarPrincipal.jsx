@@ -91,12 +91,12 @@ export const NavBarPrincipal = () => {
 
 
   const obtenerTinturasDelProfesional = async () =>{
-    const response = await axios.get(`http://localhost:8000/galeria/tinturas/profesional/${profesional_id}`)
+    const response = await axios.get(`http://localhost:8000/imagenes/tinturas/profesional/${profesional_id}`)
     setTinturas(response.data)
   }
 
   const obtetenerCortesDelProfesional = async () =>{
-    const response = await axios.get(`http://localhost:8000/galeria/cortes/profesional/${profesional_id}`)
+    const response = await axios.get(`http://localhost:8000/imagenes/cortes/profesional/${profesional_id}`)
     setCortes(response.data)
   }
 

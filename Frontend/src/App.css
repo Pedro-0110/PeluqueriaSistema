@@ -6,13 +6,13 @@ body{
   background-attachment: fixed; 
 }
 
- /* body{
+ body{
    background: linear-gradient(to bottom, #000000,  #4a4d4a, #f7f7f7);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   background-attachment: fixed; 
-  }  */
+  } 
 
 /*-------------------------------------------------------------------------------------------------------------------------------------*/
 .navegacion-administrador{
@@ -36,14 +36,14 @@ body{
     margin-top: 1rem;
     margin-right: 2rem;
     padding: 0.5rem;
-    background-color: #bababa;
+    background-color: #ffffff;
     color: black;
     border-radius: 10px;
     list-style-type: none;
 }
 
 .navegacion-administrador li:hover{
-  background-color: #ffffff;
+  background-color: rgb(118, 130, 141);
 }
 
 .navegacion-administrador span{
@@ -52,7 +52,7 @@ body{
 
 .navegacion-administrador{
     height: 100vh;
-    background-color:#2b2f33;
+    background-color:#000000;
     color: black;
     display: flex;
     flex-direction: column;
@@ -325,15 +325,15 @@ body{
 
 
 .contenedor-profesionales{
-  width: 25vw;
+  width: 26.6vw;
   margin-left: auto;
   margin-right: auto;
 }
 .contenedor-profesionales h2{
   padding: 0.5rem;
-  border: 1px solid black;
+ 
   border-radius: 10px;
-  width: 25vw;
+  width: 26.6vw;
   background-color: #000000;
   color: white;
 }
@@ -341,37 +341,37 @@ body{
 
 
 .contenedor-servicios{
-  width: 25vw;
+  width: 26.6vw;
+
 }
 
 .contenedor-servicios h2{
   padding: 0.5rem;
-  border: 1px solid black;
+ 
   border-radius: 10px;
-  width: 25vw;
+  width: 26.6vw;
   background-color: #000000;
   color: white;
 }
 
-
 .contenedor-horarios{
-  width: 25vw;
-  margin-left: 2rem;
+
+  width: 26.6vw;
   color: #000000;
 }
 
 .contenedor-horarios h2{
   padding: 0.5rem;
-  border: 1px solid black;
+ 
   border-radius: 10px;
-  width: 25vw;
+  width: 26.6vw;
   background-color: #000000;
   color: white;
 }
 
 .contenedor-horarios button{
   margin-top: 1rem;
-  width: 25vw;
+  width: 26.6vw;
   background-color: #ddd900;
   color: rgb(0, 0, 0);
   font-size: 22px;
@@ -385,7 +385,7 @@ body{
 
 .contenedor-trabajos-realizados h2{
   padding: 0.5rem;
-  border: 1px solid black;
+ 
   border-radius: 10px;
   width: 30vw;
   background-color: #000000;
@@ -407,7 +407,7 @@ body{
 
 .logo-navbar{
   margin-top: 1rem;
-  width: 18vw !important;
+  width: 22vw !important;
   height: 16vh !important;
   margin-left: auto;
   margin-right: auto;
@@ -415,11 +415,11 @@ body{
 }
 
 .logo-navbar img{
-  width: 18vw !important;
+  width: 22vw !important;
   height: 16vh !important;
   box-shadow: inset;
   height: auto;
-  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.5); /* Sombra */
+  box-shadow: 10px 10px 20px rgb(43, 0, 199); /* Sombra */
   border-radius: 10px;
 }
 
@@ -454,7 +454,7 @@ body{
   margin-left: auto;
   margin-right: auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 .contenedor-datos-profesional h2{
@@ -632,22 +632,22 @@ body{
 .horarios{
   display: flex;
   justify-content: space-evenly;
-  width: 25vw;
+  width: 26.6vw;
 }
 
 .horarios h3{
   text-align: center;
-  width: 12vw;
+  width: 13.3vw;
   background-color: #fcfcfc;
   color: rgb(0, 0, 0);
   border-radius: 10px;
 }
 
 .dia{
-  width: 12vw;
+  width: 13.3vw;
 }
 .tarde{
-  width: 12vw;
+  width: 13.3vw;
 }
 
 
@@ -723,11 +723,15 @@ body{
   margin-right: auto;
 }
 
+.contenedor-reseñas{
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 .contenedor-reseñas h2{
-  margin-left: 9.8vw;
   padding: 0.5rem;
-  border: 1px solid black;
+ 
   border-radius: 10px;
   width: 30vw;
   background-color: #000000;
@@ -735,7 +739,7 @@ body{
 }
 
 .contenedor-descuentos{
-  width: 60vw;
+  width: 80vw;
   margin-left: auto;
   margin-right: auto;
   margin-top: 3rem;
@@ -941,3 +945,76 @@ body{
   }
   
 }
+
+.contenedor-galeria{
+  display: flex;
+  flex-direction: column;
+}
+
+.contenedor-tabla-imagenes thead{
+  font-weight: 700 !important;
+  text-align: center !important;
+  color: white !important;
+  background-color: #000000!important;
+}
+
+.contenedor-tabla-imagenes img{
+  width: 22px;
+}
+
+.contenedor-tabla-imagenes{
+  height: 30vh;
+  overflow-y: auto; 
+  text-align: center;
+  margin-right: 1rem;
+}
+
+
+.contenedor-tabla-videos thead{
+  font-weight: 700 !important;
+  text-align: center !important;
+  color: white !important;
+  background-color: #000000!important;
+}
+
+.contenedor-tabla-videos img{
+  width: 22px;
+}
+
+.contenedor-tabla-videos{
+  height: 30vh;
+  overflow-y: auto; 
+  text-align: center;
+  margin-right: 1rem;
+}
+
+.btn-crear-imagen{
+  float: right;
+  margin-right: 1rem;
+  margin-top: 1rem;
+  width: 210px;
+}
+
+.btn-crear-video{
+  float: right;
+  margin-right: 1rem;
+  margin-top: 1rem;
+  width: 210px;
+}
+
+.contenedor-dos-columnas{
+  width: 80vw;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.contenedor-descuentos
+contenedor-horarios
+.contenedor-servicios
+contenedor-reseñas
+.dia
+.tarde
+.contenedor-datos-profesional
+.horarios
+.logo-navbar
+navegacion-administrador

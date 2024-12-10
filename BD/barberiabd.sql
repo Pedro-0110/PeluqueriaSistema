@@ -157,8 +157,9 @@ VALUES
     (2, 'Sábado', '09:00:00', '13:00:00'),
     (2, 'Sábado', '17:00:00', '22:00:00');
 
+RENAME TABLE Galeria TO Imagenes;
 
-CREATE TABLE Galeria (
+CREATE TABLE Imagenes (
     imagen_id INT PRIMARY KEY AUTO_INCREMENT,
     profesional_id INT,
     url_imagen VARCHAR(255) NOT NULL,
@@ -169,7 +170,7 @@ CREATE TABLE Galeria (
     on update cascade
 );
 
-insert into Galeria (profesional_id, url_imagen, descripcion_imagen) values 
+insert into Imagenes (profesional_id, url_imagen, descripcion_imagen) values 
 (1, 'https://i.imgur.com/e79xA9m.jpeg', 'Tintura'),
 (1, 'https://i.imgur.com/krBNfaJ.jpeg', 'Tintura'),
 (1, 'https://i.imgur.com/ZS3Alyr.jpeg', 'Tintura'),
@@ -184,6 +185,20 @@ insert into Galeria (profesional_id, url_imagen, descripcion_imagen) values
 ( 1, 'https://i.imgur.com/8jDAwHH.jpeg', 'Corte'),
 (1, 'https://i.imgur.com/B6qUVbS.jpeg', 'Corte'),
 (1, 'https://i.imgur.com/8j7hMoO.jpeg', 'Corte');
+
+CREATE TABLE Videos (
+    video_id INT PRIMARY KEY AUTO_INCREMENT,
+    profesional_id INT,
+    url_video VARCHAR(255) NOT NULL,
+    descripcion_video TEXT,
+    fecha_subida_video TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (profesional_id) REFERENCES Profesionales(profesional_id)
+    on delete cascade 
+    on update cascade
+);
+
+
+select * from Videos;
 
 
 CREATE TABLE Reseñas (

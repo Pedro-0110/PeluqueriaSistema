@@ -212,25 +212,25 @@ export const Citas = () => {
 
         <Modal show={showHistorial} onHide={handleClose}size='lg' >
           <Modal.Header closeButton>
-            <Modal.Title>Historial</Modal.Title>
+            <Modal.Title>Historial del cliente</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <label htmlFor=""> </label>
             <Table striped bordered hover variant = 'dark' >
               <thead>
                 <tr>
+                  <th>Profesional</th>
                   <th>Fecha</th>
                   <th>Trabajo</th>
-                  <th>Profesional</th>
                   <th>Descripcion</th>
                 </tr>
               </thead>
               <tbody>
                 {historialCliente.map((historia ,index)=>
                 <tr key={index}>
+                  <td>{historia.nombre_profesional} {historia.apellido_profesional}</td>
                   <td>{historia.fecha_cita}</td>
                   <td>{historia.nombre_servicio}</td>
-                  <td>{historia.nombre_profesional} {historia.apellido_profesional}</td>
                   <td>{historia.nota}</td>
                 </tr>
                   )}
