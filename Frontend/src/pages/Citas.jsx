@@ -18,6 +18,7 @@ import iconoPendiente from '../Icons/icono-pendiente.png'
 import iconoVer from '../Icons/icono-ver.png'
 
 
+
 export const Citas = () => {
     const [citas,setCitas] = useState([])
     const [valorBusqueda, setValorBusqueda] = useState("")
@@ -30,7 +31,7 @@ export const Citas = () => {
 
     const obtenerCitas = async () =>{
         setLoading(true)
-        const response = await axios.get("http://localhost:8000/citas")
+        let response = await axios.get("http://localhost:8000/citas")
         setCitas(response.data)
         setLoading(false)
       }
@@ -92,10 +93,12 @@ export const Citas = () => {
           }
           }
 
-
     const buscarCitaDeUsuario = async () =>{
-        if(valorBusqueda === ""){
+      console.log(valorBusqueda)
+        if(valorBusqueda == ""){
             obtenerCitas()
+            console.log(citas)
+            console.log("ESTOY PASANDO POR AQUI")
         }
         const response = await axios.get(`http://localhost:8000/citas/busqueda/${valorBusqueda}`)
         setCitas(response.data)
@@ -107,17 +110,18 @@ export const Citas = () => {
         const response = await axios.get(`http://localhost:8000/citas/historial/${usuario_id}/profesional/${profesional_id}`)
         setHistorialCliente(response.data)   
       }
-      
+
 
     useEffect(()=> {obtenerCitas()},[])
-    useEffect(()=> {buscarCitaDeUsuario()},[valorBusqueda])
+    useEffect(()=>{buscarCitaDeUsuario()},[valorBusqueda])
+    
 
   return (
     <>
         <article className="contenedor-padre">
             <h2>Citas</h2>
             <InputGroup className="mb-3">
-              <InputGroup.Text id="inputGroup-sizing-default">Busqueda de cliente o profesional</InputGroup.Text>
+              <InputGroup.Text id="inputGroup-sizing-default">Busqueda de cliente</InputGroup.Text>
 
               <Form.Control
                 placeholder="Ingrese el nombre o apellido"
@@ -143,8 +147,9 @@ export const Citas = () => {
                         <td>Usuario</td>
                         <td>Profesional</td>
                         <td>Servicio</td>
-                        <td>Fecha</td>
-                        <td>Horario</td>
+                        <td>Fecha cita</td>
+                        <td>Horario cita</td>
+                        <td>Fecha realizada</td>
                         <td>Estado</td>
                         <td>Opciones</td>
                         <td>Nota</td>
@@ -152,14 +157,15 @@ export const Citas = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {!loading && citas.length > 0 &&citas.map((cita, indx)=>
+                    {!loading && citas.length > 0 && citas.map((cita, indx)=>
                         <tr key={indx}>
                             <td>{cita.cita_id}</td>
                             <td>{cita.nombre_usuario} {cita.apellido_usuario}</td>
                             <td>{cita.nombre_profesional} {cita.apellido_profesional}</td>
                             <td>{cita.nombre_servicio}</td>
-                            <td>{new Date(cita.fecha_cita).getDay()}/{new Date(cita.fecha_cita).getMonth()}/{new Date(cita.fecha_cita).getFullYear()}</td>
-                            <td>{new Date(cita.fecha_cita).getHours()}:{new Date(cita.fecha_cita).getMinutes()}{new Date(cita.fecha_cita).getMinutes()}</td>
+                            <td>{new Date(cita.fecha_cita).toLocaleDateString('es-AR', { year: '2-digit', month: '2-digit', day: '2-digit' })}</td>
+                            <td>{new Date(cita.fecha_cita).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })}</td>
+                            <td>{new Date(cita.fecha_realizada_reserva).toLocaleDateString('es-AR', { year: '2-digit', month: '2-digit', day: '2-digit' })} - {new Date(cita.fecha_realizada_reserva).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })}</td>
                             <td>{cita.estado_cita == 'Confirmada' 
                                 ?                               
                                   <><img src={iconoConfirmarColor} alt="" width={'22px'}/></>
@@ -188,7 +194,6 @@ export const Citas = () => {
                                     : 
                                       <>
                                         <Button variant = 'success'  onClick={()=> handleClickConfirmarCita(cita.cita_id, cita.profesional_id)}><img src= {iconoConfirmar} /></Button>
-                                        <Button variant='warning' ><img src= {iconoLapiz} /></Button>
                                         <Button variant = 'danger' onClick={()=> handleClickCancelar(cita.cita_id)}><img src={iconoCancelar}/></Button>
                                       </>}
                                 </div>
@@ -238,7 +243,7 @@ export const Citas = () => {
             </Table>
           </Modal.Body>
         </Modal>
-    
+
     </>
   )
 }

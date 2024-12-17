@@ -21,7 +21,6 @@ export const Profesionales = () => {
     const [apellido_profesional,setApellido] = useState("")
     const [especialidad_profesional,setEspecialidad] = useState("")
     const [descripcion_profesional, setDescripcion] = useState("")
-    const [fecha_ingreso_profesional, setFechaIngreso] = useState("") 
     const [activo_profesional,setActivo] = useState(1)
     const [imagen_profesional, setImagenProfesional] = useState("")
     const [loading, setLoading] = useState(false);
@@ -35,15 +34,13 @@ export const Profesionales = () => {
         setLoading(false)
     }
 
-    const handleClickEditar = (profesional_id, nombre_profesional, apellido_profesional, especialidad_profesional, descripcion_profesional, fecha_ingreso_profesional, activo_profesional, imagen_profesional) =>{
+    const handleClickEditar = (profesional_id, nombre_profesional, apellido_profesional, especialidad_profesional, descripcion_profesional, activo_profesional, imagen_profesional) =>{
         setEditar(true)
         setProfesionalID(profesional_id)
         setNombre(nombre_profesional)
         setApellido(apellido_profesional)
         setEspecialidad(especialidad_profesional)
         setDescripcion(descripcion_profesional)
-        const fechaFormateada = new Date(fecha_ingreso_profesional).toISOString().split("T")[0];
-        setFechaIngreso(fechaFormateada);
         setActivo(activo_profesional)
         setImagenProfesional(imagen_profesional)
     }
@@ -55,7 +52,6 @@ export const Profesionales = () => {
                 apellido_profesional,
                 especialidad_profesional,
                 descripcion_profesional,
-                fecha_ingreso_profesional,
                 activo_profesional,
                 imagen_profesional
             })
@@ -117,7 +113,6 @@ export const Profesionales = () => {
                 apellido_profesional,
                 especialidad_profesional,
                 descripcion_profesional,
-                fecha_ingreso_profesional,
                 activo_profesional,
                 imagen_profesional
             })
@@ -145,13 +140,12 @@ export const Profesionales = () => {
         setApellido("")
         setEspecialidad("")
         setDescripcion("")
-        setFechaIngreso("")
         setActivo("")
         setImagenProfesional("")
     }
 
     const verificarLlenadoDeCampos = () =>{
-        if(nombre_profesional != "" && apellido_profesional != "" && especialidad_profesional !="" && descripcion_profesional != "" && imagen_profesional != "" && fecha_ingreso_profesional != "" && activo_profesional != ""){
+        if(nombre_profesional != "" && apellido_profesional != "" && especialidad_profesional !="" && descripcion_profesional != "" && imagen_profesional != ""  && activo_profesional != ""){
             return true
         }
     }
@@ -180,7 +174,7 @@ export const Profesionales = () => {
                                     <td>Apellido</td>
                                     <td>Especialidad</td>
                                     <td>Descripcion</td>
-                                    <td>Fecha de ingreso</td>
+                                    <td>Fecha de registro</td>
                                     <td>Activo</td>
                                     <td>Opciones</td>
                                 </tr>
@@ -188,16 +182,16 @@ export const Profesionales = () => {
                             <tbody>
                                 {!loading && profesionales.length > 0 && profesionales.map((profesional, indx)=>
                                     <tr key={indx}>
-                                        <td><img src={profesional.imagen_profesional} alt="" width={'60px'} /></td>
+                                        <td><img src={profesional.imagen_profesional} alt="" /></td>
                                         <td>{profesional.nombre_profesional}</td>
                                         <td>{profesional.apellido_profesional}</td>
                                         <td>{profesional.especialidad_profesional}</td>
                                         <td>{profesional.descripcion_profesional}</td>
-                                        <td>{profesional.fecha_ingreso_profesional}</td>
+                                        <td>{new Date(profesional.fecha_registro_profesional).toLocaleDateString('es-AR', { year: '2-digit', month: '2-digit', day: '2-digit' })} - {new Date(profesional.fecha_registro_profesional).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })}</td>
                                         <td>{profesional.activo_profesional  == 1 ? "Si" : "No"}</td>
                                         <td>
-                                            <div className='div-botones-editar'>
-                                                <Button variant = 'warning' style={{width : '80px'}} onClick={()=> handleClickEditar(profesional.profesional_id,profesional.nombre_profesional, profesional.apellido_profesional, profesional.especialidad_profesional, profesional.descripcion_profesional, profesional.fecha_ingreso_profesional, profesional.activo_profesional, profesional.imagen_profesional)}><img src={iconoLapiz} width={'22px'}/></Button>
+                                            <div className='div-botones-editar-profesionales'>
+                                                <Button variant = 'warning' style={{width : '80px'}} onClick={()=> handleClickEditar(profesional.profesional_id,profesional.nombre_profesional, profesional.apellido_profesional, profesional.especialidad_profesional, profesional.descripcion_profesional, profesional.activo_profesional, profesional.imagen_profesional)}><img src={iconoLapiz} width={'22px'}/></Button>
                                                 <Button variant =  'danger' style={{width : '80px'}} onClick={()=> {handleClickEliminar(profesional.profesional_id)}}><img src={iconoBasura} width={'22px'}/></Button>
                                             </div>
                                         </td>
@@ -239,11 +233,6 @@ export const Profesionales = () => {
                         <Form.Group>
                             <Form.Label>Imagen</Form.Label>
                             <Form.Control value={imagen_profesional} onChange={(e)=>{setImagenProfesional(e.target.value)}}/>
-                        </Form.Group>
-
-                        <Form.Group>
-                            <Form.Label>Fecha de ingreso</Form.Label>
-                            <Form.Control type='date' value = {fecha_ingreso_profesional} onChange={(e)=>{setFechaIngreso(e.target.value);}}/>
                         </Form.Group>
 
                         <Form.Group>
@@ -292,14 +281,6 @@ export const Profesionales = () => {
                 <Form.Group>
                     <Form.Label>Imagen</Form.Label>
                     <Form.Control type='url'onChange={(e)=> setImagenProfesional(e.target.value)}/>
-                </Form.Group>
-
-                <Form.Group>
-                    <Form.Label>Fecha de registro</Form.Label>
-                    <Form.Control value={fecha_ingreso_profesional} type='date' onChange={(e)=>{
-                        const fechaFormateada = new Date(e.target.value).toISOString().split("T")[0];
-                        setFechaIngreso(fechaFormateada);
-                    }}/>
                 </Form.Group>
 
                 <Form.Group>

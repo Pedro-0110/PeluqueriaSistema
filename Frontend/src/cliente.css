@@ -1,0 +1,9 @@
+body{
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #000000, #0d1b2a, #2575fc, #1e2022, #6a11cb);
+  background-size: 300% 300%;
+  animation: gradientAnimation 8s ease infinite;
+  color: white;
+
+}

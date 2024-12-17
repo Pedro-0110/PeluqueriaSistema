@@ -1,18 +1,12 @@
-body{
-  background: linear-gradient(to bottom, #1a237e, #4257df, #3849fd);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed; 
+
+
+html{
+  user-select: none; /* Bloquea la selección de texto */
+            -webkit-user-select: none; /* Soporte para navegadores basados en WebKit */
+            -ms-user-select: none; /* Soporte para navegadores antiguos de Microsoft */
 }
 
- body{
-   background: linear-gradient(to bottom, #000000,  #4a4d4a, #f7f7f7);
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed; 
-  } 
+
 
 /*-------------------------------------------------------------------------------------------------------------------------------------*/
 .navegacion-administrador{
@@ -23,6 +17,7 @@ body{
   justify-content: space-between; /* Distribuye los elementos proporcionalmente */
   height: 100vh; /* Altura total de la columna, ajustable según tus necesidades */
   margin-top: 1rem;
+  position: sticky;
 }
 
 .navegacion-administrador a{
@@ -38,7 +33,7 @@ body{
     padding: 0.5rem;
     background-color: #ffffff;
     color: black;
-    border-radius: 10px;
+    border-radius: 25px;
     list-style-type: none;
 }
 
@@ -59,7 +54,7 @@ body{
     justify-content: center;
     justify-content: space-evenly;
     border: 0;
-    border-radius: 10px;
+    border-radius: 25px;
     margin: 1rem;   
 }
 
@@ -79,7 +74,7 @@ body{
   padding: 1rem;
   background-color: #000000;
   color: white;
-  border-radius: 10px;
+  border-radius: 25px;
   margin-right: 1rem;
 }
 
@@ -95,8 +90,16 @@ body{
   background-color: #000000!important;
 }
 
-.contenedor-tabla img{
-  width: 22px;
+.contenedor-tabla-imagenes img{
+  border-radius: 100%;
+  width: 50px;
+  height: 50px;
+}
+
+.contenedor-tabla table img{
+  width: 30px;
+  height: 20px;
+  
 }
 
 .contenedor-tabla{
@@ -112,7 +115,7 @@ body{
 
 
 .div-botones-editar img{
-  width: 22px;
+  width: 12px !important;
 }
 
 .div-botones-editar{
@@ -121,12 +124,43 @@ body{
 }
 
 .div-botones-editar button{
-  width: 80px;
   margin-top: 1rem;
+  width: 100px;
+  height: 36px;
 }
 
-.div-botones-editar button img{
-  width: 24px;
+.div-botones-editar-galeria{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+
+
+.div-botones-editar-galeria button{
+  width: 5vw;
+  height: 4vh;
+}
+
+.div-botones-editar-galeria img{
+  width: 1vw;
+  height: 2vh;
+}
+
+.div-botones-editar-profesionales{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+
+.div-botones-editar-profesionales button{
+  width: 8vw;
+  height: 4vh;
+}
+
+
+.div-botones-editar-profesionales img{
+  width: 2vw;
+  height: 2vh;
 }
 
 
@@ -144,7 +178,7 @@ body{
   padding: 1rem;
   background-color: #000000;
   color: white;
-  border-radius: 10px;
+  border-radius: 25px;
 }
 
 
@@ -280,13 +314,13 @@ body{
 /* Fondo de la barra de scroll */
 ::-webkit-scrollbar-track {
   background: #f0f0f0;
-  border-radius: 10px;
+  border-radius: 25px;
 }
 
 /* Color de la barra */
 ::-webkit-scrollbar-thumb {
   background: #888;
-  border-radius: 10px;
+  border-radius: 25px;
 }
 
 /* Color cuando el mouse está sobre la barra */
@@ -297,11 +331,13 @@ body{
 .contenedor-botones-navbar a{
   width: 15vw;
   padding: 0.5rem;
-  border-radius: 10px;
+  border-radius: 25px;
   text-align: center;
   text-decoration: none;
   font-size: 16px;
   font-weight: bold;
+  background-color: #ffffff;
+  color: black;
 }
 .contenedor-botones-navbar{
   display: flex;
@@ -332,7 +368,7 @@ body{
 .contenedor-profesionales h2{
   padding: 0.5rem;
  
-  border-radius: 10px;
+  border-radius: 25px;
   width: 26.6vw;
   background-color: #000000;
   color: white;
@@ -341,38 +377,39 @@ body{
 
 
 .contenedor-servicios{
-  width: 26.6vw;
+  width: 25.5vw;
+  margin-right: 1rem;
 
 }
 
 .contenedor-servicios h2{
   padding: 0.5rem;
  
-  border-radius: 10px;
-  width: 26.6vw;
+  border-radius: 25px;
+  width: 25.5vw;
   background-color: #000000;
   color: white;
 }
 
 .contenedor-horarios{
 
-  width: 26.6vw;
+  width: 25.5vw;
   color: #000000;
 }
 
 .contenedor-horarios h2{
   padding: 0.5rem;
  
-  border-radius: 10px;
-  width: 26.6vw;
+  border-radius:  25px;
+  width: 25.5vw;
   background-color: #000000;
   color: white;
 }
 
 .contenedor-horarios button{
   margin-top: 1rem;
-  width: 26.6vw;
-  background-color: #ddd900;
+  width: 25.5vw;
+  background-color:  white;
   color: rgb(0, 0, 0);
   font-size: 22px;
 }
@@ -386,8 +423,8 @@ body{
 .contenedor-trabajos-realizados h2{
   padding: 0.5rem;
  
-  border-radius: 10px;
-  width: 30vw;
+  border-radius:  25px;
+  width: 40vw;
   background-color: #000000;
   color: white;
 }
@@ -395,7 +432,7 @@ body{
 .contenedor-trabajos-realizados
 {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   margin-top: 3rem ;
 }
 
@@ -407,20 +444,21 @@ body{
 
 .logo-navbar{
   margin-top: 1rem;
-  width: 22vw !important;
+  width: 16vw !important;
   height: 16vh !important;
   margin-left: auto;
   margin-right: auto;
-  border-radius: 10px;
+  border-radius: 100%;
 }
 
 .logo-navbar img{
-  width: 22vw !important;
+  width: 16vw !important;
   height: 16vh !important;
   box-shadow: inset;
   height: auto;
-  box-shadow: 10px 10px 20px rgb(43, 0, 199); /* Sombra */
+  box-shadow: 5px 5px 10px #0e2036; /* Sombra */
   border-radius: 10px;
+  padding: 0.2rem;
 }
 
 
@@ -454,7 +492,7 @@ body{
   margin-left: auto;
   margin-right: auto;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 .contenedor-datos-profesional h2{
@@ -462,14 +500,12 @@ body{
 }
 
 .reseñas{
-  width: 80vw;
+  width: 55vw;
 
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .reseñas{
-  height: 30vh;
+  height: 20vh;
   overflow-y: auto; 
 
 }
@@ -512,8 +548,9 @@ body{
 }
 
 .form-reseña{
-  width: 40vw;
-  margin-left: 10vw;
+  width: 80vw;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 2rem;
 }
 .form-reseña button{
@@ -608,9 +645,8 @@ body{
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background-color: #0099ff;
+  background-color: #000000;
   border: none;
- 
   font-size: 30px;
   cursor: pointer;
   border-radius: 100%;
@@ -621,33 +657,33 @@ body{
 }
 
 .arrow.left {
-  left: 10px;
+  left: 20px;
 }
 
 .arrow.right {
-  right: 10px;
+  right: 20px;
 }
 
 
 .horarios{
   display: flex;
   justify-content: space-evenly;
-  width: 26.6vw;
+  width: 25.5vw;
 }
 
 .horarios h3{
   text-align: center;
-  width: 13.3vw;
+  width: 12.5vw;
   background-color: #fcfcfc;
   color: rgb(0, 0, 0);
   border-radius: 10px;
 }
 
 .dia{
-  width: 13.3vw;
+  width: 12.5vw;
 }
 .tarde{
-  width: 13.3vw;
+  width: 12.5vw;
 }
 
 
@@ -657,8 +693,8 @@ body{
   margin-left: auto;
   margin-right: auto;
   background-color: #000000;
-  margin-top: 3rem;
-  border-radius: 10px;
+  border-radius: 25px;
+  margin-top: 2rem;
 }
 
 .ubicacion{
@@ -727,13 +763,14 @@ body{
   width: 80vw;
   margin-left: auto;
   margin-right: auto;
+  height: 30vh;
 }
 
 .contenedor-reseñas h2{
   padding: 0.5rem;
- 
-  border-radius: 10px;
-  width: 30vw;
+
+  border-radius: 25px;
+  width: 40vw;
   background-color: #000000;
   color: white;
 }
@@ -747,15 +784,15 @@ body{
 
 .contenedor-descuentos img{
   width: 100%;
-  border-radius: 10px;
+  border-radius: 25px;
 }
 
 .contenedor-descuentos h2{
-  width: 20vw;
+  width: 40vw;
   padding: 0.5rem;
   color: white;
   background-color: #000000;
-  border-radius: 10px;
+  border-radius: 25px;
   margin-left: 0.5rem;
 }
 
@@ -859,14 +896,29 @@ body{
 }
 
 .reserva-profesional{
-  display: flex;
+  width: 18vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.reserva-profesional h2{
+  text-align: center;
+}
+
+.reserva-profesional h4{
+  text-align: center;
+}
+.reserva-profesional img{
   width: 8vw;
   margin-left: auto;
   margin-right: auto;
 }
 
-.reserva-profesional img{
+.imagen-profesional-reserva{
   width: 8vw;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2rem;
 }
 
 
@@ -926,6 +978,12 @@ body{
   justify-content: space-evenly;
 }
 
+.botones-video button{
+  width: 5vw;
+  font-size: 20px;
+  font-weight: bolder;
+}
+
 
 .div-botones-editar{}
 
@@ -958,9 +1016,6 @@ body{
   background-color: #000000!important;
 }
 
-.contenedor-tabla-imagenes img{
-  width: 22px;
-}
 
 .contenedor-tabla-imagenes{
   height: 30vh;
@@ -977,8 +1032,9 @@ body{
   background-color: #000000!important;
 }
 
-.contenedor-tabla-videos img{
-  width: 22px;
+.contenedor-tabla-videos video{
+  width: 150px;
+  height: 180px;
 }
 
 .contenedor-tabla-videos{
@@ -1018,3 +1074,33 @@ contenedor-reseñas
 .horarios
 .logo-navbar
 navegacion-administrador
+form-reseña
+.contenedor-trabajos-realizados
+botones-video
+carousel-container
+reseñas
+contenedor-botones-navbar
+.contenedor-redes
+.logo-navbar
+
+.reseñas
+contenedor-tabla-imagenes
+contenedor-tabla
+contenedor-tabla-imagenes
+div-botones-editar
+reserva-profesional
+.datos-reserva
+
+.boton-iniciar-sesion{
+  width: 100%;
+}
+
+.boton-iniciar-sesion button{
+  display: block;
+  margin-top: 1rem;
+  width: 8vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contenedor-tabla

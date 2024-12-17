@@ -1,4 +1,5 @@
 import './App.css'
+import './cliente.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { NavbarAdministrados } from './Components/NavbarAdministrados';
 import { Galeria } from './pages/Galeria';

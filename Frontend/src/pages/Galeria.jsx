@@ -2,6 +2,7 @@ import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import Image from 'react-bootstrap/Image';
 
 import axios from 'axios'
 import Swal from 'sweetalert2';
@@ -19,10 +20,9 @@ export const Galeria = () => {
     const[profesionales,setProfesionales] = useState([])
     const[loading, setLoading] = useState(false);
     const[imagen_id, setImagenID] = useState("")
-    const[profesional_id, setProfesionalID] = useState("")
+    const[profesional_id, setProfesionalID] = useState(1)
     const[url_imagen, setUrlImagen] = useState("")
     const[descripcion_imagen, setDescripcion] = useState("")
-    const[fecha_subida_imagen, setFechaSubida] = useState("")
     const[showImagen, setShowImagen] = useState(false);
     const[imagen, setImagen] = useState("")
     const[show, setShow] = useState(false)
@@ -42,14 +42,12 @@ export const Galeria = () => {
         setProfesionales(response.data)
     }
 
-    const handleClickEditar = (imagen_id,profesional_id, url_imagen, descripcion_imagen, fecha_subida_imagen) =>{
+    const handleClickEditar = (imagen_id,profesional_id, url_imagen, descripcion_imagen) =>{
         setEditar(true)
         setImagenID(imagen_id)
         setProfesionalID(profesional_id)
         setUrlImagen(url_imagen)
         setDescripcion(descripcion_imagen)
-        const fechaFormateada = new Date(fecha_subida_imagen).toISOString().split("T")[0];
-        setFechaSubida(fechaFormateada);
     }
 
     const handleClickEliminar = async (imagen_id) => {
@@ -97,8 +95,7 @@ export const Galeria = () => {
             const response = await axios.put("http://localhost:8000/imagenes/" + imagen_id,{
                 profesional_id,
                 url_imagen,
-                descripcion_imagen,
-                fecha_subida_imagen
+                descripcion_imagen
             })
 
             if(response.status == 200){
@@ -123,8 +120,7 @@ export const Galeria = () => {
         const response = await axios.post("http://localhost:8000/imagenes/",{
             profesional_id,
             url_imagen,
-            descripcion_imagen,
-            fecha_subida_imagen
+            descripcion_imagen
         })
         if(response.status == 201){
             limpiarCampos()
@@ -160,11 +156,10 @@ export const Galeria = () => {
     setProfesionalID("")
     setUrlImagen("")
     setDescripcion("")
-    setFechaSubida("")
     }
 
     const verificarLlenadoDeCampos = () =>{
-        if(url_imagen != "" && descripcion_imagen != "" && profesional_id != "" && fecha_subida_imagen != ""){
+        if(url_imagen != "" && descripcion_imagen != "" && profesional_id != ""){
             return true
         }
     }
@@ -178,7 +173,6 @@ export const Galeria = () => {
     const[video_id, setVideoID] = useState("")
     const[url_video, setUrlVideo] = useState("")
     const[descripcion_video, setDescripcionVideo] = useState("")
-    const[fecha_subida_video, setFechaSubidaVideo] = useState("")
     const[showVideo, setShowVideo] = useState(false)
     const[video, setVideo] = useState("")
     const[showAgregarVideo, setShowAgregarVideo] = useState(false)
@@ -195,14 +189,12 @@ export const Galeria = () => {
     }
 
 
-    const handleClickEditarVideo = (video_id,profesional_id, url_video, descripcion_video, fecha_subida_video) =>{
+    const handleClickEditarVideo = (video_id,profesional_id, url_video, descripcion_video) =>{
         setEditarVideo(true)
         setVideoID(video_id)
         setProfesionalID(profesional_id)
         setUrlVideo(url_video)
         setDescripcionVideo(descripcion_video)
-        const fechaFormateada = new Date(fecha_subida_video).toISOString().split("T")[0];
-        setFechaSubidaVideo(fechaFormateada);
     }
 
     const handleClickEliminarVideo = async (video_id) => {
@@ -250,8 +242,7 @@ export const Galeria = () => {
             const response = await axios.put("http://localhost:8000/videos/" + video_id,{
                 profesional_id,
                 url_video,
-                descripcion_video,
-                fecha_subida_video
+                descripcion_video
             })
 
             if(response.status == 200){
@@ -276,8 +267,7 @@ export const Galeria = () => {
         const response = await axios.post("http://localhost:8000/videos/",{
             profesional_id,
             url_video,
-            descripcion_video,
-            fecha_subida_video
+            descripcion_video
         })
         if(response.status == 201){
             limpiarCamposVideos()
@@ -298,26 +288,15 @@ export const Galeria = () => {
 }
 
 
-    const handleClickVerVideo= async (video_id) =>{
-        setLoading(true)
-        const response = await axios.get(`http://localhost:8000/videos/${video_id}`)
-        if(response.status === 200){
-            setVideo(response.data[0])
-            setShowVideo(true)
-        }
-        setLoading(false)
-    }
-
     const limpiarCamposVideos = () => {
     setVideoID("")
     setProfesionalID("")
     setUrlVideo("")
     setDescripcionVideo("")
-    setFechaSubidaVideo("")
     }
 
     const verificarLlenadoDeCamposVideos = () =>{
-        if(url_video != "" && descripcion_video != "" && profesional_id != "" && fecha_subida_video != ""){
+        if(url_video != "" && descripcion_video != "" && profesional_id != ""){
             return true
         }
     }
@@ -349,7 +328,7 @@ export const Galeria = () => {
                                         <td>Img</td>
                                         <td>Descripcion</td>
                                         <td>Profesional</td>
-                                        <td>Fecha de subida</td>
+                                        <td>Fecha subida</td>
                                         <td>Opciones</td>
                                     </tr>
                                 </thead>
@@ -357,15 +336,16 @@ export const Galeria = () => {
                                 <tbody>
                                     {!loading && imagenes.length > 0 && imagenes.map((imagen,index) => 
                                         <tr key={index}>
-                                            <td style={{ textAlign: 'center'}}><img src={imagen.url_imagen} alt="" width={'60px'} /></td>
+                                            <td><Image  src={imagen.url_imagen}  width={'200px'}/></td>
+                                          
                                             <td>{imagen.descripcion_imagen}</td>
                                             <td>{imagen.nombre_profesional} {imagen.apellido_profesional}</td>
-                                            <td>{ new Date(imagen.fecha_subida_imagen).getDay()}/{ new Date(imagen.fecha_subida_imagen).getMonth()}/{ new Date(imagen.fecha_subida_imagen).getFullYear()}</td>
+                                            <td>{new Date(imagen.fecha_subida_imagen).toLocaleDateString('es-AR', { year: '2-digit', month: '2-digit', day: '2-digit' })}</td>
                                             <td>
-                                                <div className='div-botones-editar'>
-                                                    <Button variant='info' style={{width : '80px'}} onClick={()=>{handleClickVerImagen(imagen.imagen_id)}}><img src= {iconoVer} width={'22px'}/></Button>
-                                                    <Button variant='warning' style={{width : '80px'}} onClick={()=>{handleClickEditar(imagen.imagen_id, imagen.profesional_id, imagen.url_imagen, imagen.descripcion_imagen, imagen.fecha_subida_imagen)}}><img src= {iconoLapiz} width={'22px'}/></Button>
-                                                    <Button variant='danger' style={{width : '80px'}} onClick={()=>{handleClickEliminar(imagen.imagen_id)}}><img src= {iconoBasura} width={'22px'}/></Button>
+                                                <div className='div-botones-editar-galeria'>
+                                                    <Button variant='info' id='botones-tabla-imagenes' onClick={()=>{handleClickVerImagen(imagen.imagen_id)}}><img src= {iconoVer} width={'22px'}/></Button>
+                                                    <Button variant='warning' id='botones-tabla-imagenes' onClick={()=>{handleClickEditar(imagen.imagen_id, imagen.profesional_id, imagen.url_imagen, imagen.descripcion_imagen, imagen.fecha_subida_imagen)}}><img src= {iconoLapiz} width={'22px'}/></Button>
+                                                    <Button variant='danger' id='botones-tabla-imagenes' onClick={()=>{handleClickEliminar(imagen.imagen_id)}}><img src= {iconoBasura} width={'22px'}/></Button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -400,14 +380,6 @@ export const Galeria = () => {
                                 <option key={index} value={profesional.profesional_id}>{profesional.nombre_profesional} {profesional.apellido_profesional}</option>
                                 )}
                             </Form.Select>
-                        </Form.Group>
-
-                        <Form.Group>
-                            <Form.Label>Fecha subida</Form.Label>
-                            <Form.Control value={fecha_subida_imagen} type='date' onChange={(e)=>{
-                                const fechaFormateada = new Date(e.target.value).toISOString().split("T")[0];
-                                setFechaSubida(fechaFormateada);
-                                 }}/>
                         </Form.Group>
                     </Form>
 
@@ -444,14 +416,6 @@ export const Galeria = () => {
                             <option key={index} value={profesional.profesional_id}>{profesional.nombre_profesional} {profesional.apellido_profesional}</option>
                             )}
                         </Form.Select>
-                    </Form.Group>
-
-                    <Form.Group>
-                        <Form.Label>Fecha subida</Form.Label>
-                        <Form.Control type = 'date' onChange={(e)=>{
-                            const fechaFormateada = new Date(e.target.value).toISOString().split("T")[0];
-                            setFechaSubida(fechaFormateada);
-                            }} value={fecha_subida_imagen}/>
                     </Form.Group>
                  </Form>
             </Modal.Body>
@@ -496,7 +460,7 @@ export const Galeria = () => {
                                         <td>Video</td>
                                         <td>Descripcion</td>
                                         <td>Profesional</td>
-                                        <td>Fecha de subida</td>
+                                        <td>Fecha subida</td>
                                         <td>Opciones</td>
                                     </tr>
                                 </thead>
@@ -507,11 +471,11 @@ export const Galeria = () => {
                                             <td style={{ textAlign: 'center'}}><video src={video.url_video} alt="" width={'60px'} controls /></td>
                                             <td>{video.descripcion_video}</td>
                                             <td>{video.nombre_profesional} {video.apellido_profesional}</td>
-                                            <td>{ new Date(video.fecha_subida_video).getDay()}/{ new Date(video.fecha_subida_video).getMonth()}/{ new Date(video.fecha_subida_video).getFullYear()}</td>
+                                            <td>{new Date(video.fecha_subida_video).toLocaleDateString('es-AR', { year: '2-digit', month: '2-digit', day: '2-digit' })}</td>
                                             <td>
                                                 <div className='div-botones-editar'>
-                                                    <Button variant='info' style={{width : '80px'}} onClick={()=>{handleClickVerVideo(video.video_id)}}><img src= {iconoVer} width={'22px'}/></Button>
-                                                    <Button variant='warning' style={{width : '80px'}} onClick={()=>{handleClickEditarVideo(video.video_id, video.profesional_id, video.url_video, video.descripcion_video, video.fecha_subida_video)}}><img src= {iconoLapiz} width={'22px'}/></Button>
+                                                    
+                                                    <Button variant='warning' style={{width : '80px'}} onClick={()=>{handleClickEditarVideo(video.video_id, video.profesional_id, video.url_video, video.descripcion_video)}}><img src= {iconoLapiz} width={'22px'}/></Button>
                                                     <Button variant='danger' style={{width : '80px'}} onClick={()=>{handleClickEliminarVideo(video.video_id)}}><img src= {iconoBasura} width={'22px'}/></Button>
                                                 </div>
                                             </td>
@@ -547,14 +511,6 @@ export const Galeria = () => {
                                 <option key={index} value={profesional.profesional_id}>{profesional.nombre_profesional} {profesional.apellido_profesional}</option>
                                 )}
                             </Form.Select>
-                        </Form.Group>
-
-                        <Form.Group>
-                            <Form.Label>Fecha subida</Form.Label>
-                            <Form.Control value={fecha_subida_video} type='date' onChange={(e)=>{
-                                const fechaFormateada = new Date(e.target.value).toISOString().split("T")[0];
-                                setFechaSubidaVideo(fechaFormateada);
-                                 }}/>
                         </Form.Group>
                     </Form>
 
@@ -592,14 +548,6 @@ export const Galeria = () => {
                             <option key={index} value={profesional.profesional_id}>{profesional.nombre_profesional} {profesional.apellido_profesional}</option>
                             )}
                         </Form.Select>
-                    </Form.Group>
-
-                    <Form.Group>
-                        <Form.Label>Fecha subida</Form.Label>
-                        <Form.Control type = 'date' onChange={(e)=>{
-                            const fechaFormateada = new Date(e.target.value).toISOString().split("T")[0];
-                            setFechaSubidaVideo(fechaFormateada);
-                            }} value={fecha_subida_video}/>
                     </Form.Group>
                  </Form>
             </Modal.Body>

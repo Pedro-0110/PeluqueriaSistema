@@ -1,8 +1,8 @@
 const pool = require("../Config/conexionbd");
 
 const obtenerUsuarios = (req, res) => {
-  const query = `select u.usuario_id, u.nombre_usuario, u.apellido_usuario, u.email_usuario, u.telefono_usuario, u.direccion_usuario, u.username_usuario, 
-                 u.fecha_registro_usuario, r.nombre as rol from Usuarios as u
+  const query = `select u.usuario_id, u.nombre_usuario, u.apellido_usuario, u.telefono_usuario, u.username_usuario, 
+                 u.fecha_registro_usuario, r.nombre, u.password_usuario, r.nombre as rol from Usuarios as u
                  inner join Roles as r
                  on u.rol_id = r.rol_id;`;
 
@@ -18,7 +18,7 @@ const obtenerUsuarios = (req, res) => {
 
 const obtenerUsuario = (req, res) => {
   const { id } = req.params;
-  const query = `select u.usuario_id, u.nombre_usuario, u.apellido_usuario, u.email_usuario, u.telefono_usuario, u.direccion_usuario, u.username_usuario, 
+  const query = `select u.usuario_id, u.nombre_usuario, u.apellido_usuario, u.telefono_usuario, u.username_usuario, 
                  u.fecha_registro_usuario, r.nombre as rol from Usuarios as u
                  inner join Roles as r
                  on u.rol_id = r.rol_id
@@ -35,11 +35,11 @@ const obtenerUsuario = (req, res) => {
 
 
 const crearUsuario = (req, res) => {
-  const { nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, direccion_usuario, username_usuario, password_usuario, rol_id, fecha_registro_usuario } = req.body;
-  const query = `insert into Usuarios (nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, direccion_usuario, username_usuario, password_usuario, rol_id, fecha_registro_usuario)
-                 values (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+  const { nombre_usuario, apellido_usuario, telefono_usuario, username_usuario, password_usuario, rol_id} = req.body;
+  const query = `insert into Usuarios (nombre_usuario, apellido_usuario, telefono_usuario, username_usuario, password_usuario, rol_id)
+                 values (?, ?, ?, ?, ?, ?);`;
 
-  pool.query(query, [nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, direccion_usuario, username_usuario, password_usuario, rol_id, fecha_registro_usuario], (error, result) => {
+  pool.query(query, [nombre_usuario, apellido_usuario, telefono_usuario, username_usuario, password_usuario, rol_id], (error, result) => {
     if (error) {
       console.error(error);
       return res.status(500).send("Error al crear el usuario");
@@ -51,11 +51,11 @@ const crearUsuario = (req, res) => {
 
 const editarUsuario = (req, res) => {
   const { id } = req.params;
-  const { nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, direccion_usuario, username_usuario, password_usuario, rol_id, fecha_registro_usuario } = req.body;
-  const query = `update Usuarios set nombre_usuario = ?, apellido_usuario = ?, email_usuario = ?, telefono_usuario = ?, direccion_usuario = ?, username_usuario = ?,
-                 password_usuario = ?, rol_id = ?, fecha_registro_usuario = ? where usuario_id = ?`;
+  const { nombre_usuario, apellido_usuario, telefono_usuario, username_usuario, password_usuario, rol_id } = req.body;
+  const query = `update Usuarios set nombre_usuario = ?, apellido_usuario = ?, telefono_usuario = ?, username_usuario = ?,
+                 password_usuario = ?, rol_id = ? where usuario_id = ?`;
 
-  pool.query(query, [nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, direccion_usuario, username_usuario, password_usuario, rol_id, fecha_registro_usuario, id], (error, result) => {
+  pool.query(query, [nombre_usuario, apellido_usuario, telefono_usuario, username_usuario, password_usuario, rol_id, id], (error, result) => {
     if (error) {
       console.error(error);
       return res.status(500).send("Error al editar el usuario");
@@ -120,8 +120,7 @@ const buscarUsuarioPorPatrones = (req, res) => {
   // Construir patrones de búsqueda con los comodines
   const nombrePatron = `%${nombre.toUpperCase()}%`;
   const apellidoPatron = `%${apellido.toUpperCase()}%`;
-  const query = `SELECT u.usuario_id, u.nombre_usuario, u.apellido_usuario, u.email_usuario, u.telefono_usuario, 
-                 u.direccion_usuario, u.username_usuario, u.fecha_registro_usuario, r.nombre AS rol
+  const query = `SELECT u.usuario_id, u.nombre_usuario, u.apellido_usuario, u.telefono_usuario, u.username_usuario, r.nombre AS rol
                  FROM Usuarios AS u
                  INNER JOIN Roles AS r
                  ON u.rol_id = r.rol_id
@@ -136,6 +135,20 @@ const buscarUsuarioPorPatrones = (req, res) => {
   });
 };
 
+const iniciarSesion = (req,res)=>{
+  const {username_usuario, password_usuario} = req.body
+  const query = `select count(*) as valor, u.usuario_id from Usuarios as u
+                 inner join Roles as r
+                 on u.rol_id = r.rol_id
+                 where r.nombre = 'Cliente' and u.username_usuario = ? and u.password_usuario = ?;`
+  pool.query(query,[username_usuario, password_usuario],(error,result)=>{
+    if(error){
+      return res.status(500).send("Error al obtener el usuario!")
+    }
+    res.status(200).json(result)
+  })
+}
+
 
 module.exports = {
   obtenerUsuarios,
@@ -145,5 +158,6 @@ module.exports = {
   eliminarUsuario,
   obtenerAdministradores,
   obtenerAdministrador,
-  buscarUsuarioPorPatrones
+  buscarUsuarioPorPatrones,
+  iniciarSesion
 };

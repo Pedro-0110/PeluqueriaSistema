@@ -1,11 +1,15 @@
 const pool = require('../Config/conexionbd');
 
 const obtenerCitas = (req, res) => {
-    const query = `SELECT * FROM Citas AS c
-                   INNER JOIN Usuarios AS u ON c.usuario_id = u.usuario_id
-                   INNER JOIN Profesionales AS p ON c.profesional_id = p.profesional_id
-                   INNER JOIN Servicios AS s ON c.servicio_id = s.servicio_id
-                   order by c.fecha_cita desc
+    const query = `SELECT c.cita_id, c.fecha_cita, c.estado_cita, c.fecha_realizada_reserva,
+                    p.profesional_id, p.nombre_profesional, p.apellido_profesional, 
+                    u.usuario_id, u.nombre_usuario, u.apellido_usuario, 
+                    s.nombre_servicio  
+                    FROM Citas AS c
+                    INNER JOIN Usuarios AS u ON c.usuario_id = u.usuario_id
+                    INNER JOIN Profesionales AS p ON c.profesional_id = p.profesional_id
+                    INNER JOIN Servicios AS s ON c.servicio_id = s.servicio_id
+                    ORDER BY DATE(c.fecha_cita) = DATE(NOW()) DESC, c.fecha_cita ASC
                    ;`;
 
     pool.query(query, (error, result) => {
@@ -113,19 +117,18 @@ const confirmarCita = (req,res) =>{
 const busquedaCitas = (req, res) =>{
     const {nombre_apellido} = req.params
     const valorNombreApellido = `%${nombre_apellido.toUpperCase()}%`
-    const query = `select * from Citas as c
+    const query = ` select c.cita_id, c.fecha_cita, c.estado_cita, p.nombre_profesional, p.apellido_profesional, u.nombre_usuario, u.apellido_usuario, s.nombre_servicio 
+                   from Citas as c
                    inner join Usuarios as u
                    on c.usuario_id = u.usuario_id
                    inner join Profesionales as p
                    on c.profesional_id = p.profesional_id
                    inner join Servicios as s
                    on c.servicio_id = s.servicio_id
-                   where upper(p.nombre_profesional) like ?
-                   or upper(p.apellido_profesional) like ?
-                   or upper(u.nombre_usuario) like ?
-                   or upper(u.apellido_usuario) like ?;`
+                   where  u.nombre_usuario like ?
+                   or u.apellido_usuario like ?;`
 
-    pool.query(query,[valorNombreApellido,valorNombreApellido,valorNombreApellido,valorNombreApellido],(error,result)=>{
+    pool.query(query,[valorNombreApellido,valorNombreApellido],(error,result)=>{
                         if(error){
                             return res.status(500).send('Error al realizar la busqueda de Citas')
                         }

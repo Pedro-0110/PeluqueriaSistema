@@ -9,13 +9,14 @@ CREATE TABLE Roles (
 insert into Roles (nombre) values ('Administrador');
 insert into Roles (nombre) values ('Cliente');
 
+
 CREATE TABLE Profesionales (
     profesional_id INT PRIMARY KEY AUTO_INCREMENT,
     nombre_profesional VARCHAR(100) NOT NULL,
     apellido_profesional VARCHAR(100) NOT NULL,
     especialidad_profesional VARCHAR(100),
     descripcion_profesional TEXT,
-    fecha_ingreso_profesional DATE,
+    fecha_registro_profesional TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     activo_profesional BOOLEAN DEFAULT TRUE,
     imagen_profesional varchar(500) default 'sin agregar'
 );
@@ -27,9 +28,7 @@ CREATE TABLE Usuarios (
     usuario_id INT PRIMARY KEY AUTO_INCREMENT,
     nombre_usuario VARCHAR(100) NOT NULL,
     apellido_usuario VARCHAR(100) NOT NULL,
-    email_usuario VARCHAR(100) UNIQUE NOT NULL,
     telefono_usuario VARCHAR(20),
-    direccion_usuario VARCHAR(255),
     username_usuario VARCHAR(50) UNIQUE NOT NULL,
     password_usuario VARCHAR(255) NOT NULL, -- Almacenada como hash
     rol_id INT NOT NULL,
@@ -38,6 +37,12 @@ CREATE TABLE Usuarios (
     on delete restrict
     on update cascade);
     
+    
+    select count(*) from Usuarios as u
+                 inner join Roles as r
+                 on u.rol_id = r.rol_id
+                 where r.nombre = 'Cliente' and u.username_usuario = 'cliente4' and u.password_usuario = 'hashed_password_admin';
+
     -- Insertar usuario administrador (rol_id = 1)
 INSERT INTO Usuarios (nombre_usuario, apellido_usuario, email_usuario, telefono_usuario, direccion_usuario, username_usuario, password_usuario, rol_id)
 VALUES('Admin', 'Principal', 'admin@example.com', '123456789', 'Calle Ficticia 123', 'admin', 'hashed_password_admin', 1);
@@ -71,6 +76,15 @@ CREATE TABLE Profesionales_Servicios (
     
     insert into Profesionales_Servicios (profesional_id,servicio_id) values (1,1);
     insert into Profesionales_Servicios (profesional_id,servicio_id) values (1,2);
+    
+    select * from Profesionales_Servicios;
+    
+    select * from Profesionales_Servicios as ps
+                   inner join Profesionales as p
+                   on ps.profesional_id = p.profesional_id
+                   inner join Servicios as s
+                   on ps.servicio_id = s.servicio_id
+                   where ps.profesional_id = 2;
 
 CREATE TABLE Citas (
     cita_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -80,6 +94,7 @@ CREATE TABLE Citas (
     fecha_cita DATETIME NOT NULL,
     estado_cita ENUM('Pendiente', 'Confirmada', 'Cancelada', 'Completada') DEFAULT 'Pendiente',
     nota varchar(150) default 'sin agregar',
+    fecha_realizada_reserva TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES Usuarios(usuario_id),
     FOREIGN KEY (profesional_id) REFERENCES Profesionales(profesional_id),
     FOREIGN KEY (servicio_id) REFERENCES Servicios(servicio_id)
@@ -201,6 +216,7 @@ CREATE TABLE Videos (
 select * from Videos;
 
 
+
 CREATE TABLE Reseñas (
     reseña_id INT PRIMARY KEY AUTO_INCREMENT,
     usuario_id INT NOT NULL,
@@ -214,6 +230,17 @@ CREATE TABLE Reseñas (
     on update cascade
 );
 
+select * from Usuarios where usuario_id = 5 ;
+
+select count(*) as valor, u.usuario_id from Usuarios as u
+                 inner join Roles as r
+                 on u.rol_id = r.rol_id
+                 where r.nombre = 'Cliente' and u.username_usuario = 'cliente4' and u.password_usuario = 'hashed_password_admin';
+
+insert into Reseñas (usuario_id, profesional_id, comentario, puntuacion) values(1, 2, 'Buenardo', 5);
+insert into Reseñas (usuario_id, profesional_id, comentario, puntuacion) values(2, 2, 'Buenardo', 5);
+insert into Reseñas (usuario_id, profesional_id, comentario, puntuacion) values(3, 2, 'Buenardo', 5);
+insert into Reseñas (usuario_id, profesional_id, comentario, puntuacion) values(4, 2, 'Buenardo', 5);
 SELECT DISTINCT h.hora_inicio, h.hora_fin
 FROM HorariosDisponibles h
 LEFT JOIN Citas c
@@ -237,3 +264,55 @@ select * from Usuarios;
 
 select count(estado_cita) as cantidadCitasPendientes from Citas where estado_cita = 'Pendiente' and usuario_id = 4;
 
+SELECT c.cita_id, c.fecha_cita, c.estado_cita, p.nombre_profesional, p.apellido_profesional, u.nombre_usuario, u.apellido_usuario, s.nombre_servicio  FROM Citas AS c
+                   INNER JOIN Usuarios AS u ON c.usuario_id = u.usuario_id
+                   INNER JOIN Profesionales AS p ON c.profesional_id = p.profesional_id
+                   INNER JOIN Servicios AS s ON c.servicio_id = s.servicio_id
+                   order by c.fecha_cita desc
+                   ;
+                   
+                   
+                   select c.cita_id, c.fecha_cita, c.estado_cita, p.nombre_profesional, p.apellido_profesional, u.nombre_usuario, u.apellido_usuario, s.nombre_servicio 
+                   from Citas as c
+                   inner join Usuarios as u
+                   on c.usuario_id = u.usuario_id
+                   inner join Profesionales as p
+                   on c.profesional_id = p.profesional_id
+                   inner join Servicios as s
+                   on c.servicio_id = s.servicio_id
+                   where  u.nombre_usuario like '%p%'
+                   or u.apellido_usuario like '%p%';
+                   
+                   select u.nombre_usuario, u.apellido_usuario, c.fecha_cita, c.nota, s.nombre_servicio, p.nombre_profesional, p.apellido_profesional
+                   from Citas as c
+                   inner join Usuarios as u
+                   on c.usuario_id = u.usuario_id
+                   inner join Servicios as s
+                   on c.servicio_id = s.servicio_id
+                   inner join Profesionales as p
+                   on c.profesional_id = p.profesional_id
+                   where c.usuario_id = 5
+                   and c.estado_cita = 'Confirmada'
+                   and c.profesional_id = 1;
+
+SELECT c.cita_id, c.fecha_cita, c.estado_cita, 
+       p.profesional_id, p.nombre_profesional, p.apellido_profesional, 
+       u.usuario_id, u.nombre_usuario, u.apellido_usuario, 
+       s.nombre_servicio  
+FROM Citas AS c
+INNER JOIN Usuarios AS u ON c.usuario_id = u.usuario_id
+INNER JOIN Profesionales AS p ON c.profesional_id = p.profesional_id
+INNER JOIN Servicios AS s ON c.servicio_id = s.servicio_id
+ORDER BY DATE(c.fecha_cita) = DATE(NOW()) DESC, c.fecha_cita ASC;
+
+SELECT i.url_imagen, i.descripcion_imagen, p.nombre_profesional, p.apellido_profesional, i.fecha_subida_imagen, i.imagen_id, p.profesional_id FROM Imagenes AS i
+                   INNER JOIN Profesionales AS p
+                   ON i.profesional_id = p.profesional_id;
+                   
+                   select * from Reseñas as r
+                   inner join Usuarios as u
+                   on r.usuario_id = u.usuario_id
+                   inner join Profesionales as p
+                   on r.profesional_id = p.profesional_id
+                   where r.profesional_id = 1
+                   order by fecha_reseña desc;

@@ -83,7 +83,8 @@ const obtenerReseñasRealizadasAlProfesional = (req,res) =>{
                    on r.usuario_id = u.usuario_id
                    inner join Profesionales as p
                    on r.profesional_id = p.profesional_id
-                   where r.profesional_id = ?;`
+                   where r.profesional_id = ?
+                   order by fecha_reseña desc;`
 
     pool.query(query,[id],(error,result)=>{
         if(error){

@@ -1,7 +1,7 @@
 const pool = require('../Config/conexionbd');
 
 const obtenerHorariosDisponibles = (req, res) => {
-    const query = `SELECT * FROM HorariosDisponibles AS h
+    const query = `SELECT p.nombre_profesional, p.apellido_profesional, h.hora_inicio, h.hora_fin, h.dia_semana FROM HorariosDisponibles AS h
                    INNER JOIN Profesionales AS p
                    ON h.profesional_id = p.profesional_id;`;
 
@@ -14,22 +14,6 @@ const obtenerHorariosDisponibles = (req, res) => {
     });
 };
 
-
-const obtenerHorarioDisponible = (req, res) => {
-    const { id } = req.params;
-    const query = `SELECT * FROM HorariosDisponibles AS h
-                   INNER JOIN Profesionales AS p
-                   ON h.profesional_id = p.profesional_id
-                   WHERE h.horario_id = ?;`;
-
-    pool.query(query, [id], (error, result) => {
-        if (error) {
-            console.error(error);
-            return res.status(500).send("Error al obtener el horario disponible");
-        }
-        res.status(200).json(result);
-    });
-};
 
 
 const crearHorarioDisponible = (req, res) => {
@@ -110,7 +94,6 @@ const obtenerHorariosDeAtencionDeTalDia = (req,res) =>{
 
 module.exports = {
     obtenerHorariosDisponibles,
-    obtenerHorarioDisponible,
     crearHorarioDisponible,
     editarHorarioDisponible,
     eliminarHorarioDisponible,

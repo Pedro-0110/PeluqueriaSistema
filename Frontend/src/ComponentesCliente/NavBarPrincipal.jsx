@@ -9,6 +9,8 @@ import Image from 'react-bootstrap/Image'
 import ListGroup from 'react-bootstrap/ListGroup';
 import Modal from 'react-bootstrap/Modal';
 
+import Swal from 'sweetalert2';
+
 import iconoLogo from '../IconsClientes/logo-peluqueria.jpg'
 import iconoInstagram from '../IconsClientes/icono-instagram.png'
 import iconoFacebook from '../IconsClientes/icono-facebook.png'
@@ -29,9 +31,10 @@ export const NavBarPrincipal = () => {
   const [reseñasProfesional, setReseñasProfesional] = useState([])
   const [horariosProfesional, setHorariosProfesional] = useState([])
   const [serviciosProfesional, setServiciosProfesional] = useState([])
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState(1);
   const [comentario, setComentario] = useState("")
-  const [usuario_id,setUsuarioID] = useState(4)
+  const [usuario_id,setUsuarioID] = useState("")
+  const [sesionIniciada, setSecicioIniciada] = useState(false);
   const [cortes, setCortes] = useState([])
   const [tinturas,setTinturas] = useState([])
   const [showReservar, setShowReservar] = useState(false)
@@ -42,11 +45,28 @@ export const NavBarPrincipal = () => {
   const [datosUsuario, setDatosUsuario] = useState([]);
   const [checkedItems, setCheckedItems] = useState([]);
   const [datosProfesional, setDatosProfesional] = useState([])
-  const [cantidadReseñasUsuario, setCantidadReseñasUsuario] = useState("")
+  const [cantidadReseñasUsuario, setCantidadReseñasUsuario] = useState(1)
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [cantidadCitasPendientes, setCantidadCitasPendientes] = useState([])
+  const [videosDelProfesional, setVideosDelProfesional] = useState([])
+  const [mostrarFormularioRegistrarme, setMostrarFormulariRegistrarme] = useState(false)
+
+  const [showSesion, setShowSesion] = useState(false);
+  const [username_usuario, setUserName] = useState("");
+  const [password_usuario, setPasswordUsuario] = useState("")
+  const [sesionValida,setSesionValida] = useState("")
+
+
+  const[nombre_usuario, setNombre] = useState("");
+  const[apellido_usuario, setApellido] = useState("");
+  const[telefono_usuario, setTelefono] = useState("");
+
+
+
+  const handleCloseSesion = () => setShowSesion(false);
+  const handleShowSesion = () => setShowSesion(true);
 
   const handleNext = () => {
     setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
@@ -127,6 +147,7 @@ export const NavBarPrincipal = () => {
   };
 
   const handleClickComentar = async ()=> {
+    if(sesionIniciada){
     const response = await axios.post(`http://localhost:8000/resenas/`,{
       usuario_id,
       profesional_id,
@@ -134,12 +155,34 @@ export const NavBarPrincipal = () => {
       puntuacion : rating
     })
     if(response.status === 201)
+      Swal.fire({
+        position: "top",
+         icon: "success",
+         title: "Muchas gracias! 😎",
+         showConfirmButton: false,
+         timer: 1500
+       });
       obtenerCantidadReseñasUsuario()
       obtenerReseñasRealizadasAlProfesional()
+      setComentario("")
+  }else{
+    setShowSesion(true)
   }
+}
 
   const handleClickReservar = () =>{
-    setShowReservar(true)
+    if(sesionIniciada){
+      setDiaSeleccionado("")
+      setHorariosDisponibles([])
+      setNombreFechaSeleccionada("")
+      setHorarioSeleccionado(""),
+      setDatosUsuario([])
+      setCheckedItems([])
+      obtenerDatosDelUsuario()
+      setShowReservar(true)
+    }else{
+      setShowSesion(true)
+    }
   }
   
   const handleCloseReservar = () =>{
@@ -162,17 +205,13 @@ export const NavBarPrincipal = () => {
   
       // Calcular el día seleccionado en texto
       let fechaSeleccionada = new Date(diaSeleccionado);
-      // console.log(fechaSeleccionada + " formato date sin corregir")
       fechaSeleccionada.setDate(fechaSeleccionada.getDate() + 1); // Corrige el cálculo del día
-      // console.log(fechaSeleccionada + " formato date corregido")
-      const nombreFechaSeleccionada = fechaSeleccionada.toLocaleDateString("es-ES", {
+      const nombreFechaSeleccionada = fechaSeleccionada.toLocaleDateString("es-AR", {
         weekday: "long",
       });
 
       setNombreFechaSeleccionada(nombreFechaSeleccionada)
-      // console.log(nombreFechaSeleccionada + " formato texto")
   
-      // Obtener horarios disponibles
       const response1 = await axios.get(
         `http://localhost:8000/horariosDisponibles/dia/${nombreFechaSeleccionada}/profesional/${profesional_id}`
       );
@@ -240,8 +279,6 @@ export const NavBarPrincipal = () => {
           desde++;
         }
       }
-  
-      console.log("Horarios disponibles:", horariosDisponibles);
       setHorariosDisponibles(horariosDisponibles)
     } catch (error) {
       console.error("Error al obtener los horarios:", error);
@@ -270,20 +307,28 @@ export const NavBarPrincipal = () => {
       estado_cita : "Pendiente"
     })
     if(response.status == 201){
-      alert("Cita creada")
+      Swal.fire({
+        position: "top",
+         icon: "success",
+         title: "Cita confirmada! 👍",
+         showConfirmButton: false,
+         timer: 3000
+       });
       setDiaSeleccionado("")
       setHorariosDisponibles([])
       setNombreFechaSeleccionada("")
-      setDiaSeleccionado("")
       setHorarioSeleccionado(""),
       setDatosUsuario([])
       setCheckedItems([])
+      setShowReservar(false)
+      obtenerCantidadDeCitasPendiendesDelCliente()
           }
   }
 
   const obtenerCantidadReseñasUsuario = async () =>{
     const response = await axios.get(`http://localhost:8000/resenas/profesional/${profesional_id}/usuario/${usuario_id}`)
     setCantidadReseñasUsuario(response.data[0].cantidadReseñas)
+    console.log(response.data[0].cantidadReseñas)
   } 
 
   const obtenerCantidadDeCitasPendiendesDelCliente = async () =>{
@@ -291,8 +336,72 @@ export const NavBarPrincipal = () => {
     setCantidadCitasPendientes(response.data[0].cantidadCitasPendientes)
   }
 
+  const obtenerVideosDelProfesional = async () =>{
+    const response = await axios.get(`http://localhost:8000/videos/profesional/${profesional_id}`)
+    setVideosDelProfesional(response.data)
+  }
+
+  const handleIniciarSesion = async() =>{
+    if(username_usuario != "" && password_usuario != ""){
+      const response = await axios.post(`http://localhost:8000/usuarios/sesion/`,{
+        username_usuario,
+        password_usuario
+      })
+      if(response.data[0].valor === 1){
+        setSecicioIniciada(true)
+        setUsuarioID(response.data[0].usuario_id)
+        console.log(usuario_id)
+        setUserName("")
+        setPasswordUsuario("")
+        setShowSesion(false)
+        obtenerDatosDelUsuario();
+        Swal.fire({
+          position: "top",
+           icon: "success",
+           title: `Bienvenido/a ${datosUsuario.nombre_usuario}! 👍`,
+           showConfirmButton: false,
+           timer: 2000
+         });
+      }
+    }
+  }
+
+  const handleClickRegistrarUsuario = async () =>{
+    if(nombre_usuario != "" && apellido_usuario != "" && telefono_usuario != "" && username_usuario != "" && password_usuario != ""){
+      const response = await axios.post(`http://localhost:8000/usuarios/`,{
+        nombre_usuario,
+        apellido_usuario,
+        telefono_usuario,
+        username_usuario,
+        password_usuario,
+        rol_id : 2
+      })
+      if(response.status === 201){
+        alert("Usuario creado!")
+      }
+    }else{
+      alert("Llenar todos los campos!")
+    }
+  }
+
+  const handleClickCerrarSesion = () =>{
+    Swal.fire({
+      position: "top",
+       icon: "success",
+       title: "Sesion cerrada!",
+       showConfirmButton: false,
+       timer: 1500
+     });
+    setSecicioIniciada(false)
+  }
+
   useEffect(()=> {obtenerServiciosDelProfesional()},[])
-  useEffect(()=> {obtenerDatosDelUsuario()},[])
+
+  useEffect(()=>{obtenerVideosDelProfesional()},[profesional_id])
+  
+  useEffect(()=> {obtenerServiciosDelProfesional()},[profesional_id])
+
+ 
   useEffect(()=> {obtenerHorariosDisponiblesDelProfesional()},[profesional_id])
   useEffect(()=> {obtenerReseñasRealizadasAlProfesional()},[profesional_id])
   useEffect(()=> {obtenerDatosDelProfesional()},[showReservar])
@@ -301,9 +410,12 @@ export const NavBarPrincipal = () => {
   useEffect(()=> {obtetenerCortesDelProfesional()},[profesional_id])
   useEffect(()=>{obtenerProfesionales()},[])
   useEffect(()=>{obtenerHorariosReservados()},[diaSeleccionado])
-  useEffect(()=> {obtenerCantidadReseñasUsuario()},[])
+  useEffect(()=> {obtenerCantidadReseñasUsuario()},[sesionIniciada])
   useEffect(()=> {obtenerCantidadReseñasUsuario()},[profesional_id])
-  useEffect(()=> {obtenerCantidadDeCitasPendiendesDelCliente()},[])
+  useEffect(()=>{obtenerDatosDelUsuario()},[sesionIniciada])
+  useEffect(()=> {obtenerReseñasRealizadasAlProfesional()},[usuario_id])
+  useEffect(()=> {obtenerCantidadDeCitasPendiendesDelCliente()},[usuario_id])
+
 
 
 
@@ -311,12 +423,14 @@ export const NavBarPrincipal = () => {
     <>
       <div className='contenedor'>
         <div className='contenedor-navbar'>
-            <article className='logo-navbar'><img src={iconoLogo} alt="" /></article>
+            <article className='logo-navbar'><img src={iconoLogo} alt="" />
+            </article>
             <article className='contenedor-botones-navbar'>
-              <a style={{backgroundColor: 'rgb(0, 153, 255)', color : 'white'}} href='#profesionales' >Profesionales</a>
-              <a style={{backgroundColor: 'rgb(0, 153, 255)', color : 'white'}} href='#trabajos' >Trabajos</a>
-              <a style={{backgroundColor: 'rgb(0, 153, 255)', color : 'white'}} href='#reseñas'>Reseñas</a>
-              <a style={{backgroundColor: 'rgb(0, 153, 255)', color : 'white'}} href='#contacto'>Contacto</a>
+              <a href='#profesionales'>Profesionales</a>
+              <a href='#trabajos'>Trabajos</a>
+              <a href='#reseñas'>Reseñas</a>
+              <a href='#contacto'>Contacto</a>
+              {sesionIniciada ? <a id='btn-cerrar-sesion' onClick={()=>{handleClickCerrarSesion()}}>Cerrar sesion</a> : <></>}
             </article>
         </div>
 
@@ -330,13 +444,13 @@ export const NavBarPrincipal = () => {
               {profesionales.map((profesional) => (
               <div key={profesional.profesional_id} onClick={() => {handleSelect(profesional.profesional_id)}}
                 style={{
-                border: selectedImage === profesional.profesional_id ? "4px solid #00f700" : "3px solid transparent",
+                border: selectedImage === profesional.profesional_id ? "4px solid white" : "3px solid transparent",
                 cursor: "pointer",
-                height: '28rem',
+                height: '30rem',
                 borderRadius : '8px'
                 }}>
 
-                <Card style={{ width: '14rem', height : '28rem'}} border= "secondary" bg={'dark'} text="white">
+                <Card style={{ width: '14rem', height : '30rem'}} border= "secondary" bg={'dark'} text="white">
                   <Card.Img variant="top" src={profesional.imagen_profesional} width={'40px'} height={'180px'} />
                   <Card.Body>
                     <Card.Title>{profesional.nombre_profesional} {profesional.apellido_profesional}</Card.Title>
@@ -388,7 +502,7 @@ export const NavBarPrincipal = () => {
                 </ListGroup>
               </article>
             </article>
-           <Button variant='warning' onClick={() => handleClickReservar()}>Reservar un turno</Button>
+           <Button variant='dark' onClick={() => handleClickReservar()}>Reservar un turno</Button>
           </div>
           
         </article>
@@ -398,20 +512,20 @@ export const NavBarPrincipal = () => {
           <Carousel>
             <Carousel.Item interval={5000}>
               <article className='carrusel-imagen'>
-                <Image width={'700px'} height={'350px'} src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVZl22u-Dalk81qD5IW4k2y4cI92coxEEqRQ&s'></Image>
-                <Image width={'700px'} height={'350px'} src='https://i.pinimg.com/736x/05/0c/52/050c5242cfb7bd34c579655ae7f0e749.jpg'></Image>
+                <Image width={'700px'} height={'350px'} src='https://d1csarkz8obe9u.cloudfront.net/posterpreviews/barber-shop-deals-sale-promotion-video-beard-design-template-c2ebc685bc96e9e8df9af176e65ddb29_screen.jpg?ts=1624746047'></Image>
+                <Image width={'700px'} height={'350px'} src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5GZcTPT1oCFab7pgek03Csmo3eRu568Q5lg&s'></Image>
               </article>
             </Carousel.Item>
             <Carousel.Item interval={5000}>
               <article className='carrusel-imagen'>
-                <Image width={'700px'} height={'350px'} src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVZl22u-Dalk81qD5IW4k2y4cI92coxEEqRQ&s'></Image>
+                <Image width={'700px'} height={'350px'} src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSO3LHUm1kvPM-Q3A4YkddHyb7CIJCIBLSJlw&s'></Image>
                 <Image width={'700px'} height={'350px'} src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIkJP4xiTCif7pBFaRrXQsvkUKneDEqtFedA&s'></Image>
               </article>
             </Carousel.Item>
             <Carousel.Item interval={5000}>
               <article className='carrusel-imagen'>
-                <Image width={'700px'} height={'350px'} src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVZl22u-Dalk81qD5IW4k2y4cI92coxEEqRQ&s'></Image>
-                <Image width={'700px'} height={'350px'} src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIkJP4xiTCif7pBFaRrXQsvkUKneDEqtFedA&s'></Image>
+                <Image width={'700px'} height={'350px'} src='https://www.shutterstock.com/image-vector/vector-business-card-price-list-600nw-2096098918.jpg'></Image>
+                <Image width={'700px'} height={'350px'} src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvGAjxH_rW2h35bKw0LmH7ET3wHtxWUaUkxg&s'></Image>
               </article>
             </Carousel.Item>
           </Carousel>
@@ -469,8 +583,10 @@ export const NavBarPrincipal = () => {
                 style={{ width: "300px", height: "500px" }}
               ></video>
                 <div className='botones-video' style={{ marginTop: "10px" }}>
-                  <Button variant = 'dark' onClick={handlePrev}>&larr; Anterior</Button>
-                  <Button variant = 'dark' onClick={handleNext}>Siguiente &rarr;</Button>
+                  <Button variant = 'dark' onClick={handlePrev}>&lt;
+                  </Button>
+                  <Button variant = 'dark' onClick={handleNext}>&gt;
+                  </Button>
                 </div>
             </div>
           </article>
@@ -482,39 +598,56 @@ export const NavBarPrincipal = () => {
             <ListGroup as="ul"  variant="">
               {reseñasProfesional.map((reseña, index)=> 
               <ListGroup.Item key={index} action variant="dark">
-                <Image src="https://media.istockphoto.com/id/1289973223/es/foto/vista-de-primer-plano-en-la-cara-del-extraterrestre-ilustraci%C3%B3n-renderizada-en-3d.jpg?s=612x612&w=0&k=20&c=siicsi7vLVmm2KoR_eLYogeWv1Zqi4u0v-pgKP42qjY=" roundedCircle width={'30px'} height={'30px'} style={{marginRight: '0.5rem'}}/>
-                <b>{reseña.nombre_usuario} {reseña.apellido_usuario}</b> : {reseña.comentario} <br /> Puntuacion: {reseña.puntuacion} <br /> {new Date(reseña.fecha_reseña).getDay()}/{new Date(reseña.fecha_reseña).getMonth()}/{new Date(reseña.fecha_reseña).getFullYear()} <hr />
+                <Image src= {`https://robohash.org/${index}`} roundedCircle width={'30px'} height={'30px'} style={{marginRight: '0.5rem'}}/>
+                <b>{reseña.nombre_usuario} {reseña.apellido_usuario}</b> : {reseña.comentario} <br /> Puntuacion: {reseña.puntuacion} <br /> {new Date(reseña.fecha_reseña).getDay()}/{new Date(reseña.fecha_reseña).getMonth()}/{new Date(reseña.fecha_reseña).getFullYear()} 
               </ListGroup.Item>   
               )}
             </ListGroup> 
           </article>
         </article>
 
-        {cantidadReseñasUsuario < 1 ? 
-          <article className='form-reseña'>
-            <article className='datos-usuario-reseña'>
-              <img src="https://www.shutterstock.com/image-illustration/david-street-style-graphic-designtextile-600nw-2265632523.jpg" alt="" width={'150px'}/>
-              <h3>{datosUsuario.nombre_usuario}{datosUsuario.apellido_usuario}</h3>
-            </article>
-            <div className="rating-container">
-              <div className="stars">
-                {[1, 2, 3, 4, 5].map((value) => (
-                <span
-                  key={value}
-                  className={`star ${value <= (hover || rating) ? 'selected' : ''}`}
-                  onClick={() => setRating(value)}
-                  onMouseEnter={() => setHover(value)}
-                  onMouseLeave={() => setHover(0)}
-                  >
-                  ★
-                </span>
-                  ))}
+       
+      
+          {sesionIniciada ? 
+            cantidadReseñasUsuario < 1 ?
+            <article className='form-reseña'>
+              <article className='datos-usuario-reseña'>
+                <img src={`https://robohash.org/${usuario_id}`} alt="" width={'150px'}/>
+                <h3>{datosUsuario.nombre_usuario}{datosUsuario.apellido_usuario}</h3>
+              </article>
+              <div className="rating-container">
+                <div className="stars">
+                  {[1, 2, 3, 4, 5].map((value) => (
+                    <span
+                      key={value}
+                      className={`star ${value <= (hover || rating) ? 'selected' : ''}`}
+                      onClick={() => setRating(value)}
+                      onMouseEnter={() => setHover(value)}
+                      onMouseLeave={() => setHover(0)}
+                      >
+                      ★
+                    </span>
+                      ))}
+                </div>
               </div>
-            </div>
-            <Form.Control type="text" placeholder="Ingresar comentario.." onChange={(e)=> setComentario(e.target.value)} value = {comentario} />
-            <Button style={{width : '18rem'}} variant='success' onClick={()=> handleClickComentar()}>Subir</Button>  
+              <Form.Control type="text" placeholder="Ingresar comentario.." onChange={(e)=> setComentario(e.target.value)} value = {comentario} />
+              <Button style={{width : '18rem'}} variant='success' onClick={()=> handleClickComentar()}>{'Comentar'}</Button>
           </article>
-        : <></>}
+        : <></>
+        :
+        <Button onClick={()=> setShowSesion(true)}>Realizar un comentario</Button>
+        }
+      
+   
+    
+            
+      
+      
+         
+      
+       
+         
+      
 
         <article className='contenedor-redes' id='contacto'>
             <article className='ubicacion'>
@@ -543,7 +676,8 @@ export const NavBarPrincipal = () => {
                 <h2>Seleccione una fecha</h2>
                   <Form.Control
                     value={diaSeleccionado}
-                    onChange={(e) => setDiaSeleccionado(e.target.value)}
+                    // En caso de seleccionar una fecha  nueva limpiamos el horario en caso de que sea un horario reservado de otro dia
+                    onChange={(e) => {setDiaSeleccionado(e.target.value), setHorarioSeleccionado("")}}
                     type="date"
                     min={new Date().toISOString().split('T')[0]}
                   />
@@ -588,19 +722,21 @@ export const NavBarPrincipal = () => {
               </article>
 
               <article className='datos-reserva'>
+                <article className='reserva-profesional'>
                 <h2>Preparando turno con: </h2>
-                  <article className='reserva-profesional'>
                     {showReservar 
                     ? 
+                    <div className='imagen-profesional-reserva'>
                       <Image roundedCircle width={'100px'} src= {datosProfesional[0].imagen_profesional}/>
+                    </div>
                     : 
                       <></>}
-                </article>
+                {/* </article> */}
 
-                <article className='nombre-profesional'>
+                {/* <article className='nombre-profesional'> */}
                   {showReservar 
                   ? 
-                    <p>{datosProfesional[0].nombre_profesional} {datosProfesional[0].apellido_profesional}</p> 
+                    <h4>{datosProfesional[0].nombre_profesional} {datosProfesional[0].apellido_profesional}</h4> 
                   : 
                     <></>}
                 </article>
@@ -610,10 +746,10 @@ export const NavBarPrincipal = () => {
                   <>
                     <h3>Datos</h3>
                     <ul>
-                      <li><b>Fecha: </b> {nombreFechaSeleccionada} {diaSeleccionado}</li>
-                      <li><b>Horario :</b> {horarioSeleccionado}</li>
                       <li><b>Cliente :</b> {datosUsuario.nombre_usuario} {datosUsuario.apellido_usuario}</li>
                       <li><b>Telefono :</b> {datosUsuario.telefono_usuario}</li>
+                      <li><b>Fecha: </b> {nombreFechaSeleccionada} {diaSeleccionado}</li>
+                      <li><b>Horario :</b> {horarioSeleccionado}</li>
                       <li><b>Servicios :</b>
                         <ul>
                           {checkedItems.map((item, index)=>
@@ -635,6 +771,56 @@ export const NavBarPrincipal = () => {
           </Modal.Body>
       </Modal>
     </div>
+
+
+    <Modal show={showSesion} onHide={handleCloseSesion}>
+        <Modal.Header closeButton>
+          <Modal.Title>{!mostrarFormularioRegistrarme ? 'Inicio de sesion' : 'Creacion de cuenta'}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form> 
+                  {!mostrarFormularioRegistrarme ?
+                  <>
+                  <Form.Label>Nombre de usuario</Form.Label>
+                  <Form.Control placeholder='ingrese su nombre de usuario' value={username_usuario} onChange = {(e)=> setUserName(e.target.value)}/>
+                  <Form.Label >Contraseña</Form.Label>
+                  <Form.Control placeholder='ingrese su contraseña' value={password_usuario} onChange={(e)=> setPasswordUsuario(e.target.value)}/>
+                  <div className='boton-iniciar-sesion'>
+                  <Button onClick={()=> handleIniciarSesion()}>Iniciar</Button>
+                  </div>
+                  </>
+                  :
+                  <>
+                  <Form.Label>Nombre</Form.Label>
+                  <Form.Control placeholder='ingrese su nombre ' value={nombre_usuario} onChange = {(e)=> setNombre(e.target.value)}/>
+                  <Form.Label >Apellido</Form.Label>
+                  <Form.Control placeholder='ingrese su apellido' value={apellido_usuario} onChange={(e)=> setApellido(e.target.value)}/>
+                  <Form.Label >Telefono</Form.Label>
+                  <Form.Control placeholder='ingrese su numero' value={telefono_usuario} onChange={(e)=> setTelefono(e.target.value)}/>
+                  <Form.Label >Nombre de usuario</Form.Label>
+                  <Form.Control placeholder='ingrese su username' value={username_usuario} onChange={(e)=> setUserName(e.target.value)}/>
+                  <Form.Label >Contraseña</Form.Label>
+                  <Form.Control placeholder='ingrese su contraseña' value={password_usuario} onChange={(e)=> setPasswordUsuario(e.target.value)}/>
+                  <div className='boton-iniciar-sesion'>
+                  <Button variant='success' onClick={()=> handleClickRegistrarUsuario()}>Registrar</Button>
+                  </div>
+                  <Form.Label style={{width: '100%', backgroundColor: '#fca50f', color: 'black', padding: '5px', borderRadius: '25px', textAlign : 'center', marginTop : '1rem',fontWeight: 'bolder'}}> Con esto usted podra realizar reservas y comentarios!</Form.Label>
+                  </>
+                  }
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+        {!mostrarFormularioRegistrarme ? 
+        <Button variant="warning" onClick={()=> setMostrarFormulariRegistrarme(true)}>
+            Registrarme
+          </Button>
+        :
+        <Button variant="secondary" onClick={()=> setMostrarFormulariRegistrarme(false)}>
+            Regresar
+          </Button>
+          }
+        </Modal.Footer>
+      </Modal>
     </>
   )
 }

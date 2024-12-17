@@ -17,16 +17,13 @@ export const Usuarios = () => {
     const[usuario_id,setUsuarioId] = useState("")
     const[nombre_usuario,setNombre] = useState("")
     const[apellido_usuario,setApellido] = useState("")
-    const[direccion_usuario,setDireccion] = useState("")
     const[telefono_usuario,setTelefono] = useState("")
     const[username_usuario, setUsername] = useState("")
-    const[fecha_registro_usuario,setFechaRegistro] = useState("")
     const[rol_id, setRolID] = useState()
     const[password_usuario,setPassword] = useState("")
-    const[email_usuario, setEmail] = useState("")
     const[showModalAgregar, setShowModalAgregar] = useState(false)
     const [loading, setLoading] = useState(false);
-    const [valorBusqueda, setValorBusqueda] = useState("")
+    const [valorBusqueda, setValorBusqueda] = useState(" ")
 
     const handleCloseModalAgregar = () => setShowModalAgregar(false)
 
@@ -54,25 +51,19 @@ export const Usuarios = () => {
 
     const handleClickEditar = (usuario_id, nombre_usuario,
         apellido_usuario,
-        email_usuario,
         telefono_usuario, 
-        direccion_usuario, 
         username_usuario, 
         password_usuario, 
-        rol_id, 
-        fecha_registro_usuario) =>{
+        rol_id
+    ) =>{
 
         setUsuarioId(usuario_id)
         setNombre(nombre_usuario)
         setApellido(apellido_usuario)
-        setEmail(email_usuario)
-        setTelefono(telefono_usuario)
-        setDireccion(direccion_usuario)       
+        setTelefono(telefono_usuario)    
         setUsername(username_usuario)
         setPassword(password_usuario)
         setRolID(rol_id)
-        const fechaFormateada = new Date(fecha_registro_usuario).toISOString().split("T")[0];
-        setFechaRegistro(fechaFormateada)
         setEditar(true)
     }
 
@@ -126,13 +117,10 @@ export const Usuarios = () => {
             const response = await axios.put("http://localhost:8000/usuarios/" + usuario_id,{
                 nombre_usuario,
                 apellido_usuario,
-                email_usuario,
-                telefono_usuario, 
-                direccion_usuario, 
+                telefono_usuario,
                 username_usuario, 
                 password_usuario, 
-                rol_id, 
-                fecha_registro_usuario
+                rol_id
             })
             if(response.status === 200){
                 setEditar(false)
@@ -149,13 +137,10 @@ export const Usuarios = () => {
             const response = await axios.post("http://localhost:8000/usuarios/",{
                 nombre_usuario,
                 apellido_usuario,
-                email_usuario,
                 telefono_usuario, 
-                direccion_usuario, 
                 username_usuario, 
                 password_usuario, 
-                rol_id, 
-                fecha_registro_usuario 
+                rol_id
             })
             if(response.status == 201){
                 Swal.fire({
@@ -178,16 +163,13 @@ export const Usuarios = () => {
         setUsuarioId("")
         setNombre("")
         setApellido("")
-        setDireccion("")
         setTelefono("")
         setUsername("")
-        setFechaRegistro("")
         setPassword("")
-        setEmail("")
     }
 
     const verificarLlenadoDeCampos = () =>{
-        if(nombre_usuario != "" && apellido_usuario != "" && email_usuario != "" && telefono_usuario != "" && direccion_usuario != "" && username_usuario != "" && password_usuario != "" && fecha_registro_usuario != "" && rol_id != ""){
+        if(nombre_usuario != "" && apellido_usuario != ""  && telefono_usuario != "" && username_usuario != "" && password_usuario != ""  && rol_id != ""){
             return true
         }
     }
@@ -228,7 +210,6 @@ export const Usuarios = () => {
                             <tr>
                                 <td>Nombre</td>
                                 <td>Apellido</td>
-                                <td>Direccion</td>
                                 <td>Telefono</td>
                                 <td>Username</td>
                                 <td>Fecha de registro</td>
@@ -241,7 +222,6 @@ export const Usuarios = () => {
                                 <tr key={indx}>
                                     <td>{usuario.nombre_usuario}</td>
                                     <td>{usuario.apellido_usuario}</td>
-                                    <td>{usuario.direccion_usuario}</td>
                                     <td>{usuario.telefono_usuario}</td>
                                     <td>{usuario.username_usuario}</td>
                                     <td>{new Date(usuario.fecha_registro_usuario).getDay()}/{new Date(usuario.fecha_registro_usuario).getMonth()}/{new Date(usuario.fecha_registro_usuario).getFullYear()} {new Date(usuario.fecha_registro_usuario).getHours()}:{new Date(usuario.fecha_registro_usuario).getMinutes()}</td>
@@ -250,13 +230,11 @@ export const Usuarios = () => {
                                         <div className='div-botones-editar'>
                                             <Button variant = 'warning' style={{width : '80px'}} onClick={()=> handleClickEditar(usuario.usuario_id,usuario.nombre_usuario,
                                             usuario.apellido_usuario,
-                                            usuario.email_usuario,
                                             usuario.telefono_usuario, 
-                                            usuario.direccion_usuario, 
                                             usuario.username_usuario, 
                                             usuario.password_usuario, 
-                                            usuario.rol_id, 
-                                            usuario.fecha_registro_usuario)}><img src={iconoLapiz} width={'22px'}/></Button>
+                                            usuario.rol_id
+                                            )}><img src={iconoLapiz} width={'22px'}/></Button>
                                             <Button variant = 'danger'style={{width : '80px'}} onClick={()=> handleClickEliminar(usuario.usuario_id)}><img src={iconoBasura} width={'22px'}/></Button>
                                         </div>
                                     </td>
@@ -285,18 +263,8 @@ export const Usuarios = () => {
                         </Form.Group>
 
                         <Form.Group>
-                            <Form.Label>Email</Form.Label>
-                            <Form.Control required value={email_usuario} onChange = {(e) => setEmail(e.target.value)}/>
-                        </Form.Group>
-
-                        <Form.Group>
                             <Form.Label>Telefono</Form.Label>
                             <Form.Control value={telefono_usuario} onChange={(e) => setTelefono(e.target.value)}/>
-                        </Form.Group>
-
-                        <Form.Group>
-                            <Form.Label>Direccion</Form.Label>
-                            <Form.Control value = {direccion_usuario} onChange = {(e) => setDireccion(e.target.value)}/>
                         </Form.Group>
 
                         <Form.Group>
@@ -307,14 +275,6 @@ export const Usuarios = () => {
                         <Form.Group>
                             <Form.Label>Password</Form.Label>
                             <Form.Control required value = {password_usuario} onChange = {(e)=> setPassword(e.target.value)}/>
-                        </Form.Group>
-
-                        <Form.Group>
-                            <Form.Label>Fecha de registro</Form.Label>
-                            <Form.Control type="date" value = {fecha_registro_usuario} onChange = {(e) => {
-                                const fechaFormateada = new Date(e.target.value).toISOString().split("T")[0]
-                                setFechaRegistro(fechaFormateada)
-                            }}/>
                         </Form.Group>
 
                         <Form.Group>
@@ -354,18 +314,8 @@ export const Usuarios = () => {
                 </Form.Group>
 
                 <Form.Group>
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control type = 'email' value={email_usuario} onChange = {(e) => setEmail(e.target.value)}/>
-                </Form.Group>
-
-                <Form.Group>
                     <Form.Label>Telefono</Form.Label>
                     <Form.Control type = 'number' value={telefono_usuario} onChange={(e) => setTelefono(e.target.value)}/>
-                </Form.Group>
-
-                <Form.Group>
-                    <Form.Label>Direccion</Form.Label>
-                    <Form.Control value = {direccion_usuario} onChange = {(e) => setDireccion(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>
@@ -376,11 +326,6 @@ export const Usuarios = () => {
                 <Form.Group>
                     <Form.Label>Password</Form.Label>
                     <Form.Control type="password" value = {password_usuario} onChange = {(e)=> setPassword(e.target.value)}/>
-                </Form.Group>
-
-                <Form.Group>
-                    <Form.Label>Fecha de registro</Form.Label>
-                    <Form.Control type="date" value = {fecha_registro_usuario} onChange = {(e) => setFechaRegistro(e.target.value)}/>
                 </Form.Group>
 
                 <Form.Group>

@@ -1,7 +1,7 @@
 const pool = require('../Config/conexionbd');
 
 const obtenerImagenes = (req, res) => {
-    const query = `SELECT * FROM Imagenes AS i
+    const query = `SELECT i.url_imagen, i.descripcion_imagen, p.nombre_profesional, p.apellido_profesional, i.fecha_subida_imagen, i.imagen_id, p.profesional_id FROM Imagenes AS i
                    INNER JOIN Profesionales AS p
                    ON i.profesional_id = p.profesional_id;`;
 
@@ -17,7 +17,7 @@ const obtenerImagenes = (req, res) => {
 
 const obtenerImagen = (req, res) => {
     const { id } = req.params;
-    const query = `SELECT * FROM Imagenes AS i
+    const query = `SELECT i.url_imagen, p.nombre_profesional, p.apellido_profesional FROM Imagenes AS i
                    INNER JOIN Profesionales AS p
                    ON i.profesional_id = p.profesional_id
                    WHERE i.imagen_id = ?;`;
