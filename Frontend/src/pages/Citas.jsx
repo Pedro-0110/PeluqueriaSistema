@@ -16,6 +16,7 @@ import iconoConfirmarColor from '../Icons/icono-confirmar-color.png'
 import iconoNada from '../Icons/icono-nada.png'
 import iconoPendiente from '../Icons/icono-pendiente.png'
 import iconoVer from '../Icons/icono-ver.png'
+import { NavbarAdministrados } from '../Components/NavbarAdministrados';
 
 
 
@@ -54,10 +55,12 @@ export const Citas = () => {
             
             if (response.status === 200) {
               Swal.fire({
-                title: "Cita cancelada exitosamente!",
-                text: "",
-                icon: "success"
-              });
+                                  position: "top",
+                                   icon: "success",
+                                   title: "Cita cancelada!",
+                                   showConfirmButton: false,
+                                   timer: 1000
+                                 });
               obtenerCitas()
             } else {
               Swal.fire({
@@ -87,7 +90,7 @@ export const Citas = () => {
              icon: "success",
              title: "Cita confirmada",
              showConfirmButton: false,
-             timer: 1500
+             timer: 1000
            });
            obtenerCitas()
           }
@@ -118,6 +121,7 @@ export const Citas = () => {
 
   return (
     <>
+    <NavbarAdministrados/>
         <article className="contenedor-padre">
             <h2>Citas</h2>
             <InputGroup className="mb-3">
@@ -183,7 +187,7 @@ export const Citas = () => {
                             </td>
 
                             <td> 
-                                <div className='div-botones-editar'>
+                                <div className='div-botones-editar-citas'>
                                   {cita.estado_cita == 'Confirmada' 
                                     ? 
                                       <> <img src={iconoNada} alt="" /></> 
@@ -207,7 +211,7 @@ export const Citas = () => {
                                   <></> }
                             </td>
 
-                            <td><Button variant = 'info'  onClick = {()=> handleClickVerNotasDeCitasAnteriores(cita.usuario_id, cita.profesional_id)}><img src={iconoVer} alt=""/></Button></td>
+                            <td><Button className='btn-ver-historial-cita' variant = 'info'  onClick = {()=> handleClickVerNotasDeCitasAnteriores(cita.usuario_id, cita.profesional_id)}><img src={iconoVer} alt=""/></Button></td>
                         </tr>
                     )}
                 </tbody>

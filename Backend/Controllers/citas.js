@@ -9,7 +9,7 @@ const obtenerCitas = (req, res) => {
                     INNER JOIN Usuarios AS u ON c.usuario_id = u.usuario_id
                     INNER JOIN Profesionales AS p ON c.profesional_id = p.profesional_id
                     INNER JOIN Servicios AS s ON c.servicio_id = s.servicio_id
-                    ORDER BY DATE(c.fecha_cita) = DATE(NOW()) DESC, c.fecha_cita ASC
+                    ORDER BY DATE(c.fecha_cita) = DATE(NOW()) DESC, c.fecha_cita desc
                    ;`;
 
     pool.query(query, (error, result) => {

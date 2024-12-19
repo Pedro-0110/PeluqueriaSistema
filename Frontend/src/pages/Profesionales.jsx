@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 
 import iconoBasura from '../Icons/icono-basura.png'
 import iconoLapiz from '../Icons/icono-lapiz.png'
+import { NavbarAdministrados } from '../Components/NavbarAdministrados';
 
 
 export const Profesionales = () => {
@@ -154,6 +155,7 @@ export const Profesionales = () => {
 
   return (
     <>
+    <NavbarAdministrados/>
         <article className="contenedor-padre">
 
             <h2>Profesionales</h2>
@@ -182,7 +184,7 @@ export const Profesionales = () => {
                             <tbody>
                                 {!loading && profesionales.length > 0 && profesionales.map((profesional, indx)=>
                                     <tr key={indx}>
-                                        <td><img src={profesional.imagen_profesional} alt="" /></td>
+                                        <td><img src={profesional.imagen_profesional} alt="" width={'120px'} style={{borderRadius: '10px'}} /></td>
                                         <td>{profesional.nombre_profesional}</td>
                                         <td>{profesional.apellido_profesional}</td>
                                         <td>{profesional.especialidad_profesional}</td>
@@ -191,8 +193,8 @@ export const Profesionales = () => {
                                         <td>{profesional.activo_profesional  == 1 ? "Si" : "No"}</td>
                                         <td>
                                             <div className='div-botones-editar-profesionales'>
-                                                <Button variant = 'warning' style={{width : '80px'}} onClick={()=> handleClickEditar(profesional.profesional_id,profesional.nombre_profesional, profesional.apellido_profesional, profesional.especialidad_profesional, profesional.descripcion_profesional, profesional.activo_profesional, profesional.imagen_profesional)}><img src={iconoLapiz} width={'22px'}/></Button>
-                                                <Button variant =  'danger' style={{width : '80px'}} onClick={()=> {handleClickEliminar(profesional.profesional_id)}}><img src={iconoBasura} width={'22px'}/></Button>
+                                                <Button variant = 'warning' onClick={()=> handleClickEditar(profesional.profesional_id,profesional.nombre_profesional, profesional.apellido_profesional, profesional.especialidad_profesional, profesional.descripcion_profesional, profesional.activo_profesional, profesional.imagen_profesional)}><img src={iconoLapiz}/></Button>
+                                                <Button variant =  'danger' onClick={()=> {handleClickEliminar(profesional.profesional_id)}}><img src={iconoBasura}/></Button>
                                             </div>
                                         </td>
                                     </tr>
@@ -207,7 +209,7 @@ export const Profesionales = () => {
         {editar 
             ? 
                 <article className='contenedor-editar'>
-                    <h4 style={{padding: '1rem', backgroundColor: '#343a40', color: 'white', border : '1px solid black', borderRadius : '10px'}}>Datos a actualizar</h4>
+                    <h4>Datos a actualizar</h4>
                     <Form>
                         <Form.Group>
                             <Form.Label>Nombre</Form.Label>

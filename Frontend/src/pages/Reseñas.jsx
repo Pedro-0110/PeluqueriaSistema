@@ -6,6 +6,7 @@ import {useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
 import iconoBasura from '../Icons/icono-basura.png'
+import { NavbarAdministrados } from '../Components/NavbarAdministrados';
 
 export const Reseñas = () => {
     const [resenas,setResenas] = useState([])
@@ -62,6 +63,7 @@ export const Reseñas = () => {
 
   return (
     <>
+    <NavbarAdministrados/>
       <article className="contenedor-padre">
           <h2>Reseñas</h2>
             {loading 
@@ -91,11 +93,11 @@ export const Reseñas = () => {
                               <td>{resena.nombre_usuario}{resena.apellido_usuario}</td>
                               <td>{resena.comentario}</td>
                               <td>{resena.puntuacion}</td>
-                              <td>{resena.fecha_reseña}</td>
+                              <td>{new Date(resena.fecha_reseña).toLocaleDateString('es-AR', { year: '2-digit', month: '2-digit', day: '2-digit' })} {new Date(resena.fecha_reseña).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })}</td>
                               <td>{resena.nombre_profesional}{resena.apellido_profesional}</td>
                               <td>
-                                  <div className='div-botones-editar'>
-                                    <Button variant =  'danger' onClick={()=> handleClickEliminar(resena.reseña_id)} style={{width : '100px'}}><img src={iconoBasura} width={'26px'} height={'26px'}/></Button>
+                                  <div className='div-botones-editar-reseñas'>
+                                    <Button variant =  'danger' onClick={()=> handleClickEliminar(resena.reseña_id)}><img src={iconoBasura}/></Button>
                                   </div>
                               </td>
                           </tr>

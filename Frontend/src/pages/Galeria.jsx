@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import iconoBasura from '../Icons/icono-basura.png'
 import iconoLapiz from '../Icons/icono-lapiz.png'
 import iconoVer from '../Icons/icono-ver.png'
+import { NavbarAdministrados } from '../Components/NavbarAdministrados';
 
 
 export const Galeria = () => {
@@ -67,10 +68,12 @@ export const Galeria = () => {
 
             if (response.status === 200) {
               Swal.fire({
-                title: "Eliminado!",
-                text: "",
-                icon: "success",
-              });
+                                                position: "top",
+                                                 icon: "success",
+                                                 title: "Eliminado!",
+                                                 showConfirmButton: false,
+                                                 timer: 1000
+                                               });
               obtenerImagenes()
             } else {
               Swal.fire({
@@ -99,6 +102,13 @@ export const Galeria = () => {
             })
 
             if(response.status == 200){
+                Swal.fire({
+                    position: "top",
+                     icon: "success",
+                     title: "Actualizado!",
+                     showConfirmButton: false,
+                     timer: 1500
+                   });
                 limpiarCampos()
                 setEditar(false)
                 obtenerImagenes()
@@ -122,7 +132,7 @@ export const Galeria = () => {
             url_imagen,
             descripcion_imagen
         })
-        if(response.status == 201){
+        if(response.status == 200){
             limpiarCampos()
             setShow(false)
 
@@ -214,10 +224,12 @@ export const Galeria = () => {
 
             if (response.status === 200) {
               Swal.fire({
-                title: "Eliminado!",
-                text: "",
-                icon: "success",
-              });
+                                                position: "top",
+                                                 icon: "success",
+                                                 title: "Eliminado!",
+                                                 showConfirmButton: false,
+                                                 timer: 1000
+                                               });
               obtenerImagenes()
             } else {
               Swal.fire({
@@ -245,7 +257,14 @@ export const Galeria = () => {
                 descripcion_video
             })
 
-            if(response.status == 200){
+            if(response.status == 201){
+                Swal.fire({
+                    position: "top",
+                     icon: "success",
+                     title: "Actualizado!",
+                     showConfirmButton: false,
+                     timer: 1500
+                   });
                 limpiarCamposVideos()
                 setEditarVideo(false)
                 obtenerVideos()
@@ -308,7 +327,7 @@ export const Galeria = () => {
 
   return (
     <>
-
+    <NavbarAdministrados/>
     <div className='contenedor-galeria'>
         <article className='contenedor-dos-columnas'>
         <article className='contenedor-padre'>
@@ -473,10 +492,10 @@ export const Galeria = () => {
                                             <td>{video.nombre_profesional} {video.apellido_profesional}</td>
                                             <td>{new Date(video.fecha_subida_video).toLocaleDateString('es-AR', { year: '2-digit', month: '2-digit', day: '2-digit' })}</td>
                                             <td>
-                                                <div className='div-botones-editar'>
+                                                <div className='div-botones-editar-videos'>
                                                     
-                                                    <Button variant='warning' style={{width : '80px'}} onClick={()=>{handleClickEditarVideo(video.video_id, video.profesional_id, video.url_video, video.descripcion_video)}}><img src= {iconoLapiz} width={'22px'}/></Button>
-                                                    <Button variant='danger' style={{width : '80px'}} onClick={()=>{handleClickEliminarVideo(video.video_id)}}><img src= {iconoBasura} width={'22px'}/></Button>
+                                                    <Button variant='warning' onClick={()=>{handleClickEditarVideo(video.video_id, video.profesional_id, video.url_video, video.descripcion_video)}}><img src= {iconoLapiz} width={'22px'}/></Button>
+                                                    <Button variant='danger' onClick={()=>{handleClickEliminarVideo(video.video_id)}}><img src= {iconoBasura} width={'22px'}/></Button>
                                                 </div>
                                             </td>
                                         </tr>

@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 
 import iconoBasura from '../Icons/icono-basura.png'
 import iconoLapiz from '../Icons/icono-lapiz.png'
+import { NavbarAdministrados } from '../Components/NavbarAdministrados';
 
 
 export const Servicios = () => {
@@ -149,6 +150,7 @@ useEffect(()=> {obtenerServicios()},[])
 
   return (
     <>
+    <NavbarAdministrados/>
         <article className="contenedor-padre">
             <h2>Servicios</h2>
               {loading 
@@ -178,9 +180,9 @@ useEffect(()=> {obtenerServicios()},[])
                           <td>{servicio.duracion_servicio}</td>
                           <td>{servicio.precio_servicio}</td>
                           <td>         
-                              <div className='div-botones-editar'>
-                                <Button variant = 'warning' style={{width : '80px'}} onClick={()=> handleClickEditar(servicio.servicio_id,servicio.nombre_servicio, servicio.descripcion_servicio, servicio.duracion_servicio, servicio.precio_servicio)}><img src={iconoLapiz} width={'22px'}/></Button>
-                                <Button variant =  'danger' style={{width : '80px'}} onClick={()=> handleClickEliminar(servicio.servicio_id)}><img src={iconoBasura} width={'22px'}/></Button>
+                              <div className='div-botones-editar-servicios'>
+                                <Button variant = 'warning' onClick={()=> handleClickEditar(servicio.servicio_id,servicio.nombre_servicio, servicio.descripcion_servicio, servicio.duracion_servicio, servicio.precio_servicio)}><img src={iconoLapiz} width={'22px'}/></Button>
+                                <Button variant =  'danger' onClick={()=> handleClickEliminar(servicio.servicio_id)}><img src={iconoBasura} /></Button>
                               </div>
                           </td>
                         </tr>

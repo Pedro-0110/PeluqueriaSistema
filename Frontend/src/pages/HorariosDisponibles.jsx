@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 
 import iconoBasura from "../Icons/icono-basura.png";
 import iconoLapiz from "../Icons/icono-lapiz.png";
+import { NavbarAdministrados } from "../Components/NavbarAdministrados";
 
 export const HorariosDisponibles = () => {
   const diasSemana = [
@@ -169,6 +170,7 @@ export const HorariosDisponibles = () => {
 
   return (
     <>
+    <NavbarAdministrados/>
       <article className="contenedor-padre">
         <h2
         >
@@ -226,14 +228,14 @@ export const HorariosDisponibles = () => {
                       <td>{horario.hora_inicio}</td>
                       <td>{horario.hora_fin}</td>
                       <td>
-                        <div className="div-botones-editar">
-                          <Button variant="warning" style={{width : '80px'}} onClick={() => {
+                        <div className="div-botones-editar-horarios">
+                          <Button variant="warning" onClick={() => {
                             handleClickEditar(horario.horario_id,horario.profesional_id,horario.dia_semana,horario.hora_inicio,horario.hora_fin,horario.estado);}}>
-                            <img src={iconoLapiz} width={"22px"} />
+                            <img src={iconoLapiz} />
                           </Button>
 
-                          <Button variant="danger" style={{width : '80px'}} onClick={() => { handleClickEliminar(horario.horario_id); }}>
-                              <img src={iconoBasura} width={"22px"} />
+                          <Button variant="danger" onClick={() => { handleClickEliminar(horario.horario_id); }}>
+                              <img src={iconoBasura} />
                           </Button> 
                         </div>
                       </td>
@@ -249,15 +251,7 @@ export const HorariosDisponibles = () => {
       ? 
         (
         <article className="contenedor-editar">
-          <h4
-            style={{
-              padding: "1rem",
-              backgroundColor: "#343a40",
-              color: "white",
-              border: "1px solid black",
-              borderRadius: "10px",
-            }}
-            >
+          <h4>
             Datos a actualizar
           </h4>
           <Form>

@@ -18,9 +18,9 @@ function App() {
   return (
     <>
      <div className='contenedor-navbar-opcion'>
-     <NavbarAdministrados/>
+
       <Routes>
-        <Route path='/' element = ''/>
+      <Route path='/principal' element = {<NavBarPrincipal/>}/>
         <Route path='/galeria' element = {<Galeria/>}/>
         <Route path='/profesionales' element = {<Profesionales/>}/>
         <Route path = '/usuarios' element = {<Usuarios/>}/>
@@ -33,6 +33,7 @@ function App() {
         <Route path='*' element = {<NotFound/>}/>
       </Routes>
      </div> 
+
     </>
   )
 }

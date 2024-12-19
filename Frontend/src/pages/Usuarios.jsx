@@ -8,6 +8,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import iconoBasura from '../Icons/icono-basura.png'
 import iconoLapiz from '../Icons/icono-lapiz.png'
 import Swal from 'sweetalert2';
+import { NavbarAdministrados } from "../Components/NavbarAdministrados";
 
 export const Usuarios = () => {
 
@@ -180,6 +181,7 @@ export const Usuarios = () => {
 
   return (
     <>
+    <NavbarAdministrados/>
         <div className="contenedor-padre">
             <h2>Usuarios</h2>
           
@@ -224,18 +226,19 @@ export const Usuarios = () => {
                                     <td>{usuario.apellido_usuario}</td>
                                     <td>{usuario.telefono_usuario}</td>
                                     <td>{usuario.username_usuario}</td>
-                                    <td>{new Date(usuario.fecha_registro_usuario).getDay()}/{new Date(usuario.fecha_registro_usuario).getMonth()}/{new Date(usuario.fecha_registro_usuario).getFullYear()} {new Date(usuario.fecha_registro_usuario).getHours()}:{new Date(usuario.fecha_registro_usuario).getMinutes()}</td>
+                                    <td>{new Date(usuario.fecha_registro_usuario).toLocaleDateString('es-AR', { year: '2-digit', month: '2-digit', day: '2-digit' })} {new Date(usuario.fecha_registro_usuario).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })}
+                                    </td>
                                     <td>{usuario.rol}</td>
                                     <td>
-                                        <div className='div-botones-editar'>
-                                            <Button variant = 'warning' style={{width : '80px'}} onClick={()=> handleClickEditar(usuario.usuario_id,usuario.nombre_usuario,
+                                        <div className='div-botones-editar-usuarios'>
+                                            <Button variant = 'warning'  onClick={()=> handleClickEditar(usuario.usuario_id,usuario.nombre_usuario,
                                             usuario.apellido_usuario,
                                             usuario.telefono_usuario, 
                                             usuario.username_usuario, 
                                             usuario.password_usuario, 
                                             usuario.rol_id
-                                            )}><img src={iconoLapiz} width={'22px'}/></Button>
-                                            <Button variant = 'danger'style={{width : '80px'}} onClick={()=> handleClickEliminar(usuario.usuario_id)}><img src={iconoBasura} width={'22px'}/></Button>
+                                            )}><img src={iconoLapiz} /></Button>
+                                            <Button variant = 'danger' onClick={()=> handleClickEliminar(usuario.usuario_id)}><img src={iconoBasura} /></Button>
                                         </div>
                                     </td>
                                 </tr>
@@ -250,7 +253,7 @@ export const Usuarios = () => {
             {editar 
             ? 
                 <article className="contenedor-editar">
-                    <h3 style={{padding: '0.5rem', backgroundColor: '#343a40', color: 'white', border : '1px solid black', borderRadius : '10px'}}>Datos a actualizar</h3>
+                    <h4>Datos a actualizar</h4>
                     <Form>
                         <Form.Group>
                             <Form.Label>Nombre</Form.Label>

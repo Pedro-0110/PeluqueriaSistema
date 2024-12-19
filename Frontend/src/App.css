@@ -4,6 +4,8 @@ html{
   user-select: none; /* Bloquea la selección de texto */
             -webkit-user-select: none; /* Soporte para navegadores basados en WebKit */
             -ms-user-select: none; /* Soporte para navegadores antiguos de Microsoft */
+            /* scroll-behavior: smooth; */
+       
 }
 
 
@@ -96,11 +98,11 @@ html{
   height: 50px;
 }
 
-.contenedor-tabla table img{
+/* .contenedor-tabla table img{
   width: 30px;
   height: 20px;
   
-}
+} */
 
 .contenedor-tabla{
   height: 60vh;
@@ -179,6 +181,7 @@ html{
   background-color: #000000;
   color: white;
   border-radius: 25px;
+  font-size: 28px;
 }
 
 
@@ -257,7 +260,6 @@ html{
     margin: 2rem;
     padding: 15px;
     text-align: center;
-    background-color: #3c7aee !important; /* Color del botón */
     color: rgb(0, 0, 0);
     border: none !important;
     cursor: pointer !important;
@@ -409,8 +411,6 @@ html{
 .contenedor-horarios button{
   margin-top: 1rem;
   width: 25.5vw;
-  background-color:  white;
-  color: rgb(0, 0, 0);
   font-size: 22px;
 }
 .contenedor-trabajos-realizados{
@@ -444,7 +444,7 @@ html{
 
 .logo-navbar{
   margin-top: 1rem;
-  width: 16vw !important;
+  width: 18vw !important;
   height: 16vh !important;
   margin-left: auto;
   margin-right: auto;
@@ -452,7 +452,7 @@ html{
 }
 
 .logo-navbar img{
-  width: 16vw !important;
+  width: 18vw !important;
   height: 16vh !important;
   box-shadow: inset;
   height: auto;
@@ -500,12 +500,12 @@ html{
 }
 
 .reseñas{
-  width: 55vw;
+  width: 60vw;
 
 }
 
 .reseñas{
-  height: 20vh;
+  height: 28vh;
   overflow-y: auto; 
 
 }
@@ -551,7 +551,7 @@ html{
   width: 80vw;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 2rem;
+  margin-top: 4rem;
 }
 .form-reseña button{
   width: 30vw;
@@ -567,7 +567,7 @@ html{
 
 
 .imagenes{
-  width: 55vw;
+  width: 60vw;
 }
 
 .imagenes img{
@@ -694,7 +694,7 @@ html{
   margin-right: auto;
   background-color: #000000;
   border-radius: 25px;
-  margin-top: 2rem;
+  margin-top: 6rem;
 }
 
 .ubicacion{
@@ -815,10 +815,12 @@ html{
 
 .contenedor-imagen-administrador button{
   width: 100%;
-  color: rgb(5, 5, 5);
-  font-size: 22px;
-  font-weight: 500;
-  margin-top: 1rem;
+  display: block;
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  margin-top: 5px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .contenedor-imagen-administrador {
@@ -965,7 +967,7 @@ html{
 .datos-usuario-reseña h3{
   margin-left: 1rem;
   margin-top: 0.5rem;
-  color: black;
+  color: rgb(248, 248, 248);
 }
 
 .datos-usuario-reseña{
@@ -1102,5 +1104,186 @@ reserva-profesional
   margin-left: auto;
   margin-right: auto;
 }
+.btn-mostrar-contraseña{
+  margin-top: 0.5rem;
+}
+
+
+.btn-realizar-comentario{
+  margin-top: 4rem;
+}
+
+.contenedor-redes
+
+.btn-comentar{
+  margin-top: 1rem !important;
+}
+
+.contenedor-editar label{
+  color: white;
+  font-size: 18px;
+}
+
+.contenedor-editar-administrador{
+  width: 24vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contenedor-editar-administrador label{
+  font-size: 22px;
+  color: white;
+}
+
+.btns-administrador-editar{
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 1rem;
+}
+
+.btns-administrador-editar button{
+  width: 40%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+
+.div-botones-editar-videos{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+
+
+.div-botones-editar-videos button{
+  width: 5vw;
+  height: 4vh;
+}
+
+.div-botones-editar-videos img{
+  width: 1vw;
+  height: 2vh;
+}
+
+.div-botones-editar-videos{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+
+
+.div-botones-editar-usuarios button{
+  width: 5vw;
+  height: 4vh;
+}
+
+.div-botones-editar-usuarios img{
+  width: 1vw !important;
+  height: 2vh !important;
+}
+
+.div-botones-editar-usuarios{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+
+.div-botones-editar-reseñas{
+  display: flex;
+  justify-content: space-evenly;
+}  
+
+
+.div-botones-editar-reseñas img{
+  width: 1vw !important;
+  height: 2vh !important;
+}  
+
+.div-botones-editar-reseñas button{
+  width: 5vw;
+  height: 4vh;
+}  
+
+
+.div-botones-editar-horarios{
+  display: flex;
+  justify-content: space-evenly;
+}  
+
+
+.div-botones-editar-horarios img{
+  width: 1vw !important;
+  height: 2vh !important;
+}  
+
+.div-botones-editar-horarios button{
+  width: 5vw;
+  height: 4vh;
+}  
+
+
+.div-botones-editar-servicios{
+  display: flex;
+  justify-content: space-evenly;
+}  
+
+
+.div-botones-editar-servicios img{
+  width: 1vw !important;
+  height: 2vh !important;
+}  
+
+.div-botones-editar-servicios button{
+  width: 5vw;
+  height: 4vh;
+}  
+
+
+.div-botones-editar-citas{
+  display: flex;
+  justify-content: space-evenly;
+}  
+
+
+.div-botones-editar-citas img{
+  width: 1vw !important;
+  height: 2vh !important;
+}  
+
+.div-botones-editar-citas button{
+  width: 5vw;
+  height: 4vh;
+}  
+
+.btn-ver-historial-cita{
+  width: 5vw;
+  height: 4vh;
+}
+
+.btn-ver-historial-cita img{
+  width: 1vw !important;
+  height: 2vh !important;
+}
+
+.div-botones-editar-profesionales{
+  display: flex;
+  justify-content: space-evenly;
+}  
+
+
+.div-botones-editar-profesionales img{
+  width: 1vw !important;
+  height: 2vh !important;
+}  
+
+.div-botones-editar-profesionales button{
+  width: 5vw;
+  height: 4vh;
+}  
 
 .contenedor-tabla
+
+.logo
+
+datos-usuario-reseña

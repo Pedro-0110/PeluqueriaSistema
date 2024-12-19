@@ -34,7 +34,7 @@ export const NavbarAdministrados = () => {
                 
                 <li><NavLink to="/servicios" style={({ isActive }) => ({color: isActive ? '#1c55b0' : 'black'})} > <img width={'26px'} src= {iconoServicio} alt="" /><span>Servicios</span></NavLink></li>
                 
-                <li><NavLink to="" style={({ isActive }) => ({color: isActive ? '#1c55b0' : 'black'})}> <img width={'26px'} src= {iconoPuerta} alt="" /><span>Cerrar sesion</span></NavLink></li>
+                <li><NavLink to="/principal" style={({ isActive }) => ({color: isActive ? '#1c55b0' : 'black'})}> <img width={'26px'} src= {iconoPuerta} alt="" /><span>Cerrar sesion</span></NavLink></li>
             </ul>
       </article>
   </>

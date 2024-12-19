@@ -120,7 +120,7 @@ const buscarUsuarioPorPatrones = (req, res) => {
   // Construir patrones de búsqueda con los comodines
   const nombrePatron = `%${nombre.toUpperCase()}%`;
   const apellidoPatron = `%${apellido.toUpperCase()}%`;
-  const query = `SELECT u.usuario_id, u.nombre_usuario, u.apellido_usuario, u.telefono_usuario, u.username_usuario, r.nombre AS rol
+  const query = `SELECT u.usuario_id, u.nombre_usuario, u.apellido_usuario, u.telefono_usuario, u.username_usuario, u.fecha_registro_usuario, r.nombre AS rol
                  FROM Usuarios AS u
                  INNER JOIN Roles AS r
                  ON u.rol_id = r.rol_id
@@ -150,6 +150,21 @@ const iniciarSesion = (req,res)=>{
 }
 
 
+const iniciarSesionAdministrador = (req,res)=>{
+  const {username_usuario, password_usuario} = req.body
+  const query = `select count(*) as valor, u.usuario_id, u.nombre_usuario, u.apellido_usuario, u.telefono_usuario from Usuarios as u
+                 inner join Roles as r
+                 on u.rol_id = r.rol_id
+                 where r.nombre = 'Administrador' and u.username_usuario = ? and u.password_usuario = ?;`
+  pool.query(query,[username_usuario, password_usuario],(error,result)=>{
+    if(error){
+      return res.status(500).send("Error al obtener el usuario!")
+    }
+    res.status(200).json(result)
+  })
+}
+
+
 module.exports = {
   obtenerUsuarios,
   obtenerUsuario,
@@ -159,5 +174,6 @@ module.exports = {
   obtenerAdministradores,
   obtenerAdministrador,
   buscarUsuarioPorPatrones,
-  iniciarSesion
+  iniciarSesion,
+  iniciarSesionAdministrador
 };

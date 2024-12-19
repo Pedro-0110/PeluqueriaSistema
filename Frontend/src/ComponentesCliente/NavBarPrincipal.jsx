@@ -11,17 +11,19 @@ import Modal from 'react-bootstrap/Modal';
 
 import Swal from 'sweetalert2';
 
-import iconoLogo from '../IconsClientes/logo-peluqueria.jpg'
+import iconoLogo from '../IconsClientes/logo2-peluqueria.jpeg'
 import iconoInstagram from '../IconsClientes/icono-instagram.png'
 import iconoFacebook from '../IconsClientes/icono-facebook.png'
 import iconoWhatsapp from '../IconsClientes/icono-whatsapp.png'
+import iconoOjoAbierto from '../IconsClientes/icono-ojo-abierto.png'
+import iconoOjoCancelado from '../IconsClientes/icono-ojo-cancelado.png'
 
 import ListGroupItem from 'react-bootstrap/esm/ListGroupItem';
 
 
 export const NavBarPrincipal = () => {
 
-  const videos = ["https://i.imgur.com/jAS5mGy.mp4","https://i.imgur.com/A9sEMPO.mp4", "https://i.imgur.com/cFGcKKN.mp4", "https://i.imgur.com/11b6epg.mp4", "https://i.imgur.com/QNReqme.mp4"]
+  const videos = ["https://i.imgur.com/jAS5mGy.mp4","https://i.imgur.com/A9sEMPO.mp4", "https://i.imgur.com/cFGcKKN.mp4", "https://i.imgur.com/11b6epg.mp4", "https://i.imgur.com/QNReqme.mp4", "https://i.imgur.com/N2vqmOT.mp4", "https://i.imgur.com/p5gEhyJ.mp4", "https://i.imgur.com/GmT3ygS.mp4"]
 
   const videoRef = useRef(null);
   const carouselCortesRef = useRef(null);
@@ -62,6 +64,13 @@ export const NavBarPrincipal = () => {
   const[nombre_usuario, setNombre] = useState("");
   const[apellido_usuario, setApellido] = useState("");
   const[telefono_usuario, setTelefono] = useState("");
+
+
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
 
 
 
@@ -133,7 +142,6 @@ export const NavBarPrincipal = () => {
   const obtenerDatosDelUsuario = async () =>{
     const response = await axios.get(`http://localhost:8000/usuarios/${usuario_id}`)
     setDatosUsuario(response.data[0])
-    console.log(datosUsuario)
   }  
 
   const obtenerDatosDelProfesional = async () =>{
@@ -148,13 +156,14 @@ export const NavBarPrincipal = () => {
 
   const handleClickComentar = async ()=> {
     if(sesionIniciada){
+      if(comentario != ""){
     const response = await axios.post(`http://localhost:8000/resenas/`,{
       usuario_id,
       profesional_id,
       comentario,
       puntuacion : rating
     })
-    if(response.status === 201)
+    if(response.status === 201){
       Swal.fire({
         position: "top",
          icon: "success",
@@ -162,9 +171,14 @@ export const NavBarPrincipal = () => {
          showConfirmButton: false,
          timer: 1500
        });
+    }
       obtenerCantidadReseñasUsuario()
       obtenerReseñasRealizadasAlProfesional()
       setComentario("")
+    }else{
+      alert("Escribir un comentario!")
+    }
+      
   }else{
     setShowSesion(true)
   }
@@ -175,8 +189,7 @@ export const NavBarPrincipal = () => {
       setDiaSeleccionado("")
       setHorariosDisponibles([])
       setNombreFechaSeleccionada("")
-      setHorarioSeleccionado(""),
-      setDatosUsuario([])
+      setHorarioSeleccionado("")
       setCheckedItems([])
       obtenerDatosDelUsuario()
       setShowReservar(true)
@@ -299,6 +312,7 @@ export const NavBarPrincipal = () => {
   };
 
   const realizarReserva = async() =>{
+    if(horarioSeleccionado!= ""){
     const response = await axios.post(`http://localhost:8000/citas/`,{
       usuario_id,
       profesional_id,
@@ -318,17 +332,19 @@ export const NavBarPrincipal = () => {
       setHorariosDisponibles([])
       setNombreFechaSeleccionada("")
       setHorarioSeleccionado(""),
-      setDatosUsuario([])
       setCheckedItems([])
       setShowReservar(false)
       obtenerCantidadDeCitasPendiendesDelCliente()
           }
+  }else{
+    alert("Seleccione un horario")
   }
+}
 
   const obtenerCantidadReseñasUsuario = async () =>{
     const response = await axios.get(`http://localhost:8000/resenas/profesional/${profesional_id}/usuario/${usuario_id}`)
     setCantidadReseñasUsuario(response.data[0].cantidadReseñas)
-    console.log(response.data[0].cantidadReseñas)
+
   } 
 
   const obtenerCantidadDeCitasPendiendesDelCliente = async () =>{
@@ -350,19 +366,33 @@ export const NavBarPrincipal = () => {
       if(response.data[0].valor === 1){
         setSecicioIniciada(true)
         setUsuarioID(response.data[0].usuario_id)
-        console.log(usuario_id)
         setUserName("")
         setPasswordUsuario("")
         setShowSesion(false)
-        obtenerDatosDelUsuario();
         Swal.fire({
           position: "top",
            icon: "success",
-           title: `Bienvenido/a ${datosUsuario.nombre_usuario}! 👍`,
+           title: `Bienvenido/a! 👍`,
            showConfirmButton: false,
            timer: 2000
          });
+      }else{
+        Swal.fire({
+          position: "top",
+           icon: "error",
+           title: `Error, verifique bien los datos.`,
+           showConfirmButton: false,
+           timer: 2000
+         })
       }
+    }else{
+      Swal.fire({
+        position: "top",
+         icon: "warning",
+         title: `Llenar todos los campos!`,
+         showConfirmButton: false,
+         timer: 2000
+       })
     }
   }
 
@@ -377,10 +407,29 @@ export const NavBarPrincipal = () => {
         rol_id : 2
       })
       if(response.status === 201){
-        alert("Usuario creado!")
+        setNombre("")
+        setApellido("")
+        setUserName("")
+        setPasswordUsuario("")
+        setTelefono("")
+        setMostrarFormulariRegistrarme(false)
+        Swal.fire({
+          position: "top",
+           icon: "success",
+           title: `Usuario registrado!.`,
+           showConfirmButton: false,
+           timer: 2000
+         })
+
       }
     }else{
-      alert("Llenar todos los campos!")
+      Swal.fire({
+        position: "top",
+         icon: "warning",
+         title: `Llenar todos los campos!`,
+         showConfirmButton: false,
+         timer: 2000
+       })
     }
   }
 
@@ -394,27 +443,39 @@ export const NavBarPrincipal = () => {
      });
     setSecicioIniciada(false)
   }
-
-  useEffect(()=> {obtenerServiciosDelProfesional()},[])
-
-  useEffect(()=>{obtenerVideosDelProfesional()},[profesional_id])
   
-  useEffect(()=> {obtenerServiciosDelProfesional()},[profesional_id])
+  useEffect(()=> {
+      if(profesional_id){
+        obtenerVideosDelProfesional()
+        obtenerServiciosDelProfesional()
+        obtenerHorariosDisponiblesDelProfesional()
+        obtenerReseñasRealizadasAlProfesional()
+        obtenerDatosDelProfesional()
+        obtenerTinturasDelProfesional()
+        obtetenerCortesDelProfesional()
+      }
+  },[profesional_id])
+
+  useEffect(()=>{
+      if(sesionIniciada == true){
+        obtenerDatosDelUsuario()
+        obtenerCantidadDeCitasPendiendesDelCliente()
+        obtenerCantidadReseñasUsuario()
+      }
+  },[sesionIniciada])
+
+
+  useEffect(()=>{obtenerProfesionales()},[])
+
+  useEffect(()=>{obtenerHorariosReservados()},[diaSeleccionado])
+  
+
+
 
  
-  useEffect(()=> {obtenerHorariosDisponiblesDelProfesional()},[profesional_id])
-  useEffect(()=> {obtenerReseñasRealizadasAlProfesional()},[profesional_id])
-  useEffect(()=> {obtenerDatosDelProfesional()},[showReservar])
-  useEffect(()=> {obtenerDatosDelProfesional()},[])
-  useEffect(()=> {obtenerTinturasDelProfesional()},[profesional_id])
-  useEffect(()=> {obtetenerCortesDelProfesional()},[profesional_id])
-  useEffect(()=>{obtenerProfesionales()},[])
-  useEffect(()=>{obtenerHorariosReservados()},[diaSeleccionado])
-  useEffect(()=> {obtenerCantidadReseñasUsuario()},[sesionIniciada])
-  useEffect(()=> {obtenerCantidadReseñasUsuario()},[profesional_id])
-  useEffect(()=>{obtenerDatosDelUsuario()},[sesionIniciada])
-  useEffect(()=> {obtenerReseñasRealizadasAlProfesional()},[usuario_id])
-  useEffect(()=> {obtenerCantidadDeCitasPendiendesDelCliente()},[usuario_id])
+
+
+
 
 
 
@@ -444,7 +505,7 @@ export const NavBarPrincipal = () => {
               {profesionales.map((profesional) => (
               <div key={profesional.profesional_id} onClick={() => {handleSelect(profesional.profesional_id)}}
                 style={{
-                border: selectedImage === profesional.profesional_id ? "4px solid white" : "3px solid transparent",
+                border: selectedImage === profesional.profesional_id ? "4px solid #f3ff0d" : "3px solid transparent",
                 cursor: "pointer",
                 height: '30rem',
                 borderRadius : '8px'
@@ -453,7 +514,7 @@ export const NavBarPrincipal = () => {
                 <Card style={{ width: '14rem', height : '30rem'}} border= "secondary" bg={'dark'} text="white">
                   <Card.Img variant="top" src={profesional.imagen_profesional} width={'40px'} height={'180px'} />
                   <Card.Body>
-                    <Card.Title>{profesional.nombre_profesional} {profesional.apellido_profesional}</Card.Title>
+                    <Card.Title style={{fontWeight : 'bold', color: '#f3ff0d'}}>{profesional.nombre_profesional} {profesional.apellido_profesional}</Card.Title>
                     <Card.Text>
                       <em>{profesional.descripcion_profesional}</em>
                     </Card.Text>
@@ -502,7 +563,7 @@ export const NavBarPrincipal = () => {
                 </ListGroup>
               </article>
             </article>
-           <Button variant='dark' onClick={() => handleClickReservar()}>Reservar un turno</Button>
+           <Button variant='primary' onClick={() => handleClickReservar()}>Reservar un turno</Button>
           </div>
           
         </article>
@@ -528,6 +589,8 @@ export const NavBarPrincipal = () => {
                 <Image width={'700px'} height={'350px'} src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvGAjxH_rW2h35bKw0LmH7ET3wHtxWUaUkxg&s'></Image>
               </article>
             </Carousel.Item>
+
+        
           </Carousel>
         </article>
 
@@ -599,7 +662,7 @@ export const NavBarPrincipal = () => {
               {reseñasProfesional.map((reseña, index)=> 
               <ListGroup.Item key={index} action variant="dark">
                 <Image src= {`https://robohash.org/${index}`} roundedCircle width={'30px'} height={'30px'} style={{marginRight: '0.5rem'}}/>
-                <b>{reseña.nombre_usuario} {reseña.apellido_usuario}</b> : {reseña.comentario} <br /> Puntuacion: {reseña.puntuacion} <br /> {new Date(reseña.fecha_reseña).getDay()}/{new Date(reseña.fecha_reseña).getMonth()}/{new Date(reseña.fecha_reseña).getFullYear()} 
+                <b>{reseña.nombre_usuario} {reseña.apellido_usuario}</b> : {reseña.comentario} <br /> Puntuacion: {reseña.puntuacion} <br /> {new Date(reseña.fecha_reseña).toLocaleDateString('es-AR', { year: '2-digit', month: '2-digit', day: '2-digit' })}
               </ListGroup.Item>   
               )}
             </ListGroup> 
@@ -613,7 +676,7 @@ export const NavBarPrincipal = () => {
             <article className='form-reseña'>
               <article className='datos-usuario-reseña'>
                 <img src={`https://robohash.org/${usuario_id}`} alt="" width={'150px'}/>
-                <h3>{datosUsuario.nombre_usuario}{datosUsuario.apellido_usuario}</h3>
+                <h3>{datosUsuario.nombre_usuario} {datosUsuario.apellido_usuario}</h3>
               </article>
               <div className="rating-container">
                 <div className="stars">
@@ -635,7 +698,7 @@ export const NavBarPrincipal = () => {
           </article>
         : <></>
         :
-        <Button onClick={()=> setShowSesion(true)}>Realizar un comentario</Button>
+          <Button style={{marginTop: '4rem'}} onClick={()=> setShowSesion(true)}>Realizar un comentario</Button>
         }
       
    
@@ -677,7 +740,7 @@ export const NavBarPrincipal = () => {
                   <Form.Control
                     value={diaSeleccionado}
                     // En caso de seleccionar una fecha  nueva limpiamos el horario en caso de que sea un horario reservado de otro dia
-                    onChange={(e) => {setDiaSeleccionado(e.target.value), setHorarioSeleccionado("")}}
+                    onChange={(e) => {setDiaSeleccionado(e.target.value),setHorarioSeleccionado("")}}
                     type="date"
                     min={new Date().toISOString().split('T')[0]}
                   />
@@ -767,12 +830,12 @@ export const NavBarPrincipal = () => {
               </article>
             </div>
             : 
-              <h2>No es posible realizar una nueva reserva hasta que el peluquero haya confiramado o cancelado la anterior 🔐</h2>}
+              <h2> No es posible realizar una nueva reserva hasta que el peluquero haya confirmado o cancelado la anterior 🔒</h2>}
           </Modal.Body>
       </Modal>
     </div>
 
-
+    <div role="dialog" aria-modal="true" className="fade modal" tabIndex="-1" style={{display: 'block'}} inert = "true">
     <Modal show={showSesion} onHide={handleCloseSesion}>
         <Modal.Header closeButton>
           <Modal.Title>{!mostrarFormularioRegistrarme ? 'Inicio de sesion' : 'Creacion de cuenta'}</Modal.Title>
@@ -784,7 +847,13 @@ export const NavBarPrincipal = () => {
                   <Form.Label>Nombre de usuario</Form.Label>
                   <Form.Control placeholder='ingrese su nombre de usuario' value={username_usuario} onChange = {(e)=> setUserName(e.target.value)}/>
                   <Form.Label >Contraseña</Form.Label>
-                  <Form.Control placeholder='ingrese su contraseña' value={password_usuario} onChange={(e)=> setPasswordUsuario(e.target.value)}/>
+                  <Form.Control type={passwordVisible ? 'text' : 'password'} placeholder='ingrese su contraseña' value={password_usuario} onChange={(e)=> setPasswordUsuario(e.target.value)}/>
+                  <Button className='btn-mostrar-contraseña'
+            variant="outline-secondary"
+            onClick={togglePasswordVisibility}
+          >
+             <img src={passwordVisible ? iconoOjoAbierto : iconoOjoCancelado} alt="" width={'20px'}/>
+          </Button>
                   <div className='boton-iniciar-sesion'>
                   <Button onClick={()=> handleIniciarSesion()}>Iniciar</Button>
                   </div>
@@ -796,15 +865,21 @@ export const NavBarPrincipal = () => {
                   <Form.Label >Apellido</Form.Label>
                   <Form.Control placeholder='ingrese su apellido' value={apellido_usuario} onChange={(e)=> setApellido(e.target.value)}/>
                   <Form.Label >Telefono</Form.Label>
-                  <Form.Control placeholder='ingrese su numero' value={telefono_usuario} onChange={(e)=> setTelefono(e.target.value)}/>
+                  <Form.Control type = 'number' placeholder='ingrese su numero' value={telefono_usuario} onChange={(e)=> setTelefono(e.target.value)}/>
                   <Form.Label >Nombre de usuario</Form.Label>
                   <Form.Control placeholder='ingrese su username' value={username_usuario} onChange={(e)=> setUserName(e.target.value)}/>
                   <Form.Label >Contraseña</Form.Label>
-                  <Form.Control placeholder='ingrese su contraseña' value={password_usuario} onChange={(e)=> setPasswordUsuario(e.target.value)}/>
+                  <Form.Control type={passwordVisible ? 'text' : 'password'} placeholder='ingrese su contraseña' value={password_usuario} onChange={(e)=> setPasswordUsuario(e.target.value)}/>
+                  <Button className='btn-mostrar-contraseña'
+            variant="outline-secondary"
+            onClick={togglePasswordVisibility}
+          >
+           <img src={passwordVisible ? iconoOjoAbierto : iconoOjoCancelado} alt="" width={'20px'}/>
+          </Button>
                   <div className='boton-iniciar-sesion'>
                   <Button variant='success' onClick={()=> handleClickRegistrarUsuario()}>Registrar</Button>
                   </div>
-                  <Form.Label style={{width: '100%', backgroundColor: '#fca50f', color: 'black', padding: '5px', borderRadius: '25px', textAlign : 'center', marginTop : '1rem',fontWeight: 'bolder'}}> Con esto usted podra realizar reservas y comentarios!</Form.Label>
+                  <Form.Label style={{width: '100%', backgroundColor: '#fca50f', color: 'black', padding: '5px', borderRadius: '25px', textAlign : 'center', marginTop : '1rem',fontWeight: 'bolder'}}> Registrandose usted podra realizar reservas y comentarios!</Form.Label>
                   </>
                   }
           </Form>
@@ -821,6 +896,7 @@ export const NavBarPrincipal = () => {
           }
         </Modal.Footer>
       </Modal>
+      </div>
     </>
   )
 }
