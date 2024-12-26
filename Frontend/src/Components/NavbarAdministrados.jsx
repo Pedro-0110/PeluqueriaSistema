@@ -15,10 +15,10 @@ export const NavbarAdministrados = () => {
     <>
      
       <article className="navegacion-administrador">
-            <div className="div-imagen-administrador"><img src="https://www.creativefabrica.com/wp-content/uploads/2022/10/06/Realistic-Color-Painting-HDR-Graffiti-Barber-Shop-40466763-1.png" alt="" /></div>
+            <div className="div-imagen-administrador"><img src="https://i.etsystatic.com/36512112/r/il/3f098c/4274900077/il_fullxfull.4274900077_dg5t.jpg" alt="" /></div>
 
             <ul>
-                <li><NavLink to="/citas" style={({ isActive }) => ({color: isActive ? '#1c55b0' : 'black'})}> <img width={'26px'} src= {iconoCita} alt="" /><span>Citas</span> </NavLink></li>
+                <li><NavLink to="/citas" style={({ isActive }) => ({color: isActive ? '#1c55b0' : 'black'})}> <img width={'26px'} src= {iconoCita} alt="" /> <span>Citas</span> </NavLink></li>
 
                 <li><NavLink to="/galeria" style={({ isActive }) => ({color: isActive ? '#1c55b0' : 'black'})} ><img width={'26px'} src= {iconoImagen} alt="" /><span>Galeria</span></NavLink></li>
 

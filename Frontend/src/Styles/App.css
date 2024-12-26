@@ -1,5 +1,8 @@
 
-
+*{
+  margin: 0;
+  padding: 0;
+}
 html{
   user-select: none; /* Bloquea la selección de texto */
             -webkit-user-select: none; /* Soporte para navegadores basados en WebKit */
@@ -7,7 +10,6 @@ html{
             /* scroll-behavior: smooth; */
        
 }
-
 
 
 /*-------------------------------------------------------------------------------------------------------------------------------------*/
@@ -23,6 +25,7 @@ html{
 }
 
 .navegacion-administrador a{
+  display: block;
     text-decoration: none;
     font-weight: 600;
     font-size: 20px;
@@ -98,11 +101,7 @@ html{
   height: 50px;
 }
 
-/* .contenedor-tabla table img{
-  width: 30px;
-  height: 20px;
-  
-} */
+
 
 .contenedor-tabla{
   height: 60vh;
@@ -148,22 +147,7 @@ html{
   height: 2vh;
 }
 
-.div-botones-editar-profesionales{
-  display: flex;
-  justify-content: space-evenly;
-}
 
-
-.div-botones-editar-profesionales button{
-  width: 8vw;
-  height: 4vh;
-}
-
-
-.div-botones-editar-profesionales img{
-  width: 2vw;
-  height: 2vh;
-}
 
 
 
@@ -444,16 +428,16 @@ html{
 
 .logo-navbar{
   margin-top: 1rem;
-  width: 18vw !important;
-  height: 16vh !important;
+  width: 24vw !important;
+  height: 18vh !important;
   margin-left: auto;
   margin-right: auto;
   border-radius: 100%;
 }
 
 .logo-navbar img{
-  width: 18vw !important;
-  height: 16vh !important;
+  width: 24vw !important;
+  height: 18vh !important;
   box-shadow: inset;
   height: auto;
   box-shadow: 5px 5px 10px #0e2036; /* Sombra */
@@ -986,10 +970,6 @@ html{
   font-weight: bolder;
 }
 
-
-.div-botones-editar{}
-
-
 .contenedor{
   width: 80vw;
   margin-left: auto;
@@ -1065,33 +1045,6 @@ html{
   display: flex;
   justify-content: space-evenly;
 }
-
-.contenedor-descuentos
-contenedor-horarios
-.contenedor-servicios
-contenedor-reseñas
-.dia
-.tarde
-.contenedor-datos-profesional
-.horarios
-.logo-navbar
-navegacion-administrador
-form-reseña
-.contenedor-trabajos-realizados
-botones-video
-carousel-container
-reseñas
-contenedor-botones-navbar
-.contenedor-redes
-.logo-navbar
-
-.reseñas
-contenedor-tabla-imagenes
-contenedor-tabla
-contenedor-tabla-imagenes
-div-botones-editar
-reserva-profesional
-.datos-reserva
 
 .boton-iniciar-sesion{
   width: 100%;
@@ -1282,8 +1235,4 @@ reserva-profesional
   height: 4vh;
 }  
 
-.contenedor-tabla
-
-.logo
-
-datos-usuario-reseña
+div-botones-editar-profesionales

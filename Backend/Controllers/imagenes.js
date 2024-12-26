@@ -34,9 +34,9 @@ const obtenerImagen = (req, res) => {
 
 const crearImagen = (req, res) => {
     const { profesional_id, url_imagen, descripcion_imagen, fecha_subida_imagen } = req.body;
-    const query = `INSERT INTO Imagenes (profesional_id, url_imagen, descripcion_imagen, fecha_subida_imagen) VALUES (?, ?, ?, ?);`;
+    const query = `INSERT INTO Imagenes (profesional_id, url_imagen, descripcion_imagen) VALUES (?, ?, ?);`;
     
-    pool.query(query, [profesional_id, url_imagen, descripcion_imagen, fecha_subida_imagen], (error, result) => {
+    pool.query(query, [profesional_id, url_imagen, descripcion_imagen], (error, result) => {
         if (error) {
             console.error(error);
             return res.status(500).send("Error al crear la imagen");
@@ -49,9 +49,9 @@ const crearImagen = (req, res) => {
 const editarImagen = (req, res) => {
     const { id } = req.params;
     const { profesional_id, url_imagen, descripcion_imagen, fecha_subida_imagen } = req.body;
-    const query = `UPDATE Imagenes SET profesional_id = ?, url_imagen = ?, descripcion_imagen = ?, fecha_subida_imagen = ? WHERE imagen_id = ?;`;
+    const query = `UPDATE Imagenes SET profesional_id = ?, url_imagen = ?, descripcion_imagen = ? WHERE imagen_id = ?;`;
     
-    pool.query(query, [profesional_id, url_imagen, descripcion_imagen, fecha_subida_imagen, id], (error, result) => {
+    pool.query(query, [profesional_id, url_imagen, descripcion_imagen,  id], (error, result) => {
         if (error) {
             console.error(error);
             return res.status(500).send("Error al editar la imagen");

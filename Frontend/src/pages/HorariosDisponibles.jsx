@@ -106,7 +106,14 @@ export const HorariosDisponibles = () => {
           hora_fin
         }
       );
-      if (response.status === 201) {
+      if (response.status === 200) {
+        Swal.fire({
+          title: "Registro actualizado!",
+          text: "",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500
+        });
         obtenerHorarios();
       }
     }else{
@@ -372,8 +379,8 @@ export const HorariosDisponibles = () => {
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClickCancelar}>Cancelar</Button>
-          <Button variant = 'primary' onClick={handleClickConfirmar}>Confirmar</Button>
+          <Button style={{display: 'block', width : '10vw', marginLeft : 'auto', marginRight : 'auto'}} variant = 'primary' onClick={handleClickConfirmar}>Confirmar</Button>
+          <Button style={{display: 'block', width : '10vw', marginLeft : 'auto', marginRight : 'auto'}} variant="secondary" onClick={handleClickCancelar}>Cancelar</Button>
         </Modal.Footer>
       </Modal>
     </>

@@ -1,0 +1,526 @@
+.contenedor{
+    width: 80vw;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media screen and (max-width: 959px) {
+    .contenedor{
+      width: 100%;
+    }
+    .logo img{
+      width: 100%;
+    }
+  }
+
+  .logo{
+    margin-top: 1rem;
+    width: 18vw !important;
+    height: 16vh !important;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 100%;
+  }
+
+
+  .logo img{
+    width: 18vw !important;
+    height: 16vh !important;
+    box-shadow: inset;
+    height: auto;
+    box-shadow: 5px 5px 10px #0e2036; /* Sombra */
+    border-radius: 10px;
+    padding: 0.2rem;
+  }
+
+  @media screen and (max-width: 959px) {
+    .contenedor{
+      width: 100%;
+    }
+    .logo img{
+      width: 100%;
+    }
+    
+  }
+
+  .botones-navegacion a{
+    width: 15vw;
+    padding: 0.5rem;
+    border-radius: 25px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #ffffff;
+    color: black;
+  }
+  .botones-navegacion{
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 1.5rem;
+    width: 80vw;
+    margin-left: auto;
+    margin-right: auto;
+    flex-wrap: wrap; 
+  }
+  
+  .botones-navegacion a:hover{
+    background-color:  rgb(94, 169, 255) !important;
+  }
+  .botones-navegacion button{
+    width: 14vw;
+  }
+
+
+  .contenedor-datos-profesional{
+    margin-top: 3rem;
+    width: 80vw;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .contenedor-datos-profesional h2{
+    background-color: #000000 !important;
+  }
+
+.profesionales{
+    width: 26.6vw;
+    margin-left: auto;
+    margin-right: auto;
+  }
+.profesionales h2{
+    padding: 0.5rem;
+   
+    border-radius: 25px;
+    width: 26.6vw;
+    background-color: #000000;
+    color: white;
+  }
+
+ .servicios{
+    width: 25.5vw;
+    margin-right: 1rem;
+  
+  }
+  
+ .servicios h2{
+    padding: 0.5rem;
+   
+    border-radius: 25px;
+    width: 25.5vw;
+    background-color: #000000;
+    color: white;
+  }
+
+.horarios{
+
+    width: 25.5vw;
+    color: #000000;
+  }
+  
+ h2{
+    padding: 0.5rem;
+   
+    border-radius:  25px;
+    width: 25.5vw;
+    background-color: #000000;
+    color: white;
+  }
+  
+ button{
+    margin-top: 1rem;
+    width: 25.5vw;
+    font-size: 22px;
+  }
+
+  .horarios{
+    display: flex;
+    justify-content: space-evenly;
+    width: 25.5vw;
+  }
+  
+  .horario h3{
+    text-align: center;
+    width: 12.5vw;
+    background-color: #fcfcfc;
+    color: rgb(0, 0, 0);
+    border-radius: 10px;
+  }
+
+  .dia{
+    width: 12.5vw;
+  }
+  .tarde{
+    width: 12.5vw;
+  }
+
+.descuentos{
+    width: 80vw;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3rem;
+  }
+  
+.descuentos img{
+    width: 100%;
+    border-radius: 25px;
+  }
+  
+.descuentos h2{
+    width: 40vw;
+    padding: 0.5rem;
+    color: white;
+    background-color: #000000;
+    border-radius: 25px;
+    margin-left: 0.5rem;
+  }
+
+  .carrusel-imagen{
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .carrusel-imagen img{
+    margin: 0.5rem;
+  }
+
+ .galeria{
+    width: 80vw;
+    margin-top: 3rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+ .galeria h2{
+    padding: 0.5rem;
+   
+    border-radius:  25px;
+    width: 40vw;
+    background-color: #000000;
+    color: white;
+  }
+  
+ .galeria
+  {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem ;
+  }
+  
+ .galeria h3{
+    text-indent: 1rem;
+    color:   #ffffff;
+  
+  }
+
+  .imagenes{
+    width: 60vw;
+  }
+  
+  .imagenes img{
+    width: 8vw;
+    height: 16vh;
+    margin-right: 1rem;
+  }
+
+  .carousel-container {
+    position: relative;
+    width: 100%;
+    margin: auto;
+    overflow: hidden;
+  }
+
+  .arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #000000;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    border-radius: 100%;
+    z-index: 1;
+    color: white;
+    width: 50px;
+    height: 50px;
+  }
+  
+  .arrow.left {
+    left: 20px;
+  }
+  
+  .arrow.right {
+    right: 20px;
+  }
+
+  .carousel {
+    display: flex;
+    gap: 16px;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    padding: 10px;
+  }
+
+  .product-card {
+    min-width: 250px;
+    background-color: rgb(0, 0, 0);
+    border-radius: 8px;
+    padding: 8px;
+    text-align: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .product-card img {
+    width: 100%;
+    height: 16vh;
+    margin-top: 8px;
+    border-radius: 8px;
+  }
+  .product-info {
+    margin-top: 8px;
+  }
+
+  .product-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .product-price {
+    color: #ff5733;
+    font-size: 14px;
+  }
+
+  .videos{
+    width: 20vw;
+    border-radius: 10px;
+    height: 60vh;
+    overflow-y: auto; 
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .videos{
+    margin-top: 10vh;
+  }
+  .videos video{
+    padding: 1rem;
+    background-color: #020202;
+    border-radius: 10px;
+  }
+
+
+  .botones-video{
+    width: 16vw;
+    display: flex;
+    justify-content: space-evenly;
+  }
+  
+  .botones-video button{
+    width: 5vw;
+    font-size: 20px;
+    font-weight: bolder;
+  }
+
+.contenedor-reseñas{
+    width: 80vw;
+    margin-left: auto;
+    margin-right: auto;
+    height: 30vh;
+  }
+  
+.contenedor-reseñas h2{
+    padding: 0.5rem;
+  
+    border-radius: 25px;
+    width: 40vw;
+    background-color: #000000;
+    color: white;
+  }
+
+
+  .reseñas{
+    width: 60vw;
+  
+  }
+  
+  .reseñas{
+    height: 28vh;
+    overflow-y: auto; 
+  
+  }
+  
+  .reseñas input{
+    width: 40vw;
+    border: 1px solid rgb(0, 0, 0);
+  }
+
+  .form-reseña{
+    width: 80vw;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 4rem;
+  }
+  .form-reseña button{
+    width: 30vw;
+    
+  }
+  .form-reseña input{
+    width: 20vw;
+  }
+  .form-reseña button{
+    margin-top: 0.5rem;
+    width: 20vw !important;
+  }
+
+  .datos-usuario-reseña img{
+    width: 50px;
+    border-radius: 100%;
+  }
+  
+  .datos-usuario-reseña h3{
+    margin-left: 1rem;
+    margin-top: 0.5rem;
+    color: rgb(248, 248, 248);
+  }
+  
+  .datos-usuario-reseña{
+    display: flex;
+  }
+  
+
+  .rating-container {
+    /* text-align: center; */
+    font-family: Arial, sans-serif;
+  }
+
+  .stars {
+    display: flex;
+    /* justify-content: center; */
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  .star {
+    font-size: 2rem;
+    color: #ccc;
+    transition: color 0.3s ease;
+    margin: 0 5px;
+  }
+  
+  .star.selected {
+    color: #ffc107;
+  }
+  
+  .star:hover {
+    color: #ff9800;
+  }
+
+  .contenedor-redes{
+    width: 80vw;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #000000;
+    border-radius: 25px;
+    margin-top: 6rem;
+  }
+
+  .ubicacion{
+    width: 30vw;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .ubicacion iframe{
+    margin-top: 1rem;
+    width: 30vw;
+    height: 18vh;
+  }
+
+  .redes{
+    width: 30vw;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: space-evenly;
+    margin-top: 1rem;
+  }
+  .redes img{
+    width: 80px;
+  }
+
+  .reserva{display: flex; justify-content: space-evenly;}
+.reserva li{
+  list-style: none;
+  margin-top: 0.2rem;
+}
+
+.reserva h2{
+  margin-top: 0.5rem;
+}
+
+.campos-reserva li{
+    font-size: 18px;
+  }
+  
+  .campos-reserva{
+    width: 20vw;
+    border-right: 1px solid black;
+    margin: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .datos-reserva button{
+    width: 100%;
+  }
+  
+  .datos-reserva li{
+    font-size: 18px;
+  }
+  .datos-reserva{
+    width: 20vw;
+    border-left: 1px solid black;
+    margin: 0.5rem;
+    padding: 0.5rem;
+  }
+  
+
+  .reserva-profesional{
+    width: 18vw;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .reserva-profesional h2{
+    text-align: center;
+  }
+  
+  .reserva-profesional h4{
+    text-align: center;
+  }
+  .reserva-profesional img{
+    width: 8vw;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .imagen-profesional-reserva{
+    width: 8vw;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2rem;
+  }
+
+  .btn-mostrar-contraseña{
+    margin-top: 0.5rem;
+  }
+
+  .boton-iniciar-sesion{
+    width: 100%;
+  }
+  
+  .boton-iniciar-sesion button{
+    display: block;
+    margin-top: 1rem;
+    width: 8vw;
+    margin-left: auto;
+    margin-right: auto;
+  }

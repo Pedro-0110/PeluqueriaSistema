@@ -1,7 +1,7 @@
 const pool = require('../Config/conexionbd');
 
 const obtenerHorariosDisponibles = (req, res) => {
-    const query = `SELECT p.nombre_profesional, p.apellido_profesional, h.hora_inicio, h.hora_fin, h.dia_semana FROM HorariosDisponibles AS h
+    const query = `SELECT p.nombre_profesional, p.apellido_profesional, p.profesional_id, h.horario_id, h.hora_inicio, h.hora_fin, h.dia_semana FROM HorariosDisponibles AS h
                    INNER JOIN Profesionales AS p
                    ON h.profesional_id = p.profesional_id;`;
 

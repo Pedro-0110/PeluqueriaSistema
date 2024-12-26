@@ -57,6 +57,13 @@ export const Profesionales = () => {
                 imagen_profesional
             })
             if(response.status == 200){
+                Swal.fire({
+                    position: "top",
+                     icon: "success",
+                     title: "Registro actualizado!",
+                     showConfirmButton: false,
+                     timer: 1500
+                   });
                 limpiarCampos()
                 obtenerProfesionales()
                 setEditar(false)
@@ -82,11 +89,13 @@ export const Profesionales = () => {
                 const response = await axios.delete(`http://localhost:8000/profesionales/${profesional_id}`);
         
                 if (response.status === 200) {
-                     Swal.fire({
-                        title: "Registro eliminado!",
-                        text: "",
-                        icon: "success"
-                });
+                    Swal.fire({
+                        position: "top",
+                         icon: "success",
+                         title: "Registro eliminado!",
+                         showConfirmButton: false,
+                         timer: 1500
+                       });
                 obtenerProfesionales()
                 } else {
                     Swal.fire({
@@ -105,7 +114,10 @@ export const Profesionales = () => {
             }
     };
 
-    const handleClickCancelarEdicion = () => setEditar(false)
+    const handleClickCancelarEdicion = () =>{
+        limpiarCampos()
+        setEditar(false)
+    }
 
     const handleClickConfirmar = async () =>{
         if(verificarLlenadoDeCampos()){
@@ -295,11 +307,11 @@ export const Profesionales = () => {
             </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModalAgregar}>
-            Cancelar
-          </Button>
-          <Button variant="primary" onClick={()=> handleClickConfirmar()}>
+          <Button style={{display: 'block', width : '10vw', marginLeft : 'auto', marginRight : 'auto'}} variant="primary" onClick={()=> handleClickConfirmar()}>
             Confirmar
+          </Button>
+          <Button style={{display: 'block', width : '10vw', marginLeft : 'auto', marginRight : 'auto'}} variant="secondary" onClick={handleCloseModalAgregar}>
+            Cancelar
           </Button>
         </Modal.Footer>
       </Modal> 

@@ -58,7 +58,7 @@ export const NavBarPrincipal = () => {
   const [showSesion, setShowSesion] = useState(false);
   const [username_usuario, setUserName] = useState("");
   const [password_usuario, setPasswordUsuario] = useState("")
-  const [sesionValida,setSesionValida] = useState("")
+
 
 
   const[nombre_usuario, setNombre] = useState("");
@@ -68,6 +68,8 @@ export const NavBarPrincipal = () => {
 
   const [passwordVisible, setPasswordVisible] = useState(false);
 
+  const[loading, setLoading] = useState(false);
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -75,7 +77,7 @@ export const NavBarPrincipal = () => {
 
 
   const handleCloseSesion = () => setShowSesion(false);
-  const handleShowSesion = () => setShowSesion(true);
+  // const handleShowSesion = () => setShowSesion(true);
 
   const handleNext = () => {
     setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
@@ -114,19 +116,25 @@ export const NavBarPrincipal = () => {
   };
   
   const obtenerProfesionales = async () =>{
+    setLoading(true)
     const response = await axios.get("http://localhost:8000/profesionales/nombres")
     setProfesionales(response.data)
+    setLoading(false)
   }
 
 
   const obtenerTinturasDelProfesional = async () =>{
+    setLoading(true)
     const response = await axios.get(`http://localhost:8000/imagenes/tinturas/profesional/${profesional_id}`)
     setTinturas(response.data)
+    setLoading(false)
   }
 
   const obtetenerCortesDelProfesional = async () =>{
+    setLoading(true)
     const response = await axios.get(`http://localhost:8000/imagenes/cortes/profesional/${profesional_id}`)
     setCortes(response.data)
+    setLoading(false)
   }
 
   const obtenerReseñasRealizadasAlProfesional = async () =>{
@@ -209,6 +217,7 @@ export const NavBarPrincipal = () => {
 
   
   const obtenerHorariosReservados = async () => {
+    setLoading(true)
     try {
       // Obtener citas pendientes
       const response = await axios.get(
@@ -296,6 +305,7 @@ export const NavBarPrincipal = () => {
     } catch (error) {
       console.error("Error al obtener los horarios:", error);
     }
+    setLoading(false)
   };
 
   const handleChangeRadio = (event) =>{
@@ -324,7 +334,7 @@ export const NavBarPrincipal = () => {
       Swal.fire({
         position: "top",
          icon: "success",
-         title: "Cita confirmada! 👍",
+         title: "Reservado! 📅",
          showConfirmButton: false,
          timer: 3000
        });
@@ -372,7 +382,7 @@ export const NavBarPrincipal = () => {
         Swal.fire({
           position: "top",
            icon: "success",
-           title: `Bienvenido/a! 👍`,
+           title: `Bienvenido/a ^_^`,
            showConfirmButton: false,
            timer: 2000
          });
@@ -398,6 +408,7 @@ export const NavBarPrincipal = () => {
 
   const handleClickRegistrarUsuario = async () =>{
     if(nombre_usuario != "" && apellido_usuario != "" && telefono_usuario != "" && username_usuario != "" && password_usuario != ""){
+
       const response = await axios.post(`http://localhost:8000/usuarios/`,{
         nombre_usuario,
         apellido_usuario,
@@ -406,6 +417,7 @@ export const NavBarPrincipal = () => {
         password_usuario,
         rol_id : 2
       })
+
       if(response.status === 201){
         setNombre("")
         setApellido("")
@@ -420,18 +432,17 @@ export const NavBarPrincipal = () => {
            showConfirmButton: false,
            timer: 2000
          })
-
-      }
-    }else{
-      Swal.fire({
-        position: "top",
-         icon: "warning",
-         title: `Llenar todos los campos!`,
-         showConfirmButton: false,
-         timer: 2000
-       })
     }
+  }else{
+    Swal.fire({
+      position: "top",
+       icon: "warning",
+       title: `Llenar todos los campos!`,
+       showConfirmButton: false,
+       timer: 2000
+     })
   }
+}
 
   const handleClickCerrarSesion = () =>{
     Swal.fire({
@@ -450,9 +461,11 @@ export const NavBarPrincipal = () => {
         obtenerServiciosDelProfesional()
         obtenerHorariosDisponiblesDelProfesional()
         obtenerReseñasRealizadasAlProfesional()
+        obtenerCantidadReseñasUsuario()
         obtenerDatosDelProfesional()
         obtenerTinturasDelProfesional()
         obtetenerCortesDelProfesional()
+
       }
   },[profesional_id])
 
@@ -469,22 +482,27 @@ export const NavBarPrincipal = () => {
 
   useEffect(()=>{obtenerHorariosReservados()},[diaSeleccionado])
   
-
-
-
- 
-
-
-
-
-
-
-
   return (
     <>
       <div className='contenedor'>
+        {loading ? 
+        <div className="text-center">
+        <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Cargando...</span>
+        </div>
+    </div> :
+        <>
         <div className='contenedor-navbar'>
             <article className='logo-navbar'><img src={iconoLogo} alt="" />
+            </article>
+            <article className='perfiles'>
+              <a href="http://localhost:5173/citas"><Image src="https://static.vecteezy.com/system/resources/previews/007/570/733/non_2x/user-management-icon-isolated-management-icon-design-free-vector.jpg" width={'80px'} roundedCircle onClick={()=> Swal.fire({
+          position: "top",
+           title: `Bienvenido jefe!`,
+           showConfirmButton: false,
+           timer: 3000
+         })}/></a> 
+              
             </article>
             <article className='contenedor-botones-navbar'>
               <a href='#profesionales'>Profesionales</a>
@@ -668,7 +686,8 @@ export const NavBarPrincipal = () => {
             </ListGroup> 
           </article>
         </article>
-
+        </>
+        }
        
       
           {sesionIniciada ? 
@@ -698,20 +717,9 @@ export const NavBarPrincipal = () => {
           </article>
         : <></>
         :
-          <Button style={{marginTop: '4rem'}} onClick={()=> setShowSesion(true)}>Realizar un comentario</Button>
+          <Button  style={{marginTop: '4rem', display : 'block', marginLeft : 'auto', marginRight : 'auto'}} onClick={()=> setShowSesion(true)}>Realizar un comentario</Button>
         }
       
-   
-    
-            
-      
-      
-         
-      
-       
-         
-      
-
         <article className='contenedor-redes' id='contacto'>
             <article className='ubicacion'>
               <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d8475.577981818704!2d-65.26683040196815!3d-26.727088598049765!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x942267b77a391251%3A0xb824688fa9f92f9b!2sUttinger%20348%2C%20T4103FVH%20Taf%C3%AD%20Viejo%2C%20Tucum%C3%A1n!5e0!3m2!1ses!2sar!4v1732835302050!5m2!1ses!2sar" 
@@ -865,7 +873,7 @@ export const NavBarPrincipal = () => {
                   <Form.Label >Apellido</Form.Label>
                   <Form.Control placeholder='ingrese su apellido' value={apellido_usuario} onChange={(e)=> setApellido(e.target.value)}/>
                   <Form.Label >Telefono</Form.Label>
-                  <Form.Control type = 'number' placeholder='ingrese su numero' value={telefono_usuario} onChange={(e)=> setTelefono(e.target.value)}/>
+                  <Form.Control type="number" step="1" placeholder='ingrese su numero' value={telefono_usuario} onChange={(e)=> setTelefono(e.target.value)}/>
                   <Form.Label >Nombre de usuario</Form.Label>
                   <Form.Control placeholder='ingrese su username' value={username_usuario} onChange={(e)=> setUserName(e.target.value)}/>
                   <Form.Label >Contraseña</Form.Label>
@@ -896,10 +904,11 @@ export const NavBarPrincipal = () => {
           }
         </Modal.Footer>
       </Modal>
+        
       </div>
     </>
   )
-}
+  }
 
 
 

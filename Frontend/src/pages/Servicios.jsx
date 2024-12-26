@@ -117,9 +117,9 @@ export const Servicios = () => {
               Swal.fire({
                   position: "top",
                    icon: "success",
-                   title: "Nuevo profesional guardado",
+                   title: "Nuevo servicios guardado",
                    showConfirmButton: false,
-                   timer: 1500
+                   timer: 1500,
                  });
               setShow(false)
               obtenerServicios()
@@ -253,11 +253,11 @@ useEffect(()=> {obtenerServicios()},[])
             </Form>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Cancelar
-            </Button>
-            <Button variant="primary" onClick={()=> handleClickConfirmar()}>
+            <Button style={{display: 'block', width : '10vw', marginLeft : 'auto', marginRight : 'auto'}} variant="primary" onClick={()=> handleClickConfirmar()}>
               Confirmar
+            </Button>
+            <Button style={{display: 'block', width : '10vw', marginLeft : 'auto', marginRight : 'auto'}} variant="secondary" onClick={handleClose}>
+              Cancelar
             </Button>
           </Modal.Footer>
         </Modal>

@@ -12,7 +12,7 @@ export const Perfil = () => {
     const[usuario_id, setUsuarioID] = useState("")
     const[editar,setEditar] = useState(false)
     const[administrador,setAdministrador] = useState([])
-    const[username_usuario, setUsername] = useState("Paolo")
+    const[username_usuario, setUsername] = useState("Pedro01")
     const[password_usuario, setPassword] = useState("")
     const[nombre_usuario, setNombre] = useState("")
     const[apellido_usuario, setApellido] = useState("")

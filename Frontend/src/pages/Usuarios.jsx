@@ -20,7 +20,7 @@ export const Usuarios = () => {
     const[apellido_usuario,setApellido] = useState("")
     const[telefono_usuario,setTelefono] = useState("")
     const[username_usuario, setUsername] = useState("")
-    const[rol_id, setRolID] = useState()
+    const[rol_id, setRolID] = useState("")
     const[password_usuario,setPassword] = useState("")
     const[showModalAgregar, setShowModalAgregar] = useState(false)
     const [loading, setLoading] = useState(false);
@@ -57,7 +57,7 @@ export const Usuarios = () => {
         password_usuario, 
         rol_id
     ) =>{
-
+        console.log(rol_id)
         setUsuarioId(usuario_id)
         setNombre(nombre_usuario)
         setApellido(apellido_usuario)
@@ -124,6 +124,14 @@ export const Usuarios = () => {
                 rol_id
             })
             if(response.status === 200){
+
+                Swal.fire({
+                    title: "Registro actualizado!",
+                    text: "",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
                 setEditar(false)
                 obtenerUsuarios()
             }
@@ -345,11 +353,11 @@ export const Usuarios = () => {
             </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModalAgregar}>
-            Cancelar
-          </Button>
-          <Button variant="success" onClick={()=> handleClickConfirmar()}>
+          <Button style={{display: 'block', width : '10vw', marginLeft : 'auto', marginRight : 'auto'}} variant="success" onClick={()=> handleClickConfirmar()}>
             Confirmar
+          </Button>
+          <Button style={{display: 'block', width : '10vw', marginLeft : 'auto', marginRight : 'auto'}} variant="secondary" onClick={handleCloseModalAgregar}>
+            Cancelar
           </Button>
         </Modal.Footer>
       </Modal>

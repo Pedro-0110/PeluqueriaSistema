@@ -2,7 +2,7 @@ const pool = require("../Config/conexionbd");
 
 const obtenerUsuarios = (req, res) => {
   const query = `select u.usuario_id, u.nombre_usuario, u.apellido_usuario, u.telefono_usuario, u.username_usuario, 
-                 u.fecha_registro_usuario, r.nombre, u.password_usuario, r.nombre as rol from Usuarios as u
+                 u.fecha_registro_usuario, r.nombre, u.password_usuario, r.nombre as rol, r.rol_id from Usuarios as u
                  inner join Roles as r
                  on u.rol_id = r.rol_id;`;
 

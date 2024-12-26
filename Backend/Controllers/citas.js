@@ -3,7 +3,7 @@ const pool = require('../Config/conexionbd');
 const obtenerCitas = (req, res) => {
     const query = `SELECT c.cita_id, c.fecha_cita, c.estado_cita, c.fecha_realizada_reserva,
                     p.profesional_id, p.nombre_profesional, p.apellido_profesional, 
-                    u.usuario_id, u.nombre_usuario, u.apellido_usuario, 
+                    u.usuario_id, u.nombre_usuario, u.apellido_usuario, u.telefono_usuario, 
                     s.nombre_servicio  
                     FROM Citas AS c
                     INNER JOIN Usuarios AS u ON c.usuario_id = u.usuario_id

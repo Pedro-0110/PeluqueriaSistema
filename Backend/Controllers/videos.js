@@ -34,9 +34,9 @@ const obtenerVideo = (req, res) => {
 
 const crearVideo = (req, res) => {
     const { profesional_id, url_video, descripcion_video, fecha_subida_video } = req.body;
-    const query = `INSERT INTO Videos (profesional_id, url_video, descripcion_video, fecha_subida_video) VALUES (?, ?, ?, ?);`;
+    const query = `INSERT INTO Videos (profesional_id, url_video, descripcion_video) VALUES (?, ?, ?);`;
     
-    pool.query(query, [profesional_id, url_video, descripcion_video, fecha_subida_video], (error, result) => {
+    pool.query(query, [profesional_id, url_video, descripcion_video], (error, result) => {
         if (error) {
             console.error(error);
             return res.status(500).send("Error al crear el video");
@@ -49,9 +49,9 @@ const crearVideo = (req, res) => {
 const editarVideo = (req, res) => {
     const { id } = req.params;
     const { profesional_id, url_video, descripcion_video, fecha_subida_video } = req.body;
-    const query = `UPDATE Videos SET profesional_id = ?, url_video = ?, descripcion_video = ?, fecha_subida_video = ? WHERE video_id = ?;`;
+    const query = `UPDATE Videos SET profesional_id = ?, url_video = ?, descripcion_video = ? WHERE video_id = ?;`;
     
-    pool.query(query, [profesional_id, url_video, descripcion_video, fecha_subida_video, id], (error, result) => {
+    pool.query(query, [profesional_id, url_video, descripcion_video, id], (error, result) => {
         if (error) {
             console.error(error);
             return res.status(500).send("Error al editar el video");

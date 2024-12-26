@@ -21,7 +21,7 @@ export const Galeria = () => {
     const[profesionales,setProfesionales] = useState([])
     const[loading, setLoading] = useState(false);
     const[imagen_id, setImagenID] = useState("")
-    const[profesional_id, setProfesionalID] = useState(1)
+    const[profesional_id, setProfesionalID] = useState("")
     const[url_imagen, setUrlImagen] = useState("")
     const[descripcion_imagen, setDescripcion] = useState("")
     const[showImagen, setShowImagen] = useState(false);
@@ -119,6 +119,7 @@ export const Galeria = () => {
 }
 
     const handleClickCancelar = () =>{
+        limpiarCampos()
         setEditar(false)
         setShow(false)
     }
@@ -132,7 +133,7 @@ export const Galeria = () => {
             url_imagen,
             descripcion_imagen
         })
-        if(response.status == 200){
+        if(response.status == 201){
             limpiarCampos()
             setShow(false)
 
@@ -257,7 +258,7 @@ export const Galeria = () => {
                 descripcion_video
             })
 
-            if(response.status == 201){
+            if(response.status == 200){
                 Swal.fire({
                     position: "top",
                      icon: "success",
@@ -277,6 +278,7 @@ export const Galeria = () => {
     const handleClickCancelarVideo = () =>{
         setEditarVideo(false)
         setShowAgregarVideo(false)
+        limpiarCampos()
     }
 
     const handleClickCrearVideo = () => setShowAgregarVideo(true)
@@ -439,8 +441,8 @@ export const Galeria = () => {
                  </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClickCancelar}>Cancelar</Button>
-                <Button variant = "success" onClick={handleClickConfirmar} >Confirmar</Button>
+                <Button style={{display: 'block', width : '10vw', marginLeft : 'auto', marginRight : 'auto'}} variant = "success" onClick={handleClickConfirmar} >Confirmar</Button>
+                <Button style={{display: 'block', width : '10vw', marginLeft : 'auto', marginRight : 'auto'}} variant="secondary" onClick={handleClickCancelar}>Cancelar</Button>
             </Modal.Footer>
         </Modal>
 
@@ -571,8 +573,8 @@ export const Galeria = () => {
                  </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClickCancelarVideo}>Cancelar</Button>
-                <Button variant = "success" onClick={handleClickConfirmarVideo} >Confirmar</Button>
+                <Button style={{display: 'block', width : '10vw', marginLeft : 'auto', marginRight : 'auto'}} variant = "success" onClick={handleClickConfirmarVideo} >Confirmar</Button>
+                <Button style={{display: 'block', width : '10vw', marginLeft : 'auto', marginRight : 'auto'}} variant="secondary" onClick={handleClickCancelarVideo}>Cancelar</Button>
             </Modal.Footer>
         </Modal>
 

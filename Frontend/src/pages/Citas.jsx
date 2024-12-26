@@ -10,7 +10,7 @@ import {useEffect, useState } from 'react';
 
 import iconoCancelar from '../Icons/icono-cancelar.png'
 import iconoCancelarColor from '../Icons/icono-cancelar-color.png'
-import iconoLapiz from '../Icons/icono-lapiz.png'
+import iconoWhatsapp from '../IconsClientes/icono-whatsapp.png'
 import iconoConfirmar from '../Icons/icono-confirmar.png'
 import iconoConfirmarColor from '../Icons/icono-confirmar-color.png'
 import iconoNada from '../Icons/icono-nada.png'
@@ -148,6 +148,7 @@ export const Citas = () => {
                 <thead className="cabeza-tabla">
                     <tr>
                         <td>Cita</td>
+                        <td>Telefono</td>
                         <td>Usuario</td>
                         <td>Profesional</td>
                         <td>Servicio</td>
@@ -164,6 +165,7 @@ export const Citas = () => {
                     {!loading && citas.length > 0 && citas.map((cita, indx)=>
                         <tr key={indx}>
                             <td>{cita.cita_id}</td>
+                            <td><a href= {`https://wa.me/54${cita.telefono_usuario}`} style={{display : 'block'}} target='_blank'><img src={iconoWhatsapp} alt="" width={'50px'}/></a></td>
                             <td>{cita.nombre_usuario} {cita.apellido_usuario}</td>
                             <td>{cita.nombre_profesional} {cita.apellido_profesional}</td>
                             <td>{cita.nombre_servicio}</td>
@@ -238,7 +240,7 @@ export const Citas = () => {
                 {historialCliente.map((historia ,index)=>
                 <tr key={index}>
                   <td>{historia.nombre_profesional} {historia.apellido_profesional}</td>
-                  <td>{historia.fecha_cita}</td>
+                  <td>{new Date(historia.fecha_cita).toLocaleDateString('es-AR', { year: '2-digit', month: '2-digit', day: '2-digit' })}</td>
                   <td>{historia.nombre_servicio}</td>
                   <td>{historia.nota}</td>
                 </tr>
