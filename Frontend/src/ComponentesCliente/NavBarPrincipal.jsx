@@ -11,7 +11,6 @@ import Modal from 'react-bootstrap/Modal';
 
 import Swal from 'sweetalert2';
 
-import iconoLogo from '../IconsClientes/logo2-peluqueria.jpeg'
 import iconoInstagram from '../IconsClientes/icono-instagram.png'
 import iconoFacebook from '../IconsClientes/icono-facebook.png'
 import iconoWhatsapp from '../IconsClientes/icono-whatsapp.png'
@@ -20,10 +19,10 @@ import iconoOjoCancelado from '../IconsClientes/icono-ojo-cancelado.png'
 
 import ListGroupItem from 'react-bootstrap/esm/ListGroupItem';
 
+import { StarFill, Star } from "react-bootstrap-icons";
+
 
 export const NavBarPrincipal = () => {
-
-  const videos = ["https://i.imgur.com/jAS5mGy.mp4","https://i.imgur.com/A9sEMPO.mp4", "https://i.imgur.com/cFGcKKN.mp4", "https://i.imgur.com/11b6epg.mp4", "https://i.imgur.com/QNReqme.mp4", "https://i.imgur.com/N2vqmOT.mp4", "https://i.imgur.com/p5gEhyJ.mp4", "https://i.imgur.com/GmT3ygS.mp4"]
 
   const videoRef = useRef(null);
   const carouselCortesRef = useRef(null);
@@ -70,22 +69,36 @@ export const NavBarPrincipal = () => {
 
   const[loading, setLoading] = useState(false);
 
+  const[mostrarPromociones, setMostrarPromociones] = useState(false);
+  const[promociones, setPromociones] = useState([]);
+
+
+  const obtenerPromociones = async () =>{
+    const response = await axios.get(`http://localhost:8000/promociones/${profesional_id}`);
+    setPromociones(response.data)
+  }
+
+  const verificarSiMostrarPromociones = async () =>{
+    const response = await axios.get(`http://localhost:8000/configuracionGlobal`);
+    setMostrarPromociones(response.data[0].mostrar_promociones)
+    console.log(response.data[0].mostrar_promociones == true)
+  }
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
 
-
-
   const handleCloseSesion = () => setShowSesion(false);
-  // const handleShowSesion = () => setShowSesion(true);
 
   const handleNext = () => {
-    setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
+    //videos
+    setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videosDelProfesional.length);
   };
 
   const handlePrev = () => {
+    //videos
     setCurrentVideoIndex((prevIndex) =>
-      prevIndex === 0 ? videos.length - 1 : prevIndex - 1
+      prevIndex === 0 ? videosDelProfesional.length - 1 : prevIndex - 1
     );
   };
 
@@ -175,7 +188,7 @@ export const NavBarPrincipal = () => {
       Swal.fire({
         position: "top",
          icon: "success",
-         title: "Muchas gracias! 😎",
+         title: "Muchas gracias ✌",
          showConfirmButton: false,
          timer: 1500
        });
@@ -184,7 +197,13 @@ export const NavBarPrincipal = () => {
       obtenerReseñasRealizadasAlProfesional()
       setComentario("")
     }else{
-      alert("Escribir un comentario!")
+      Swal.fire({
+        position: "top",
+         icon: "info",
+         title: "Ingresar un comentario",
+         showConfirmButton: false,
+         timer: 1500
+       });
     }
       
   }else{
@@ -373,6 +392,7 @@ export const NavBarPrincipal = () => {
         username_usuario,
         password_usuario
       })
+
       if(response.data[0].valor === 1){
         setSecicioIniciada(true)
         setUsuarioID(response.data[0].usuario_id)
@@ -382,7 +402,7 @@ export const NavBarPrincipal = () => {
         Swal.fire({
           position: "top",
            icon: "success",
-           title: `Bienvenido/a ^_^`,
+           title: `Bienvenido`,
            showConfirmButton: false,
            timer: 2000
          });
@@ -465,6 +485,7 @@ export const NavBarPrincipal = () => {
         obtenerDatosDelProfesional()
         obtenerTinturasDelProfesional()
         obtetenerCortesDelProfesional()
+        obtenerPromociones()
 
       }
   },[profesional_id])
@@ -479,6 +500,7 @@ export const NavBarPrincipal = () => {
 
 
   useEffect(()=>{obtenerProfesionales()},[])
+  useEffect(()=>{verificarSiMostrarPromociones()},[])
 
   useEffect(()=>{obtenerHorariosReservados()},[diaSeleccionado])
   
@@ -493,10 +515,10 @@ export const NavBarPrincipal = () => {
     </div> :
         <>
         <div className='contenedor-navbar'>
-            <article className='logo-navbar'><img src={iconoLogo} alt="" />
+            <article className='logo-navbar'><img src={"https://scontent.ftuc1-2.fna.fbcdn.net/v/t39.30808-6/470223312_928030019424024_7163923516468459950_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=Qo00ZmzLB3EQ7kNvgEzAC62&_nc_oc=AdiLuMQ65oAFQEv2ScH5UEsSKk-3pbuUq03jQe-5t8-0mlw4syMWcSoqilMqw_gpO2A&_nc_zt=23&_nc_ht=scontent.ftuc1-2.fna&_nc_gid=AzKhBKdPT6NaGKx1AtIqPMH&oh=00_AYAofxhIFFFJyYFLdvD3yERHWun9ksP7S8BbskBsb3QlHA&oe=67947660"} alt="" />
             </article>
             <article className='perfiles'>
-              <a href="http://localhost:5173/citas"><Image src="https://static.vecteezy.com/system/resources/previews/007/570/733/non_2x/user-management-icon-isolated-management-icon-design-free-vector.jpg" width={'80px'} roundedCircle onClick={()=> Swal.fire({
+              <a href="http://localhost:5173/citas"><Image src="https://scontent.ftuc1-1.fna.fbcdn.net/v/t1.6435-9/50077696_2050762325017242_652053740081119232_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=4xVWNqEIW4EQ7kNvgE1VYfi&_nc_oc=Adh--vrID5y9hUuDBKzfkdaabjvvtVHI1lbLWzxH3MpGtMGk2zkzMLzwLCc7d8EAqGw&_nc_zt=23&_nc_ht=scontent.ftuc1-1.fna&_nc_gid=AiIAOiBcXnZDEBnfq9KyxSI&oh=00_AYDWjFl_kuEpUZXdewOn8AlNwnRe_bYQAxcgl8HH7Juyew&oe=67BB8E3A" width={'100px'} height={'90px'} rounded onClick={()=> Swal.fire({
           position: "top",
            title: `Bienvenido jefe!`,
            showConfirmButton: false,
@@ -517,13 +539,13 @@ export const NavBarPrincipal = () => {
 
           <article id='profesionales' className='contenedor-profesionales'>
             <h2 style={{backgroundColor: '#523042', color: 'white'
-            }}>Seleccionar un profesional</h2>
+            }}>Seleccionar un profesional  ⬇</h2>
 
             <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }} className='profesionales'>
               {profesionales.map((profesional) => (
               <div key={profesional.profesional_id} onClick={() => {handleSelect(profesional.profesional_id)}}
                 style={{
-                border: selectedImage === profesional.profesional_id ? "4px solid #f3ff0d" : "3px solid transparent",
+                border: selectedImage === profesional.profesional_id ? "4px solid #9fdb2e" : "3px solid transparent",
                 cursor: "pointer",
                 height: '30rem',
                 borderRadius : '8px'
@@ -532,7 +554,7 @@ export const NavBarPrincipal = () => {
                 <Card style={{ width: '14rem', height : '30rem'}} border= "secondary" bg={'dark'} text="white">
                   <Card.Img variant="top" src={profesional.imagen_profesional} width={'40px'} height={'180px'} />
                   <Card.Body>
-                    <Card.Title style={{fontWeight : 'bold', color: '#f3ff0d'}}>{profesional.nombre_profesional} {profesional.apellido_profesional}</Card.Title>
+                    <Card.Title style={{fontWeight : 'bold', color: '#9fdb2e'}}>{profesional.nombre_profesional} {profesional.apellido_profesional}</Card.Title>
                     <Card.Text>
                       <em>{profesional.descripcion_profesional}</em>
                     </Card.Text>
@@ -581,36 +603,25 @@ export const NavBarPrincipal = () => {
                 </ListGroup>
               </article>
             </article>
-           <Button variant='primary' onClick={() => handleClickReservar()}>Reservar un turno</Button>
+           <Button variant='warning' onClick={() => handleClickReservar()}>Reservar un turno</Button>
           </div>
           
         </article>
-        
+        {mostrarPromociones ? 
         <article className='contenedor-descuentos'>
           <h2>Promociones</h2>
           <Carousel>
-            <Carousel.Item interval={5000}>
+            {promociones.map((promo)=>
+              <Carousel.Item interval={5000}>
               <article className='carrusel-imagen'>
-                <Image width={'700px'} height={'350px'} src='https://d1csarkz8obe9u.cloudfront.net/posterpreviews/barber-shop-deals-sale-promotion-video-beard-design-template-c2ebc685bc96e9e8df9af176e65ddb29_screen.jpg?ts=1624746047'></Image>
-                <Image width={'700px'} height={'350px'} src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5GZcTPT1oCFab7pgek03Csmo3eRu568Q5lg&s'></Image>
+                <Image width={'700px'} height={'350px'} src={promo.url_promocion}></Image>
+                <Image width={'700px'} height={'350px'} src={promo.url_promocion}></Image>
               </article>
             </Carousel.Item>
-            <Carousel.Item interval={5000}>
-              <article className='carrusel-imagen'>
-                <Image width={'700px'} height={'350px'} src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSO3LHUm1kvPM-Q3A4YkddHyb7CIJCIBLSJlw&s'></Image>
-                <Image width={'700px'} height={'350px'} src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIkJP4xiTCif7pBFaRrXQsvkUKneDEqtFedA&s'></Image>
-              </article>
-            </Carousel.Item>
-            <Carousel.Item interval={5000}>
-              <article className='carrusel-imagen'>
-                <Image width={'700px'} height={'350px'} src='https://www.shutterstock.com/image-vector/vector-business-card-price-list-600nw-2096098918.jpg'></Image>
-                <Image width={'700px'} height={'350px'} src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvGAjxH_rW2h35bKw0LmH7ET3wHtxWUaUkxg&s'></Image>
-              </article>
-            </Carousel.Item>
-
-        
+            )}
           </Carousel>
         </article>
+        :<></>}
 
 
         <article className='contenedor-trabajos-realizados' id='trabajos'>
@@ -656,7 +667,7 @@ export const NavBarPrincipal = () => {
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
               <video
                 ref={videoRef}
-                src={videos[currentVideoIndex]}
+                src={videosDelProfesional.length > 0 ? videosDelProfesional[currentVideoIndex].url_video : undefined}
                 onEnded={handleVideoEnd}
                 autoPlay
                 muted
@@ -676,14 +687,39 @@ export const NavBarPrincipal = () => {
         <article className='contenedor-reseñas'>
           <h2>Reseñas</h2>
           <article className='reseñas' id='reseñas'>
-            <ListGroup as="ul"  variant="">
-              {reseñasProfesional.map((reseña, index)=> 
-              <ListGroup.Item key={index} action variant="dark">
-                <Image src= {`https://robohash.org/${index}`} roundedCircle width={'30px'} height={'30px'} style={{marginRight: '0.5rem'}}/>
-                <b>{reseña.nombre_usuario} {reseña.apellido_usuario}</b> : {reseña.comentario} <br /> Puntuacion: {reseña.puntuacion} <br /> {new Date(reseña.fecha_reseña).toLocaleDateString('es-AR', { year: '2-digit', month: '2-digit', day: '2-digit' })}
-              </ListGroup.Item>   
-              )}
-            </ListGroup> 
+          <ListGroup as="ul" variant="">
+  {reseñasProfesional.map((reseña, index) => (
+    <ListGroup.Item key={index} action variant="dark">
+      <Image
+        src={`https://robohash.org/${index}`}
+        roundedCircle
+        width={'30px'}
+        height={'30px'}
+        style={{ marginRight: '0.5rem' }}
+      />
+      <b>
+        {reseña.nombre_usuario} {reseña.apellido_usuario}
+      </b>
+      : {reseña.comentario} <br />
+      Puntuación:
+      <span style={{ marginLeft: '0.5rem' }}>
+        {Array.from({ length: 5 }, (_, i) => 
+          i < reseña.puntuacion ? (
+            <StarFill key={i} color="gold" />
+          ) : (
+            <Star key={i} color="gray" />
+          )
+        )}
+      </span>
+      <br />
+      {new Date(reseña.fecha_reseña).toLocaleDateString('es-AR', {
+        year: '2-digit',
+        month: '2-digit',
+        day: '2-digit',
+      })}
+    </ListGroup.Item>
+  ))}
+</ListGroup>;
           </article>
         </article>
         </>
@@ -717,7 +753,7 @@ export const NavBarPrincipal = () => {
           </article>
         : <></>
         :
-          <Button  style={{marginTop: '4rem', display : 'block', marginLeft : 'auto', marginRight : 'auto'}} onClick={()=> setShowSesion(true)}>Realizar un comentario</Button>
+          <Button variant = 'warning' style={{marginTop: '4rem', display : 'block', marginLeft : 'auto', marginRight : 'auto'}} onClick={()=> setShowSesion(true)}>Realizar un comentario</Button>
         }
       
         <article className='contenedor-redes' id='contacto'>
@@ -731,9 +767,9 @@ export const NavBarPrincipal = () => {
                 referrerPolicy="no-referrer-when-downgrade"></iframe>
             </article>
             <article className='redes'>
-              <a href="https://www.facebook.com/nombredeusuario" target="_blank"><img src={iconoFacebook} alt=""/></a>
+              <a href="https://www.facebook.com/profile.php?id=100066511033982" target="_blank"><img src={iconoFacebook} alt=""/></a>
               <a href="https://wa.me/543813464225?text=¡Hola!%20Estoy%20interesado%20en%20los%20servicios%20de%20la%20peluquería.%20Me%20gustaría%20hacer%20una%20cita." target="_blank"><img src={iconoWhatsapp} alt="" /></a>
-              <a href="https://www.instagram.com/nombredeusuario/" target="_blank"><img src={iconoInstagram} alt="" /></a>
+              <a href="https://www.instagram.com/n.nbarber/?fbclid=IwY2xjawH7p0lleHRuA2FlbQIxMAABHWgvlSVRmYFECBT7BDNZQcn-hf4ss-0LQSDh7beg6eNEjpAytzjCh9BrEw_aem_E_svTUUwgZJh_zNtk9jF0g#" target="_blank"><img src={iconoInstagram} alt="" /></a>
             </article>
         </article>
 

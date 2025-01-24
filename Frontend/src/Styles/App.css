@@ -96,15 +96,15 @@ html{
 }
 
 .contenedor-tabla-imagenes img{
-  border-radius: 100%;
-  width: 50px;
-  height: 50px;
+  border-radius: 10%;
+  width: 60px;
+  height: 60px;
 }
 
 
 
 .contenedor-tabla{
-  height: 60vh;
+  height: 72vh;
   overflow-y: auto; 
   text-align: center;
   margin-right: 1rem;
@@ -428,20 +428,20 @@ html{
 
 .logo-navbar{
   margin-top: 1rem;
-  width: 24vw !important;
-  height: 18vh !important;
+  width: 12vw !important;
+  height: 22vh !important;
   margin-left: auto;
   margin-right: auto;
   border-radius: 100%;
 }
 
 .logo-navbar img{
-  width: 24vw !important;
-  height: 18vh !important;
+  width: 12vw !important;
+  height: 22vh !important;
   box-shadow: inset;
   height: auto;
   box-shadow: 5px 5px 10px #0e2036; /* Sombra */
-  border-radius: 10px;
+  border-radius: 50%;
   padding: 0.2rem;
 }
 
@@ -787,7 +787,7 @@ html{
 
 .contenedor-imagen-administrador img{
   width: 16vw;
-  height: 40vh;
+  height: 30vh;
   
 }
 .contenedor-imagen-administrador h2{
@@ -1235,4 +1235,48 @@ html{
   height: 4vh;
 }  
 
-div-botones-editar-profesionales
+.contenedor-padre-promociones{
+  display: flex;
+  justify-content: space-evenly;
+  width: 80vw;
+  margin-top: 1rem;
+}
+
+
+.formulario-promociones{
+  width: 26vw;
+}
+
+.formulario-promociones label{
+  color: rgb(248, 248, 248);
+}
+
+.formulario-promociones button{
+  display: block;
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
+}
+
+.tabla-promociones{
+  width: 52vw;
+}
+
+.tabla-promociones{
+
+    height: 100vh;
+    overflow-y: auto; 
+    text-align: center;
+    margin-right: 1rem;
+  
+}
+
+.contenedor-tabla-citas{
+  height: 85vh;
+  overflow-y: auto; 
+  text-align: center;
+  margin-right: 1rem;
+}
+
+.contenedor-imagen-administrador

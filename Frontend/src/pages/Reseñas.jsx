@@ -36,10 +36,12 @@ export const Reseñas = () => {
             
             if (response.status === 200) {
               Swal.fire({
-                title: "Registro eliminado!",
-                text: "",
-                icon: "success"
-              });
+                                                              position: "top",
+                                                               icon: "success",
+                                                               title: "Eliminado!",
+                                                               showConfirmButton: false,
+                                                               timer: 1000
+                                                             });
               obtenerResenas()
             } else {
               Swal.fire({
@@ -65,7 +67,7 @@ export const Reseñas = () => {
     <>
     <NavbarAdministrados/>
       <article className="contenedor-padre">
-          <h2>Reseñas</h2>
+          <h2>Comentarios</h2>
             {loading 
               ?
                 <div className="text-center">

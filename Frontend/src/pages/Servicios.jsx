@@ -103,7 +103,10 @@ export const Servicios = () => {
         }
       };
     
-    const handleClickCancelar = () => setEditar(false)
+    const handleClickCancelar = () =>{
+      limpiarCampos();
+      setEditar(false);
+    }
     
     const handleClickConfirmar = async () =>{
         if(verificarLlenadoDeCampos()){
@@ -196,7 +199,7 @@ useEffect(()=> {obtenerServicios()},[])
         {editar 
           ? 
             <article className='contenedor-editar'>
-              <h4 style={{padding: '1rem', backgroundColor: '#343a40', color: 'white', border : '1px solid black', borderRadius : '10px'}}>Datos a actualizar</h4>
+              <h4 >Datos a actualizar</h4>
               <Form>
                 <Form.Group>
                     <Form.Label>Nombre</Form.Label>

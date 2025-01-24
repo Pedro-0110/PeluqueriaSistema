@@ -195,12 +195,12 @@ export const Usuarios = () => {
           
             <InputGroup className="mb-3">
                 <InputGroup.Text id="inputGroup-sizing-default">
-                     Buscar usuario
+                     Busqueda de usuario
                 </InputGroup.Text>
                 <Form.Control
                 aria-label="Default"
                 aria-describedby="inputGroup-sizing-default"
-                placeholder="Ingrese el nombre o apellido"
+                placeholder=""
                 onChange={(e) => setValorBusqueda(e.target.value)}
                 />
             </InputGroup>

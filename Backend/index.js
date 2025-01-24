@@ -14,6 +14,9 @@ const imagenes = require('./Routes/imagenes.js')
 const reseñas = require('./Routes/reseñas.js')
 const roles = require('./Routes/roles.js')
 const videos = require('./Routes/videos.js')
+const promociones = require('./Routes/promociones.js')
+const configuracionGlobal = require('./Routes/configuracionGlobal.js');
+
 const app = express()
 
 app.use(express.json())
@@ -80,6 +83,8 @@ app.use('/',imagenes)
 app.use('/',reseñas)
 app.use('/',roles)
 app.use('/',videos)
+app.use('/',promociones);
+app.use('/',configuracionGlobal)
 
 app.listen(8000,()=> console.log('Escuchando en el puerto 8000'))
 

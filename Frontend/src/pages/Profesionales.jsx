@@ -201,7 +201,7 @@ export const Profesionales = () => {
                                         <td>{profesional.apellido_profesional}</td>
                                         <td>{profesional.especialidad_profesional}</td>
                                         <td>{profesional.descripcion_profesional}</td>
-                                        <td>{new Date(profesional.fecha_registro_profesional).toLocaleDateString('es-AR', { year: '2-digit', month: '2-digit', day: '2-digit' })} - {new Date(profesional.fecha_registro_profesional).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })}</td>
+                                        <td>{new Date(profesional.fecha_registro_profesional).toLocaleDateString('es-AR', { year: '2-digit', month: '2-digit', day: '2-digit' })} </td>
                                         <td>{profesional.activo_profesional  == 1 ? "Si" : "No"}</td>
                                         <td>
                                             <div className='div-botones-editar-profesionales'>

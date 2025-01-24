@@ -5,6 +5,7 @@ import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
 import {BrowserRouter} from 'react-router-dom'
 import { NavBarPrincipal } from './ComponentesCliente/NavBarPrincipal.jsx'
+import { PaginaPrincipal } from './Pages_/PaginaPrincipal.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -13,5 +14,6 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <App/>
     </BrowserRouter>
+    {/* <PaginaPrincipal/> */}
   </StrictMode>
 )

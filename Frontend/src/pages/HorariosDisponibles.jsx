@@ -122,6 +122,7 @@ export const HorariosDisponibles = () => {
   };
 
   const handleClickCancelar = () => {
+    limpiarCampos();
     setEditar(false);
     setShowModalAgregar(false);
   };
@@ -181,7 +182,7 @@ export const HorariosDisponibles = () => {
       <article className="contenedor-padre">
         <h2
         >
-          Horarios Disponibles
+          Horarios de atención
         </h2>
 
         {loading 

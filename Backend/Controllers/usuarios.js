@@ -57,10 +57,9 @@ const editarUsuario = (req, res) => {
 
   pool.query(query, [nombre_usuario, apellido_usuario, telefono_usuario, username_usuario, password_usuario, rol_id, id], (error, result) => {
     if (error) {
-      console.error(error);
       return res.status(500).send("Error al editar el usuario");
     }
-    res.status(200).json({ message: "Usuario actualizado exitosamente" });
+    res.status(200).json(result);
   });
 };
 

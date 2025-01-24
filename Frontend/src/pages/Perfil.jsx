@@ -12,7 +12,7 @@ export const Perfil = () => {
     const[usuario_id, setUsuarioID] = useState("")
     const[editar,setEditar] = useState(false)
     const[administrador,setAdministrador] = useState([])
-    const[username_usuario, setUsername] = useState("Pedro01")
+    const[username_usuario, setUsername] = useState("Barberia")
     const[password_usuario, setPassword] = useState("")
     const[nombre_usuario, setNombre] = useState("")
     const[apellido_usuario, setApellido] = useState("")
@@ -25,11 +25,8 @@ export const Perfil = () => {
 
     const obtenerAdministrador = async() =>{
       const response = await axios.get("http://localhost:8000/usuarios/administradores/" + usuario_id)
-      console.log(response.data)
       setAdministrador(response.data[0])
     }
-
-  
 
     const handleClickVerificar = async () =>{
       if(password_usuario != ""){
@@ -55,8 +52,9 @@ export const Perfil = () => {
         telefono_usuario,
         rol_id : 1
       })
-      if(response.status == 201){
+      if(response.status == 200){
         alert('Modificado')
+        setEditar(false)
       }
     }
 
@@ -99,7 +97,7 @@ export const Perfil = () => {
 
             <>
             <div className='btns-administrador-editar'>
-            <Button variant = 'dark' onClick={() => {setEditar(false), setPassword("")}}>Regresar sin modificar</Button>  <Button variant='primary' onClick={handleGuardarCambios}>Guardar y regresar</Button>
+            <Button variant = 'dark' onClick={() => {setEditar(false), setPassword("")}}>Regresar sin modificar</Button>  <Button variant='primary' onClick={()=> handleGuardarCambios()}>Guardar y regresar</Button>
             </div>
             </>
 
@@ -107,7 +105,7 @@ export const Perfil = () => {
 
         : 
         <article className='contenedor-imagen-administrador'>
-        <Image src="https://i.etsystatic.com/36512112/r/il/3f098c/4274900077/il_fullxfull.4274900077_dg5t.jpg" rounded width={'250px'} height={'300px'}/>
+        <Image src="https://scontent.ftuc1-2.fna.fbcdn.net/v/t39.30808-6/470562555_927284132831946_7384246587308229195_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=Yu0rPeJUxXMQ7kNvgGuoAnw&_nc_oc=AdhS1hisygczXy1vKnsmk0at4-gmbtP92UJgSYLaghqN4O87gHzd1nbeH1L4OSGn8W0&_nc_zt=23&_nc_ht=scontent.ftuc1-2.fna&_nc_gid=Ak5ThRZoEBMkMw8368rzl60&oh=00_AYC83UjTi5C_6pqcI-mLM6NT_qcTmTuyF4Ua7ie2pZ2MgA&oe=6794A4EA" rounded width={'150px'} height={'200px'}/>
         <Form.Control style={{marginTop : '1rem', fontSize : '18px'}} type='password' placeholder='Ingresar contraseña' onChange={(e)=> {setPassword(e.target.value)}} value={password_usuario}/>
         <Button onClick={handleClickVerificar}>Verificar</Button>
       </article>}

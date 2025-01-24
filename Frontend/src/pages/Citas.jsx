@@ -97,11 +97,8 @@ export const Citas = () => {
           }
 
     const buscarCitaDeUsuario = async () =>{
-      console.log(valorBusqueda)
         if(valorBusqueda == ""){
             obtenerCitas()
-            console.log(citas)
-            console.log("ESTOY PASANDO POR AQUI")
         }
         const response = await axios.get(`http://localhost:8000/citas/busqueda/${valorBusqueda}`)
         setCitas(response.data)
@@ -115,20 +112,21 @@ export const Citas = () => {
       }
 
 
-    useEffect(()=> {obtenerCitas()},[])
+    useEffect(()=> {obtenerCitas()},[valorBusqueda])
     useEffect(()=>{buscarCitaDeUsuario()},[valorBusqueda])
+  
     
 
   return (
     <>
     <NavbarAdministrados/>
         <article className="contenedor-padre">
-            <h2>Citas</h2>
+            <h2>Reservas</h2>
             <InputGroup className="mb-3">
               <InputGroup.Text id="inputGroup-sizing-default">Busqueda de cliente</InputGroup.Text>
 
               <Form.Control
-                placeholder="Ingrese el nombre o apellido"
+                placeholder=""
                 onChange={(e) => setValorBusqueda(e.target.value)
                 }
               />
@@ -143,12 +141,12 @@ export const Citas = () => {
               </div>
           </div>
         :
-          <div className='contenedor-tabla'>
+          <div className='contenedor-tabla-citas'>
             <Table striped bordered hover variant="dark">
                 <thead className="cabeza-tabla">
                     <tr>
                         <td>Cita</td>
-                        <td>Telefono</td>
+                        <td>Contacto</td>
                         <td>Usuario</td>
                         <td>Profesional</td>
                         <td>Servicio</td>

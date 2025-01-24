@@ -95,7 +95,8 @@ const obtenerTinturasDelProfesional = (req,res) =>{
     const query = `select * from Imagenes as i
                    inner join Profesionales as p
                    on i.profesional_id = p.profesional_id
-                   where p.profesional_id = ? and (i.descripcion_imagen like '%tintura%' or i.descripcion_imagen like '%Tintura%');`
+                   where p.profesional_id = ? and (i.descripcion_imagen like '%tintura%' or i.descripcion_imagen like '%Tintura%')
+                   order by i.fecha_subida_imagen desc;`
     pool.query(query,[id],(error,result)=>{
         if(error){
             return res.status(500).send("Error al obtener las tinturas del profesional")
@@ -109,7 +110,8 @@ const obtenerCortesDelProfesional = (req,res) =>{
     const query = `select * from Imagenes as i
                    inner join Profesionales as p
                    on i.profesional_id = p.profesional_id
-                   where p.profesional_id = ? and (i.descripcion_imagen like '%corte%' or i.descripcion_imagen like '%Corte%');`
+                   where p.profesional_id = ? and (i.descripcion_imagen like '%corte%' or i.descripcion_imagen like '%Corte%')
+                   order by i.fecha_subida_imagen desc;`
     pool.query(query,[id],(error,result)=>{
         if(error){
             return res.status(500).send("Error al obtener las tinturas del profesional")

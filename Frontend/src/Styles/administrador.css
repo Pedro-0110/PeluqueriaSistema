@@ -105,7 +105,7 @@ body{
           }
 
           .contenedor-tabla-imagenes img{
-            border-radius: 100%;
+            /* border-radius: 100%; */
             width: 50px;
             height: 50px;
           }
@@ -419,11 +419,13 @@ body{
   }
   .contenedor-imagen-administrador{
     width: 16vw;
+   
   }
   
   .contenedor-imagen-administrador img{
     width: 16vw;
     height: 40vh;
+   
     
   }
   .contenedor-imagen-administrador h2{
@@ -476,4 +478,4 @@ body{
   
   /*Reseñas */
 
-  
+  .contenedor-imagen-administrador

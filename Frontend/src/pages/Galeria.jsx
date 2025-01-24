@@ -74,7 +74,7 @@ export const Galeria = () => {
                                                  showConfirmButton: false,
                                                  timer: 1000
                                                });
-              obtenerImagenes()
+              obtenerVideos()
             } else {
               Swal.fire({
                 title: "Error!",
@@ -293,6 +293,7 @@ export const Galeria = () => {
         if(response.status == 201){
             limpiarCamposVideos()
             setShowVideo(false)
+            setShowAgregarVideo(false)
 
             Swal.fire({
                position: "top",

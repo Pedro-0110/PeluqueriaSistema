@@ -13,6 +13,7 @@ import { Citas } from './pages/Citas';
 import { HorariosDisponibles } from './pages/HorariosDisponibles';
 import { Perfil } from './pages/Perfil';
 import { NavBarPrincipal } from './ComponentesCliente/NavBarPrincipal';
+import { Promociones } from './pages/Promociones';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <Route path='/principal' element = {<NavBarPrincipal/>}/>
         <Route path='/galeria' element = {<Galeria/>}/>
         <Route path='/profesionales' element = {<Profesionales/>}/>
+        <Route path='/promociones' element = {<Promociones/>}/>
         <Route path = '/usuarios' element = {<Usuarios/>}/>
         <Route path = '/servicios' element = {<Servicios/>}/>
         <Route path = '/reseñas' element = {<Reseñas/>}/>
