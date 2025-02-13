@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 
 import iconoBasura from '../Icons/icono-basura.png'
 import iconoLapiz from '../Icons/icono-lapiz.png'
-import { NavbarAdministrados } from '../Components/NavbarAdministrados';
+import { NavbarAdministrador } from '../pages/NavbarAdministrador';
 
 
 export const Profesionales = () => {
@@ -82,6 +82,10 @@ export const Profesionales = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Si, eliminar!",
+            customClass: {
+                confirmButton: "custom-confirm-btn",
+                cancelButton: "custom-cancel-btn"
+              }
             });
   
         if (confirmacion.isConfirmed) {
@@ -167,7 +171,7 @@ export const Profesionales = () => {
 
   return (
     <>
-    <NavbarAdministrados/>
+    <NavbarAdministrador/>
         <article className="contenedor-padre">
 
             <h2>Profesionales</h2>

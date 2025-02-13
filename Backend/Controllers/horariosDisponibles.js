@@ -61,20 +61,26 @@ const eliminarHorarioDisponible = (req, res) => {
 };
 
 
-const obtenerHorarioDisponibleDelProfesional = (req,res) =>{
-    const {id} = req.params
-    const query = `select * from HorariosDisponibles as h
-                   inner join Profesionales as p
-                   on h.profesional_id = p.profesional_id
-                   where h.profesional_id = ?;`
+const obtenerHorarioDisponibleDelProfesional = (req, res) => {
+    const { id } = req.params;
+    const query = `SELECT * FROM HorariosDisponibles AS h
+                   INNER JOIN Profesionales AS p
+                   ON h.profesional_id = p.profesional_id
+                   WHERE h.profesional_id = ?;`;
 
-    pool.query(query,[id],(error,result)=>{
-        if(error){
-            return res.status(500).json('Error al obtener los horarios del profesional')
+    pool.query(query, [id], (error, result) => {
+        if (error) {
+            return res.status(500).json('Error al obtener los horarios del profesional');
         }
-        res.status(200).json(result)
-    })
-}
+
+        // Ordenar los días de la semana en orden lógico
+        const ordenDias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"];
+        const horariosOrdenados = result.sort((a, b) => ordenDias.indexOf(a.dia_semana) - ordenDias.indexOf(b.dia_semana));
+
+        res.status(200).json(horariosOrdenados);
+    });
+};
+
 
 const obtenerHorariosDeAtencionDeTalDia = (req,res) =>{
     const {dia,id} = req.params

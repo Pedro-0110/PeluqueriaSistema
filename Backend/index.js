@@ -16,6 +16,7 @@ const roles = require('./Routes/roles.js')
 const videos = require('./Routes/videos.js')
 const promociones = require('./Routes/promociones.js')
 const configuracionGlobal = require('./Routes/configuracionGlobal.js');
+const serviciosProfesional = require('./Routes/profesionales_servicios.js');
 
 const app = express()
 
@@ -85,6 +86,7 @@ app.use('/',roles)
 app.use('/',videos)
 app.use('/',promociones);
 app.use('/',configuracionGlobal)
+app.use('/',serviciosProfesional)
 
 app.listen(8000,()=> console.log('Escuchando en el puerto 8000'))
 

@@ -1,35 +1,41 @@
 import Button from 'react-bootstrap/esm/Button';
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
-import { NavbarAdministrados } from '../Components/NavbarAdministrados';
 import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import { NavbarAdministrador } from '../pages/NavbarAdministrador';
 
 export const Promociones = () => {
     const [profesionales, setProfesionales] = useState([]);
     const [promociones, setPromociones] = useState([]);
-    const [id_profesional, setIDProfesional] = useState("");
+    const [id_profesional, setIDProfesional] = useState(1);
     const [url_promocion, setUrlPromocion] = useState("");
-    const [mostrar_promociones, setMostrarPromociones] = useState(null);
+    const [mostrar_promociones, setMostrarPromociones] = useState(true);
 
 
     const verificarSiMostrarPromociones = async () =>{
         const response = await axios.get(`http://localhost:8000/configuracionGlobal`);
-        setMostrarPromociones(response.data[0].mostrar_promociones === 0 ? false : true);
+        setMostrarPromociones(response.data[0].mostrar_promociones);
     }
 
     const manejarCambio = async (e) =>{
-        setMostrarPromociones(e.target.checked);
-        await axios.put(`http://localhost:8000/configuracionGlobal/`,{mostrar_promociones});
+        const nuevoEstado = e.target.checked;
+        setMostrarPromociones(nuevoEstado ? 1 : 0);
+        await axios.put(`http://localhost:8000/configuracionGlobal/`,{ mostrar_promociones});
     }
 
     const obtenerProfesionales = async() =>{
         const response = await axios.get('http://localhost:8000/profesionales/nombres');
         setProfesionales(response.data);
+
+        if(profesionales.length > 0){
+            setIDProfesional(profesionales[0].profesional_id)
+        }
     }
 
     const agregarPromocion = async() =>{
+        if(url_promocion != ""){
         const response = await axios.post(`http://localhost:8000/promociones/`,{
             url_promocion,
             id_profesional
@@ -47,7 +53,15 @@ export const Promociones = () => {
         }
 
         setUrlPromocion("")
-    }
+    }else{
+        Swal.fire({
+            position: "top",
+             icon: "info",
+             title: "Llenar campo de url",
+             showConfirmButton: false,
+             timer: 1000
+           });
+    }}
 
     const obtenerPromociones = async()=>{
         const response = await axios.get(`http://localhost:8000/promociones/${id_profesional}`);
@@ -56,14 +70,18 @@ export const Promociones = () => {
 
     const handleClickEliminarPromocion =  async(promocion_id)=>{
         const confirmacion = await Swal.fire({
-                  title: "Se eliminara el registro",
-                  text: "",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Si, eliminar",
-                });
+            title: "Se eliminará el registro",
+            text: "¿Estás seguro?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Sí, eliminar",
+            customClass: {
+                confirmButton: "custom-confirm-btn",
+                cancelButton: "custom-cancel-btn"
+              }
+          });
 
         if(confirmacion.isConfirmed){
         const response = await axios.delete(`http://localhost:8000/promociones/${promocion_id}/${id_profesional}`);
@@ -79,17 +97,18 @@ export const Promociones = () => {
 
   return (
     <> 
-        <NavbarAdministrados/>
+        <NavbarAdministrador/>
         <div className="contenedor-padre-promociones">
             <article className="formulario-promociones">
             <Form>
                     <Form.Check // prettier-ignore
-                      type="switch"
+                      type="checkbox"
                       id="custom-switch"
+                      checked= {mostrar_promociones}
                       label="Mostrar promociones en pagina principal"
-                      checked = {mostrar_promociones}
+                      value = {true}
                       onChange= {manejarCambio}
-                    />
+                                          />
             </Form>
             <Form.Label>Profesional</Form.Label> 
             <Form.Select value={id_profesional} onChange={(e)=> setIDProfesional(e.target.value)}>

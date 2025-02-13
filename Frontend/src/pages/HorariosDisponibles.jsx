@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 
 import iconoBasura from "../Icons/icono-basura.png";
 import iconoLapiz from "../Icons/icono-lapiz.png";
-import { NavbarAdministrados } from "../Components/NavbarAdministrados";
+import { NavbarAdministrador } from "../pages/NavbarAdministrador";
 
 export const HorariosDisponibles = () => {
   const diasSemana = [
@@ -66,6 +66,10 @@ export const HorariosDisponibles = () => {
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Sí, eliminar!",
+      customClass: {
+        confirmButton: "custom-confirm-btn",
+        cancelButton: "custom-cancel-btn"
+      }
     });
   
     if (confirmacion.isConfirmed) {
@@ -178,7 +182,7 @@ export const HorariosDisponibles = () => {
 
   return (
     <>
-    <NavbarAdministrados/>
+    <NavbarAdministrador/>
       <article className="contenedor-padre">
         <h2
         >

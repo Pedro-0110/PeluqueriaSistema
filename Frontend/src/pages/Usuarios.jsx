@@ -8,7 +8,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import iconoBasura from '../Icons/icono-basura.png'
 import iconoLapiz from '../Icons/icono-lapiz.png'
 import Swal from 'sweetalert2';
-import { NavbarAdministrados } from "../Components/NavbarAdministrados";
+import { NavbarAdministrador } from "../pages/NavbarAdministrador";
 
 export const Usuarios = () => {
 
@@ -77,6 +77,10 @@ export const Usuarios = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Si, eliminar!",
+            customClass: {
+                confirmButton: "custom-confirm-btn",
+                cancelButton: "custom-cancel-btn"
+              }
         });
   
         if (confirmacion.isConfirmed) {
@@ -189,7 +193,7 @@ export const Usuarios = () => {
 
   return (
     <>
-    <NavbarAdministrados/>
+    <NavbarAdministrador/>
         <div className="contenedor-padre">
             <h2>Usuarios</h2>
           

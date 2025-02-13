@@ -4,7 +4,8 @@ import {useEffect, useState} from 'react'
 import Button from 'react-bootstrap/esm/Button';
 import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
-import { NavbarAdministrados } from '../Components/NavbarAdministrados';
+import logoPeluqueria from "../Icons/logo2-peluqueria.jpeg"
+import { NavbarAdministrador } from '../pages/NavbarAdministrador';
 
 export const Perfil = () => {
 
@@ -64,7 +65,7 @@ export const Perfil = () => {
   return (
     <>
 
-    <NavbarAdministrados/>
+    <NavbarAdministrador/>
       <div className='contenedor-perfil'>
     
         {editar 
@@ -105,7 +106,7 @@ export const Perfil = () => {
 
         : 
         <article className='contenedor-imagen-administrador'>
-        <Image src="https://scontent.ftuc1-2.fna.fbcdn.net/v/t39.30808-6/470562555_927284132831946_7384246587308229195_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=Yu0rPeJUxXMQ7kNvgGuoAnw&_nc_oc=AdhS1hisygczXy1vKnsmk0at4-gmbtP92UJgSYLaghqN4O87gHzd1nbeH1L4OSGn8W0&_nc_zt=23&_nc_ht=scontent.ftuc1-2.fna&_nc_gid=Ak5ThRZoEBMkMw8368rzl60&oh=00_AYC83UjTi5C_6pqcI-mLM6NT_qcTmTuyF4Ua7ie2pZ2MgA&oe=6794A4EA" rounded width={'150px'} height={'200px'}/>
+        <Image src={logoPeluqueria} rounded width={'150px'} height={'200px'}/>
         <Form.Control style={{marginTop : '1rem', fontSize : '18px'}} type='password' placeholder='Ingresar contraseña' onChange={(e)=> {setPassword(e.target.value)}} value={password_usuario}/>
         <Button onClick={handleClickVerificar}>Verificar</Button>
       </article>}

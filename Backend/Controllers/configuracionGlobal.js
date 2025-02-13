@@ -11,7 +11,8 @@ const verificarSiMostrarPromociones = (req, res)=>{
 }
 
 const editarMostrarPromociones = (req, res) =>{
-    const {mostrar_promociones} = req.body;
+    let {mostrar_promociones} = req.body;
+    mostrar_promociones = mostrar_promociones === true || mostrar_promociones === "true" || mostrar_promociones === 1 ? 1 : 0;
     const query = `update ConfiguracionGlobal set mostrar_promociones = ?;`;
     connection.query(query,[mostrar_promociones],(error, result)=>{
         if(error){

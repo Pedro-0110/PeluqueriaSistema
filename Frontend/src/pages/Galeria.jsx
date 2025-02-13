@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 import iconoBasura from '../Icons/icono-basura.png'
 import iconoLapiz from '../Icons/icono-lapiz.png'
 import iconoVer from '../Icons/icono-ver.png'
-import { NavbarAdministrados } from '../Components/NavbarAdministrados';
+import { NavbarAdministrador } from '../pages/NavbarAdministrador';
 
 
 export const Galeria = () => {
@@ -60,6 +60,10 @@ export const Galeria = () => {
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Si, eliminar!",
+          customClass: {
+            confirmButton: "custom-confirm-btn",
+            cancelButton: "custom-cancel-btn"
+          }
         });
       
         if (confirmacion.isConfirmed) {
@@ -74,7 +78,7 @@ export const Galeria = () => {
                                                  showConfirmButton: false,
                                                  timer: 1000
                                                });
-              obtenerVideos()
+              obtenerImagenes();
             } else {
               Swal.fire({
                 title: "Error!",
@@ -217,6 +221,10 @@ export const Galeria = () => {
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Si, eliminar!",
+          customClass: {
+            confirmButton: "custom-confirm-btn",
+            cancelButton: "custom-cancel-btn"
+          }
         });
       
         if (confirmacion.isConfirmed) {
@@ -231,7 +239,7 @@ export const Galeria = () => {
                                                  showConfirmButton: false,
                                                  timer: 1000
                                                });
-              obtenerImagenes()
+              obtenerVideos()
             } else {
               Swal.fire({
                 title: "Error!",
@@ -330,7 +338,7 @@ export const Galeria = () => {
 
   return (
     <>
-    <NavbarAdministrados/>
+    <NavbarAdministrador/>
     <div className='contenedor-galeria'>
         <article className='contenedor-dos-columnas'>
         <article className='contenedor-padre'>

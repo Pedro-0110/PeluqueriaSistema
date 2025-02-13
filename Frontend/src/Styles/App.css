@@ -110,9 +110,19 @@ html{
   margin-right: 1rem;
 }
 
+.contenedor-tabla-servicios{
+  height: 50vh;
+  overflow-y: auto; 
+  text-align: center;
+  margin-right: 1rem;
+}
 
-
-
+.contenedor-tabla-profesional-servicio{
+  height: 30vh;
+  overflow-y: auto; 
+  text-align: center;
+  margin-right: 1rem;
+}
 
 
 .div-botones-editar img{
@@ -357,7 +367,7 @@ html{
   border-radius: 25px;
   width: 26.6vw;
   background-color: #000000;
-  color: white;
+  color:#F8F8F8;
 }
 
 
@@ -373,7 +383,7 @@ html{
  
   border-radius: 25px;
   width: 25.5vw;
-  background-color: #000000;
+  background-color: #192841;
   color: white;
 }
 
@@ -741,6 +751,9 @@ html{
   width: 30vw;
   margin-left: auto;
   margin-right: auto;
+}
+.campos label{
+  color: white;
 }
 
 .contenedor-reseñas{
@@ -1279,4 +1292,49 @@ html{
   margin-right: 1rem;
 }
 
-.contenedor-imagen-administrador
+.servicios-del-profesional{
+  display: flex; 
+  flex-wrap: wrap;
+}
+
+.contenedor-servicios-profesional{
+  width: 100%;
+}
+.info-profesional-servicio{
+  width: 25%;
+  color: rgb(247, 247, 247);
+  margin-left: 1rem;
+}
+
+.info-profesional-servicio button{
+  width: 90%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
+}
+
+.info-profesional-servicio select{
+  margin-top: 1rem;
+}
+
+.contenedor-tabla-profesional-servicio{
+  width: 60%;
+  margin-left: 1rem;
+}
+
+.btn-crear-servicio{
+  float: right;
+}
+
+.swal2-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* Evita que los botones se salgan del modal */
+}
+
+
+
+  .btn-crear{}
+
+  .campos{}

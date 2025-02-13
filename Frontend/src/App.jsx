@@ -1,7 +1,6 @@
 import './Styles/App.css'
 import './Styles/cliente.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { NavbarAdministrados } from './Components/NavbarAdministrados';
 import { Galeria } from './pages/Galeria';
 import { Route, Routes } from 'react-router-dom';
 import { Profesionales } from './pages/Profesionales';
@@ -12,8 +11,9 @@ import { Reseñas } from './pages/Reseñas';
 import { Citas } from './pages/Citas';
 import { HorariosDisponibles } from './pages/HorariosDisponibles';
 import { Perfil } from './pages/Perfil';
-import { NavBarPrincipal } from './ComponentesCliente/NavBarPrincipal';
+import { NavBarPrincipal } from './pages/NavBarPrincipal';
 import { Promociones } from './pages/Promociones';
+import { Login } from './pages/Login';
 
 function App() {
   return (
@@ -21,10 +21,10 @@ function App() {
      <div className='contenedor-navbar-opcion'>
 
       <Routes>
-      <Route path='/principal' element = {<NavBarPrincipal/>}/>
-        <Route path='/galeria' element = {<Galeria/>}/>
-        <Route path='/profesionales' element = {<Profesionales/>}/>
-        <Route path='/promociones' element = {<Promociones/>}/>
+        <Route path = '/principal' element = {<NavBarPrincipal/>}/>
+        <Route path = '/galeria' element = {<Galeria/>}/>
+        <Route path = '/profesionales' element = {<Profesionales/>}/>
+        <Route path = '/promociones' element = {<Promociones/>}/>
         <Route path = '/usuarios' element = {<Usuarios/>}/>
         <Route path = '/servicios' element = {<Servicios/>}/>
         <Route path = '/reseñas' element = {<Reseñas/>}/>
@@ -32,7 +32,8 @@ function App() {
         <Route path = '/perfil' element = {<Perfil/>}/>
         <Route path = '/redesSociales' element = {<h1>En proceso</h1>}/>
         <Route path = '/horariosDisponibles' element = {<HorariosDisponibles/>}/>
-        <Route path='*' element = {<NotFound/>}/>
+        <Route path = '/login' element = {<Login/>}/>
+        <Route path = '*' element = {<NotFound/>}/>
       </Routes>
      </div> 
 

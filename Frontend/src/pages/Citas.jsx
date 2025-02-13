@@ -10,13 +10,13 @@ import {useEffect, useState } from 'react';
 
 import iconoCancelar from '../Icons/icono-cancelar.png'
 import iconoCancelarColor from '../Icons/icono-cancelar-color.png'
-import iconoWhatsapp from '../IconsClientes/icono-whatsapp.png'
+import iconoWhatsapp from '../Icons/icono-whatsapp.png'
 import iconoConfirmar from '../Icons/icono-confirmar.png'
 import iconoConfirmarColor from '../Icons/icono-confirmar-color.png'
 import iconoNada from '../Icons/icono-nada.png'
 import iconoPendiente from '../Icons/icono-pendiente.png'
 import iconoVer from '../Icons/icono-ver.png'
-import { NavbarAdministrados } from '../Components/NavbarAdministrados';
+import { NavbarAdministrador } from '../pages/NavbarAdministrador';
 
 
 
@@ -47,6 +47,10 @@ export const Citas = () => {
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Si, cancelar",
+          customClass: {
+            confirmButton: "custom-confirm-btn",
+            cancelButton: "custom-cancel-btn"
+          }
         });
       
         if (confirmacion.isConfirmed) {
@@ -119,7 +123,7 @@ export const Citas = () => {
 
   return (
     <>
-    <NavbarAdministrados/>
+    <NavbarAdministrador/>
         <article className="contenedor-padre">
             <h2>Reservas</h2>
             <InputGroup className="mb-3">

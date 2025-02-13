@@ -6,7 +6,7 @@ import {useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 
 import iconoBasura from '../Icons/icono-basura.png'
-import { NavbarAdministrados } from '../Components/NavbarAdministrados';
+import { NavbarAdministrador } from '../pages/NavbarAdministrador';
 
 export const Reseñas = () => {
     const [resenas,setResenas] = useState([])
@@ -28,6 +28,10 @@ export const Reseñas = () => {
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Sí, eliminar!",
+          customClass: {
+            confirmButton: "custom-confirm-btn",
+            cancelButton: "custom-cancel-btn"
+          }
         });
       
         if (confirmacion.isConfirmed) {
@@ -65,9 +69,9 @@ export const Reseñas = () => {
 
   return (
     <>
-    <NavbarAdministrados/>
+    <NavbarAdministrador/>
       <article className="contenedor-padre">
-          <h2>Comentarios</h2>
+          <h2>Reseñas</h2>
             {loading 
               ?
                 <div className="text-center">
@@ -92,7 +96,7 @@ export const Reseñas = () => {
                     <tbody>
                       {!loading && resenas.length > 0 && resenas.map((resena, indx)=>
                           <tr key={indx}>
-                              <td>{resena.nombre_usuario}{resena.apellido_usuario}</td>
+                              <td>{resena.nombre_usuario} {resena.apellido_usuario}</td>
                               <td>{resena.comentario}</td>
                               <td>{resena.puntuacion}</td>
                               <td>{new Date(resena.fecha_reseña).toLocaleDateString('es-AR', { year: '2-digit', month: '2-digit', day: '2-digit' })} {new Date(resena.fecha_reseña).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false })}</td>

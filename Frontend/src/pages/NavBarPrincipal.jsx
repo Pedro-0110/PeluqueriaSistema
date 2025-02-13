@@ -11,15 +11,18 @@ import Modal from 'react-bootstrap/Modal';
 
 import Swal from 'sweetalert2';
 
-import iconoInstagram from '../IconsClientes/icono-instagram.png'
-import iconoFacebook from '../IconsClientes/icono-facebook.png'
-import iconoWhatsapp from '../IconsClientes/icono-whatsapp.png'
-import iconoOjoAbierto from '../IconsClientes/icono-ojo-abierto.png'
-import iconoOjoCancelado from '../IconsClientes/icono-ojo-cancelado.png'
+import iconoInstagram from '../Icons/icono-instagram.png'
+import iconoFacebook from '../Icons/icono-facebook.png'
+import iconoWhatsapp from '../Icons/icono-whatsapp.png'
+import iconoOjoAbierto from '../Icons/icono-ojo-abierto.png'
+import iconoOjoCancelado from '../Icons/icono-ojo-cancelado.png'
+import logoPeluqueria from '../Icons/logo2-peluqueria.jpeg'
+import imagenPeluquero from '../Icons/imagen_peluquero.jpg'
 
 import ListGroupItem from 'react-bootstrap/esm/ListGroupItem';
 
 import { StarFill, Star } from "react-bootstrap-icons";
+import { NavLink } from 'react-router-dom';
 
 
 export const NavBarPrincipal = () => {
@@ -57,7 +60,9 @@ export const NavBarPrincipal = () => {
   const [showSesion, setShowSesion] = useState(false);
   const [username_usuario, setUserName] = useState("");
   const [password_usuario, setPasswordUsuario] = useState("")
-
+  const [selectedService, setSelectedService] = useState(null);
+  const [nombre_servicio, setNombreServicio] = useState("");
+  const [servicio_id, setServicioId] = useState("");
 
 
   const[nombre_usuario, setNombre] = useState("");
@@ -188,7 +193,7 @@ export const NavBarPrincipal = () => {
       Swal.fire({
         position: "top",
          icon: "success",
-         title: "Muchas gracias ✌",
+         title: "Gracias!",
          showConfirmButton: false,
          timer: 1500
        });
@@ -331,43 +336,56 @@ export const NavBarPrincipal = () => {
     setHorarioSeleccionado(event.target.value)
   }
   
-  const handleChangeChecked = (event) => {
-    const { value, checked } = event.target;
-    setCheckedItems((prevState) =>
-      checked
-        ? [...prevState, value] // Agrega al arreglo si está marcado
-        : prevState.filter((item) => item !== value) // Remueve si está desmarcado
-    );
+  const handleChangeChecked = (e, servicioId, nombre_servicio) => {
+    setNombreServicio(nombre_servicio)
+    setSelectedService(servicioId);
+    setServicioId(servicioId)
   };
 
   const realizarReserva = async() =>{
-    if(horarioSeleccionado!= ""){
-    const response = await axios.post(`http://localhost:8000/citas/`,{
-      usuario_id,
-      profesional_id,
-      servicio_id : 1,
-      fecha_cita : diaSeleccionado + " " + horarioSeleccionado,
-      estado_cita : "Pendiente"
-    })
-    if(response.status == 201){
+
+    if(horarioSeleccionado == ""){
       Swal.fire({
         position: "top",
-         icon: "success",
-         title: "Reservado! 📅",
+         icon: "warning",
+         title: "Selecione un horario",
          showConfirmButton: false,
-         timer: 3000
+         timer: 1500
        });
-      setDiaSeleccionado("")
-      setHorariosDisponibles([])
-      setNombreFechaSeleccionada("")
-      setHorarioSeleccionado(""),
-      setCheckedItems([])
-      setShowReservar(false)
-      obtenerCantidadDeCitasPendiendesDelCliente()
-          }
-  }else{
-    alert("Seleccione un horario")
-  }
+    }else if(servicio_id == ""){
+      Swal.fire({
+        position: "top",
+         icon: "warning",
+         title: "Selecione un servicio",
+         showConfirmButton: false,
+         timer: 1500
+       });
+    }else{
+      const response = await axios.post(`http://localhost:8000/citas/`,{
+        usuario_id,
+        profesional_id,
+        servicio_id,
+        fecha_cita : diaSeleccionado + " " + horarioSeleccionado,
+        estado_cita : "Pendiente"
+      })
+  
+      if(response.status == 201){
+        Swal.fire({
+          position: "top",
+           icon: "success",
+           title: "Reservado! ⏰📅",
+           showConfirmButton: false,
+           timer: 3000
+         });
+        setDiaSeleccionado("")
+        setHorariosDisponibles([])
+        setNombreFechaSeleccionada("")
+        setHorarioSeleccionado(""),
+        setCheckedItems([])
+        setShowReservar(false)
+        obtenerCantidadDeCitasPendiendesDelCliente()
+            }
+    }
 }
 
   const obtenerCantidadReseñasUsuario = async () =>{
@@ -448,7 +466,7 @@ export const NavBarPrincipal = () => {
         Swal.fire({
           position: "top",
            icon: "success",
-           title: `Usuario registrado!.`,
+           title: `Usuario registrado!`,
            showConfirmButton: false,
            timer: 2000
          })
@@ -515,15 +533,10 @@ export const NavBarPrincipal = () => {
     </div> :
         <>
         <div className='contenedor-navbar'>
-            <article className='logo-navbar'><img src={"https://scontent.ftuc1-2.fna.fbcdn.net/v/t39.30808-6/470223312_928030019424024_7163923516468459950_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=Qo00ZmzLB3EQ7kNvgEzAC62&_nc_oc=AdiLuMQ65oAFQEv2ScH5UEsSKk-3pbuUq03jQe-5t8-0mlw4syMWcSoqilMqw_gpO2A&_nc_zt=23&_nc_ht=scontent.ftuc1-2.fna&_nc_gid=AzKhBKdPT6NaGKx1AtIqPMH&oh=00_AYAofxhIFFFJyYFLdvD3yERHWun9ksP7S8BbskBsb3QlHA&oe=67947660"} alt="" />
+            <article className='logo-navbar'><img src={logoPeluqueria} alt="" />
             </article>
             <article className='perfiles'>
-              <a href="http://localhost:5173/citas"><Image src="https://scontent.ftuc1-1.fna.fbcdn.net/v/t1.6435-9/50077696_2050762325017242_652053740081119232_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=4xVWNqEIW4EQ7kNvgE1VYfi&_nc_oc=Adh--vrID5y9hUuDBKzfkdaabjvvtVHI1lbLWzxH3MpGtMGk2zkzMLzwLCc7d8EAqGw&_nc_zt=23&_nc_ht=scontent.ftuc1-1.fna&_nc_gid=AiIAOiBcXnZDEBnfq9KyxSI&oh=00_AYDWjFl_kuEpUZXdewOn8AlNwnRe_bYQAxcgl8HH7Juyew&oe=67BB8E3A" width={'100px'} height={'90px'} rounded onClick={()=> Swal.fire({
-          position: "top",
-           title: `Bienvenido jefe!`,
-           showConfirmButton: false,
-           timer: 3000
-         })}/></a> 
+              <NavLink to={'/login'}><Image src="https://scontent.ftuc1-1.fna.fbcdn.net/v/t1.6435-9/50077696_2050762325017242_652053740081119232_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=4xVWNqEIW4EQ7kNvgE1VYfi&_nc_oc=Adh--vrID5y9hUuDBKzfkdaabjvvtVHI1lbLWzxH3MpGtMGk2zkzMLzwLCc7d8EAqGw&_nc_zt=23&_nc_ht=scontent.ftuc1-1.fna&_nc_gid=AiIAOiBcXnZDEBnfq9KyxSI&oh=00_AYDWjFl_kuEpUZXdewOn8AlNwnRe_bYQAxcgl8HH7Juyew&oe=67BB8E3A" width={'100px'} height={'90px'} rounded/></NavLink> 
               
             </article>
             <article className='contenedor-botones-navbar'>
@@ -538,23 +551,24 @@ export const NavBarPrincipal = () => {
         <article id='datos' className='contenedor-datos-profesional'>
 
           <article id='profesionales' className='contenedor-profesionales'>
-            <h2 style={{backgroundColor: '#523042', color: 'white'
-            }}>Seleccionar un profesional  ⬇</h2>
+            {profesionales.length == 1 ? <h2 style={{backgroundColor: '#523042', color: 'white'
+            }}>Profesional</h2> : <h2 style={{backgroundColor: '#523042', color: 'white'
+            }}>Seleccionar un profesional  ⬇</h2>}
 
-            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }} className='profesionales'>
+            <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", justifyContent: 'space-evenly' }} className='profesionales'>
               {profesionales.map((profesional) => (
               <div key={profesional.profesional_id} onClick={() => {handleSelect(profesional.profesional_id)}}
                 style={{
-                border: selectedImage === profesional.profesional_id ? "4px solid #9fdb2e" : "3px solid transparent",
+                border: selectedImage === profesional.profesional_id ? "4px solid #1E90FF" : "3px solid transparent",
                 cursor: "pointer",
-                height: '30rem',
+                height: '28rem',
                 borderRadius : '8px'
                 }}>
 
-                <Card style={{ width: '14rem', height : '30rem'}} border= "secondary" bg={'dark'} text="white">
+                <Card style={{ width: '14rem', height : '28rem', background : '#242424'}} border= "secondary"  text="white">
                   <Card.Img variant="top" src={profesional.imagen_profesional} width={'40px'} height={'180px'} />
                   <Card.Body>
-                    <Card.Title style={{fontWeight : 'bold', color: '#9fdb2e'}}>{profesional.nombre_profesional} {profesional.apellido_profesional}</Card.Title>
+                    <Card.Title style={{fontWeight : 'bold', color: '#1E90FF'}}>{profesional.nombre_profesional} {profesional.apellido_profesional}</Card.Title>
                     <Card.Text>
                       <em>{profesional.descripcion_profesional}</em>
                     </Card.Text>
@@ -575,7 +589,7 @@ export const NavBarPrincipal = () => {
           </div>
 
           <div className='contenedor-horarios'>
-            <h2>Horarios de atencion</h2>
+            <h2>Horarios de atención</h2>
             <article className='horarios'>
               <article className='dia'>
                 <h3>Día</h3>
@@ -603,7 +617,7 @@ export const NavBarPrincipal = () => {
                 </ListGroup>
               </article>
             </article>
-           <Button variant='warning' onClick={() => handleClickReservar()}>Reservar un turno</Button>
+           <Button variant='warning' style={{background : '#E6A500', boxShadow : '0px 4px 6px rgba(0, 0, 0, 0.2)', color : 'black'}} onClick={() => handleClickReservar()}>Reservar un turno</Button>
           </div>
           
         </article>
@@ -611,14 +625,17 @@ export const NavBarPrincipal = () => {
         <article className='contenedor-descuentos'>
           <h2>Promociones</h2>
           <Carousel>
-            {promociones.map((promo)=>
-              <Carousel.Item interval={5000}>
-              <article className='carrusel-imagen'>
-                <Image width={'700px'} height={'350px'} src={promo.url_promocion}></Image>
-                <Image width={'700px'} height={'350px'} src={promo.url_promocion}></Image>
-              </article>
-            </Carousel.Item>
-            )}
+          {promociones.map((promo, index) => {
+  const siguienteIndex = (index + 1) % promociones.length; // Para no salir del array
+  return (
+    <Carousel.Item interval={5000} key={index}>
+      <article className='carrusel-imagen'>
+        <Image width={'700px'} height={'350px'} src={promo.url_promocion} alt={`Imagen ${index}`} />
+        <Image width={'700px'} height={'350px'} src={promociones[siguienteIndex].url_promocion} alt={`Imagen ${siguienteIndex}`} />
+      </article>
+    </Carousel.Item>
+  );
+})}
           </Carousel>
         </article>
         :<></>}
@@ -753,7 +770,7 @@ export const NavBarPrincipal = () => {
           </article>
         : <></>
         :
-          <Button variant = 'warning' style={{marginTop: '4rem', display : 'block', marginLeft : 'auto', marginRight : 'auto'}} onClick={()=> setShowSesion(true)}>Realizar un comentario</Button>
+          <Button variant = 'warning' style={{background : '#E6A500', boxShadow : '0px 4px 6px rgba(0, 0, 0, 0.2)', color : 'black',marginTop: '4rem', display : 'block', marginLeft : 'auto', marginRight : 'auto'}}  onClick={()=> setShowSesion(true)}>Realizar un comentario</Button>
         }
       
         <article className='contenedor-redes' id='contacto'>
@@ -812,18 +829,18 @@ export const NavBarPrincipal = () => {
 
                   {horarioSeleccionado && (
                     <>
-                      <h2>Seleccione los servicios</h2>
-                      {serviciosProfesional.map((servicio, index) => (
-                        <Form.Check
-                          key={index}
-                          type="checkbox"
-                          value={servicio.nombre_servicio}
-                          checked={checkedItems.includes(servicio.nombre_servicio)}
-                          onChange={handleChangeChecked}
-                          id={`servicio-${index}`} // ID único para cada servicio
-                          label={servicio.nombre_servicio}
-                        />
-                      ))}
+                      <h2>Seleccione el servicio</h2>
+                      {serviciosProfesional.map((servicio) => (
+  <Form.Check
+    key={servicio.servicio_id}
+    type="radio"
+    value={servicio.servicio_id}
+    checked={selectedService === servicio.servicio_id}
+    onChange={(e) => handleChangeChecked(e, servicio.servicio_id, servicio.nombre_servicio)}
+    id={`servicio-${servicio.servicio_id}`}
+    label={servicio.nombre_servicio}
+  />
+))}
                     </>
                   )}
               </article>
@@ -838,9 +855,7 @@ export const NavBarPrincipal = () => {
                     </div>
                     : 
                       <></>}
-                {/* </article> */}
 
-                {/* <article className='nombre-profesional'> */}
                   {showReservar 
                   ? 
                     <h4>{datosProfesional[0].nombre_profesional} {datosProfesional[0].apellido_profesional}</h4> 
@@ -857,13 +872,7 @@ export const NavBarPrincipal = () => {
                       <li><b>Telefono :</b> {datosUsuario.telefono_usuario}</li>
                       <li><b>Fecha: </b> {nombreFechaSeleccionada} {diaSeleccionado}</li>
                       <li><b>Horario :</b> {horarioSeleccionado}</li>
-                      <li><b>Servicios :</b>
-                        <ul>
-                          {checkedItems.map((item, index)=>
-                          <li key={index}>{item}</li>
-                            )}
-                        </ul>
-                      </li>
+                      <li><b>Servicio :</b>{nombre_servicio}</li>
                     </ul>
    
                     <Button size='' onClick={realizarReserva}>Confirmar</Button>

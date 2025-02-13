@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 
 import iconoBasura from '../Icons/icono-basura.png'
 import iconoLapiz from '../Icons/icono-lapiz.png'
-import { NavbarAdministrados } from '../Components/NavbarAdministrados';
+import { NavbarAdministrador } from '../pages/NavbarAdministrador';
 
 
 export const Servicios = () => {
@@ -22,6 +22,9 @@ export const Servicios = () => {
     const [duracion_servicio,setDuracion] = useState("")
     const [precio_servicio, setPrecio] = useState("")
     const [loading, setLoading] = useState(false);
+    const [profesionales, setProfesionales] = useState([]);
+    const [servicios_profesional, setServiciosProfesional] = useState([]);
+    const [profesional_id, setProfesionalID] = useState("");
     
     const handleClose = () => setShow(false)
 
@@ -72,6 +75,10 @@ export const Servicios = () => {
           confirmButtonColor: "#3085d6",
           cancelButtonColor: "#d33",
           confirmButtonText: "Sí, eliminar!",
+          customClass: {
+            confirmButton: "custom-confirm-btn",
+            cancelButton: "custom-cancel-btn"
+          }
         });
       
         if (confirmacion.isConfirmed) {
@@ -149,11 +156,45 @@ export const Servicios = () => {
       } 
     }
 
+    const obtenerProfesionales = async () =>{
+      const response = await axios.get(`http://localhost:8000/profesionales`);
+      setProfesionales(response.data);
+    }
+
+    const obtenerServiciosDelProfesional = async () =>{
+      const response = await axios.get(`http://localhost:8000/serviciosProfesional`);
+        setServiciosProfesional(response.data)
+    }
+
+    const relacionarProfesionalServicio = async() =>{
+      const response = await axios.post(`http://localhost:8000/serviciosProfesional/`,{profesional_id, servicio_id});
+      if(response.status == 200){
+        Swal.fire({
+          position: "top",
+           icon: "success",
+           title: "Relacionado!",
+           showConfirmButton: false,
+           timer: 1500,
+         });
+        obtenerServiciosDelProfesional();
+      }
+    }
+
+    const quitarRelacionProfesionalServicio = async(profesional_id, servicio_id) =>{
+
+      const response = await axios.delete(`http://localhost:8000/serviciosProfesional/${profesional_id}/${servicio_id}`);
+      if(response.status == 200){
+        obtenerServiciosDelProfesional();
+      }
+    }
+
+useEffect(()=>{obtenerServiciosDelProfesional()},[])
 useEffect(()=> {obtenerServicios()},[])
+useEffect(()=>{obtenerProfesionales()},[])
 
   return (
     <>
-    <NavbarAdministrados/>
+    <NavbarAdministrador/>
         <article className="contenedor-padre">
             <h2>Servicios</h2>
               {loading 
@@ -164,7 +205,7 @@ useEffect(()=> {obtenerServicios()},[])
                     </div>
                 </div>
               :
-                <div className='contenedor-tabla'>
+                <div className='contenedor-tabla-servicios'>
                   <Table striped bordered hover variant="dark">
                       <thead>
                         <tr>
@@ -192,9 +233,52 @@ useEffect(()=> {obtenerServicios()},[])
                       )}
                     </tbody>
                   </Table>
+                  <Button className='btn-crear-servicio' onClick={()=> handleClickCrearServicio()}>Crear nuevo servicio</Button>
                 </div>
               }
-              <Button className='btn-crear' onClick={()=> handleClickCrearServicio()}>Crear nuevo servicio</Button>
+
+              <article className='contenedor-servicios-profesional'>
+                <h2>Servicios del profesional</h2>
+
+                <div className='servicios-del-profesional'>
+                    <div className='info-profesional-servicio'>
+                      <Form.Select onChange = {(e)=> setProfesionalID(e.target.value)}>
+                        {profesionales.map((profesional, indx)=>
+                          <option key={indx} value={profesional.profesional_id}>{profesional.nombre_profesional} {profesional.apellido_profesional}</option>
+                        )}
+                      </Form.Select>
+                      <Form.Select onChange = {(e)=> setServicioID(e.target.value)}>
+                        {servicios.map((servicio, indx)=>
+                          <option key={indx} value={servicio.servicio_id}>{servicio.nombre_servicio}</option>
+                        )}
+                      </Form.Select>
+                      <Button onClick={relacionarProfesionalServicio}>Relacionar</Button>
+                  </div>
+                 
+                 <div className='contenedor-tabla-profesional-servicio'>
+                 <Table striped bordered hover variant="dark">
+                      <thead>
+                        <tr>
+                          <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Profesional</td>
+                          <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Servicio</td>
+                          <td  style={{backgroundColor: '#343a40', fontWeight : '700', textAlign: 'center', color: 'white'}}>Opcion</td>
+                        </tr>
+                      </thead>
+                    <tbody>
+                      {!loading && servicios_profesional.length > 0 && servicios_profesional.map((sp, indx)=>
+                        <tr key={indx}>
+                          <td>{sp.nombre_profesional} {sp.apellido_profesional}</td>
+                          <td>{sp.nombre_servicio}</td>
+                          <td><Button variant = 'warning' onClick={()=> quitarRelacionProfesionalServicio(sp.profesional_id, sp.servicio_id)}>Quitar relacion</Button></td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </Table>
+                 </div>
+                </div>
+              
+              </article>
+
         </article>
         {editar 
           ? 
